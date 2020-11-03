@@ -66,6 +66,18 @@ printf("this is ccode in hascal");
 ";
 ```
 
+## Standard Libraries List
+- hascal.core : main Hascal standard library+
+- hascal.math : a library for work with math
+- hascal.string : a library for work with strings
+- hascal.regex : a regex engine for Hascal
+- hascal.hlm : create HLM packages
+- hascal.convert : convert variables type
+- hascal.TrEx : try/except library
+- hascal.io : work with files and directories
+- hascal.time : work with time and date
+- hascal.micro : programming AVR micros and arduino boards (Comming Soon!)
+- hascal.sqlite : work with sqlite databases
 ## Contributors
 This project exists thanks to all the people who contribute. 
 
