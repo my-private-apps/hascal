@@ -32,6 +32,16 @@ x = ReadInt;
 var str = "";
 str = ReadStr;
 ```
+comments :
+```
+// this is a single line comment
+
+/*
+  this is a multi line comment
+*/
+
+Comment "this a comment";
+```
 if...else :
 ```
 use "hascal.core.h";
