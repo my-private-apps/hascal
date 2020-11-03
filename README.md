@@ -66,7 +66,8 @@ printf("this is ccode in hascal");
 ";
 ```
 
-## Standard Libraries List
+## Standard Libraries
+```
 - hascal.core : main Hascal standard library+
 - hascal.math : a library for work with math
 - hascal.string : a library for work with strings
@@ -78,6 +79,7 @@ printf("this is ccode in hascal");
 - hascal.time : work with time and date
 - hascal.micro : programming AVR micros and arduino boards (Comming Soon!)
 - hascal.sqlite : work with sqlite databases
+```
 ## Contributors
 This project exists thanks to all the people who contribute. 
 
