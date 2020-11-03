@@ -1,6 +1,15 @@
 # Hascal
 This repository contains the Hascal compiler, Hascal's Standard Libraries, tools, and documentation.
 
+## Hascal Features:
+1. Cross Platform (Linux, Windows,MacOS, and Android/IOS & Web soon
+2. High Performane
+3. Fast & Powerful
+4. Safe
+5. Compile to C Code and Machine Code
+6. System Programming
+7. Support Functional Programming
+...
 ## Examples
 hello world :
 ```
