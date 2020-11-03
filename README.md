@@ -23,6 +23,15 @@ use "hascal.core.h";
 var x = 1;
 var str = "Hascal";
 ```
+read values :
+```
+use "hascal.core.h";
+var x = 0;
+x = ReadInt;
+
+var str = "";
+str = ReadStr;
+```
 if...else :
 ```
 use "hascal.core.h";
