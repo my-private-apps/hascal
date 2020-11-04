@@ -194,6 +194,13 @@ class Parser(Parser):
     @_('call_funcs_params call_func_params')
     def call_funcs_params(self, p):
         return p.call_funcs_params + p.call_func_params
+    
+    @_('PRINT STRING SEM')
+    def call_func_params(self, p):
+        return "printf(\"{0}\") ;".format(p.STRING)
+    @_('PRINT expr SEM')
+    def call_func_params(self, p):
+        return "printf(\"%d\",{0}) ;".format(p.expr)
     @_('NAME SEM')
     def call_func(self, p):
         return "{0} () ;".format(p.NAME)
