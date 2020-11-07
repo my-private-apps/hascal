@@ -1,5 +1,5 @@
 # Hascal
-<b>HASCAL IS UNDER CURRENTLY DEVELOPMENT</b><br>
+<b>HASCAL IS CURRENTLY IN DEVELOPMENT</b><br>
 This repository contains the Hascal compiler, Hascal's Standard Libraries, tools, and documentation.
 
 [Hascal Official Website](https://hascal.github.io)
