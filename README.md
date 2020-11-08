@@ -4,7 +4,7 @@ This repository contains the Hascal compiler, Hascal's Standard Libraries, tools
 
 [Hascal Official Website](https://hascal.github.io)
 ## Hascal Features:
-1. Cross Platform (Linux, Windows,MacOS, and Android/IOS & Web soon
+1. Cross Platform (Linux, Windows,MacOS, and Android/IOS & Web soon)
 2. High Performane
 3. Fast & Powerful
 4. Safe
@@ -41,7 +41,7 @@ comments :
   this is a multi line comment
 */
 
-Comment "this a comment";
+Comment "this is a comment";
 ```
 if...else :
 ```
