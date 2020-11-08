@@ -15,18 +15,18 @@ This repository contains the Hascal compiler, Hascal's Standard Libraries, tools
 ## Examples
 hello world :
 ```
-use "hascal.core.h";
+use "hascal.core";
 print "Hello World";
 ```
 variables :
 ```
-use "hascal.core.h";
+use "hascal.core";
 var x = 1;
 var str = "Hascal";
 ```
 read values :
 ```
-use "hascal.core.h";
+use "hascal.core";
 var x = 0;
 x = ReadInt;
 
@@ -45,7 +45,7 @@ Comment "this is a comment";
 ```
 if...else :
 ```
-use "hascal.core.h";
+use "hascal.core";
 var x = 1;
 if x== 1 then
   print "x==1";
@@ -55,7 +55,7 @@ end;
 ```
 for loop :
 ```
-use "hascal.core.h";
+use "hascal.core";
 var x = 0;
 for x=0 to 10 do
   print x;
@@ -63,7 +63,7 @@ end;
 ```
 while loop :
 ```
-use "hsacal.core.h";
+use "hsacal.core";
 var x = 1;
 while x==1 do
   print "loop";
@@ -71,7 +71,7 @@ end;
 ```
 functions :
 ```
-use "hascal.core.h"
+use "hascal.core"
 function sayHello
   print "hello";
 end;
@@ -90,7 +90,7 @@ use "your_module_name";
 ```
 use C code in Hascal :
 ```
-use "hascal.core.h";
+use "hascal.core";
 ccode "
 printf("this is ccode in hascal");
 ";
