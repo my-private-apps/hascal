@@ -8,9 +8,8 @@ This repository contains the Hascal compiler, Hascal's Standard Libraries, tools
 2. High Performane
 3. Fast & Powerful
 4. Safe
-5. Compile to C Code and Machine Code
-6. System Programming
-7. Support Functional Programming
+5. System Programming
+6. Support Functional Programming
 ...
 ## Examples
 hello world :
@@ -84,7 +83,7 @@ function ret2 : var str = "" as str
   print str;
 end;
 ```
-use modules and c headers :
+use modules:
 ```
 use "your_module_name";
 ```
