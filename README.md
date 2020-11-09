@@ -1,4 +1,6 @@
 # Hascal
+![draw](https://raw.githubusercontent.com/hascal/hascal/main/img/has.png)
+<br>
 <b>HASCAL IS CURRENTLY IN DEVELOPMENT</b><br>
 This repository contains the Hascal compiler, Hascal's Standard Libraries, tools, and documentation.
 
