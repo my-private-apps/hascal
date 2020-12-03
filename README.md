@@ -25,8 +25,16 @@ use "hascal.core";
 int x = 1;
 string str = "Hascal";
 float pi = 3.14;
-bool testBool = true;//or bool testBool = false;
+bool testBool = true;//or <bool testBool = false;>
 char ch = 'h';
+```
+arrays:
+```
+int[] ages = 12,13,14,15;
+strings strs = "hello" , "bye" ;
+float[] fls = 1.0,1.1,1.3;
+bool[] bls = true , false,false;
+char[] chs = 'h','a','s','c','a','l'; 
 ```
 read values :
 ```
