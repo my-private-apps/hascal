@@ -6,7 +6,7 @@ This repository contains the Hascal compiler, Hascal's Standard Libraries, tools
 
 [Hascal Official Website](https://hascal.github.io)
 ## Hascal Features:
-1. Cross Platform (Linux, Windows,MacOS, and Android/IOS & Web soon)
+1. Cross Platform (Linux, Windows,MacOS,Web)
 2. High Performane
 3. Fast & Powerful
 4. Safe
@@ -17,22 +17,25 @@ This repository contains the Hascal compiler, Hascal's Standard Libraries, tools
 hello world :
 ```
 use "hascal.core";
-print "Hello World";
+print("Hello World");
 ```
 variables :
 ```
 use "hascal.core";
-var x = 1;
-var str = "Hascal";
+int x = 1;
+string str = "Hascal";
+float pi = 3.14;
+bool testBool = true;//or bool testBool = false;
+char ch = 'h';
 ```
 read values :
 ```
 use "hascal.core";
 var x = 0;
-x = ReadInt;
+ReadInt("",x);
 
 var str = "";
-str = ReadStr;
+ReadStr("",str);
 ```
 comments :
 ```
@@ -49,9 +52,9 @@ if...else :
 use "hascal.core";
 var x = 1;
 if x== 1 then
-  print "x==1";
+  print("x==1");
 else
-  print "x!=1";
+  print("x!=1");
 end;
 ```
 for loop :
@@ -59,7 +62,7 @@ for loop :
 use "hascal.core";
 var x = 0;
 for x=0 to 10 do
-  print x;
+  print(x);
 end;
 ```
 while loop :
@@ -67,22 +70,22 @@ while loop :
 use "hsacal.core";
 var x = 1;
 while x==1 do
-  print "loop";
+  print("loop");
 end;
 ```
 functions :
 ```
 use "hascal.core"
-function sayHello
-  print "hello";
+function sayHello()
+  print("hello");
 end;
 
-function ret as str
+function ret() as string
   return "hello";
 end;
 
-function ret2 : var str = "" as str
-  print str;
+function ret2(string ss)  as string
+  print(ss);
 end;
 ```
 use modules:
