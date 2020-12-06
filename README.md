@@ -17,17 +17,17 @@ This repository contains the Hascal compiler, Hascal's Standard Libraries, tools
 ## Get Started
 On Windows : \
 [Download Hascal for Windows](#)\
-\
+
 On Linux : \
 [Download Hascal for Linux](#)\
-or :\
+or : \
 ```
 sudo apt install hascal
 ```
 \
 On MacOS : \
 [Download Hascal for MacOS](#)\
-\
+
 ## Examples
 hello world :
 ```
