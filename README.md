@@ -31,7 +31,7 @@ char ch = 'h';
 arrays:
 ```
 int[] ages = 12,13,14,15;
-strings strs = "hello" , "bye" ;
+string[] strs = "hello" , "bye" ;
 float[] fls = 1.0,1.1,1.3;
 bool[] bls = true , false,false;
 char[] chs = 'h','a','s','c','a','l'; 
@@ -39,10 +39,10 @@ char[] chs = 'h','a','s','c','a','l';
 read values :
 ```
 use "hascal.core";
-var x = 0;
+int x = 0;
 ReadInt("",x);
 
-var str = "";
+string str = "";
 ReadStr("",str);
 ```
 comments :
@@ -58,7 +58,7 @@ Comment "this is a comment";
 if...else :
 ```
 use "hascal.core";
-var x = 1;
+int x = 1;
 if x== 1 then
   print("x==1");
 else
@@ -68,7 +68,7 @@ end;
 for loop :
 ```
 use "hascal.core";
-var x = 0;
+int x = 0;
 for x=0 to 10 do
   print(x);
 end;
@@ -76,7 +76,7 @@ end;
 while loop :
 ```
 use "hsacal.core";
-var x = 1;
+int x = 1;
 while x==1 do
   print("loop");
 end;
