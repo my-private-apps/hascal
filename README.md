@@ -20,7 +20,7 @@ On Windows : \
 
 On Linux : \
 [Download Hascal for Linux](#)\
-or : \
+or :
 ```
 sudo apt install hascal
 ```
