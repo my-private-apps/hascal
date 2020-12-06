@@ -124,7 +124,7 @@ printf("this is ccode in hascal");
 ```
 ## Standard Libraries
 ```
-- hascal.core : main Hascal standard library+
+- hascal.core : main Hascal standard library
 - hascal.math : a library for work with math
 - hascal.string : a library for work with strings
 - hascal.regex : a regex engine for Hascal
