@@ -122,11 +122,6 @@ ccode "
 printf("this is ccode in hascal");
 ";
 ```
-
-## Hascal VS C\C++
-<img style="display:inline-block" width="482px" height="298px" src="https://raw.githubusercontent.com/hascal/hascal/main/img/hasca_what_is_your_name.png">
-<img style="display:inline-block" width="482px" height="298px" src="https://raw.githubusercontent.com/hascal/hascal/main/img/c_what_is_your_name.png">
-
 ## Standard Libraries
 ```
 - hascal.core : main Hascal standard library+
