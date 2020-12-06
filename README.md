@@ -26,7 +26,7 @@ sudo apt install hascal
 ```
 \
 On MacOS : \
-[Download Hascal for MacOS](#)\
+[Download Hascal for MacOS](#)
 
 ## Examples
 hello world :
