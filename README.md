@@ -13,6 +13,10 @@ This repository contains the Hascal compiler, Hascal's Standard Libraries, tools
 5. System Programming
 6. Support Functional Programming
 ...
+
+## Get Started
+On Windows : \
+[df]()
 ## Examples
 hello world :
 ```
