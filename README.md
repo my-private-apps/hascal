@@ -2,18 +2,22 @@
 ![draw](https://raw.githubusercontent.com/hascal/hascal/main/img/has.png)
 <br>
 <b>HASCAL IS CURRENTLY IN DEVELOPMENT</b><br>
-This repository contains the Hascal compiler, Hascal's Standard Libraries, tools, and documentation.
+This repository contains the Hascal compiler, Hascal's Standard Libraries, tools, and documentation. \
+
+Hascal is a statically typed programming language.
 
 [Hascal Official Website](https://hascal.github.io)
 ## Hascal Features:
 1. Cross Platform (Linux, Windows,MacOS,Web)
-2. High Performane
+2. High Performane as fast as C (Hascal's main backend compiles to human readable C)
+3. Simple syntax (combination of Pascal and ruby)
 3. Fast & Powerful
 4. Safe
-5. System Programming
+5. Support System Programming
 6. Support Functional Programming
-...
-
+7. Develop front-end with Hascal
+8. C and JavaScript backends
+9. Translation to C and JavaScript
 ## Get Started
 On Windows : \
 [Download Hascal for Windows](#)\
