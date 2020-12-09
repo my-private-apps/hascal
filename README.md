@@ -20,7 +20,7 @@ Hascal is a statically typed programming language.
 9. Translation to C and JavaScript
 ## Get Started
 On Windows : \
-[Download Hascal for Windows](#)\
+[Download Hascal for Windows](#)
 
 On Linux : \
 [Download Hascal for Linux](#)\
