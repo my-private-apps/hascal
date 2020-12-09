@@ -5,6 +5,7 @@
 This repository contains the Hascal compiler, Hascal's Standard Libraries, tools, and documentation. 
 
 Hascal is a statically typed programming language.
+You can Countribute to this repo anytime.
 
 [Hascal Official Website](https://hascal.github.io)
 ## Hascal Features:
