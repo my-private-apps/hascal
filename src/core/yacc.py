@@ -1,3 +1,35 @@
+# -----------------------------------------------------------------------------
+# sly: yacc.py
+#
+# Copyright (C) 2016-2018
+# David M. Beazley (Dabeaz LLC)
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+#
+# * Redistributions of source code must retain the above copyright notice,
+#   this list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+# * Neither the name of the David Beazley or Dabeaz LLC may be used to
+#   endorse or promote products derived from this software without
+#  specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+# OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# -----------------------------------------------------------------------------
 
 import sys
 import inspect
@@ -6,12 +38,26 @@ from collections import OrderedDict, defaultdict, Counter
 __all__        = [ 'Parser' ]
 
 class YaccError(Exception):
+    '''
+    Exception raised for yacc-related build errors.
+    '''
     pass
 
+#-----------------------------------------------------------------------------
+#                     === User configurable parameters ===
+#
+# Change these to modify the default behavior of yacc (if you wish).  
+# Move these parameters to the Yacc class itself.
+#-----------------------------------------------------------------------------
 
-ERROR_COUNT = 3                
+ERROR_COUNT = 3                # Number of symbols that must be shifted to leave recovery mode
 MAXINT = sys.maxsize
 
+# This object is a stand-in for a logging object created by the
+# logging module.   SLY will use this by default to create things
+# such as the parser.out file.  If a user wants more detailed
+# information, they can create their own logging object and pass
+# it into SLY.
 
 class SlyLogger(object):
     def __init__(self, f):
@@ -32,6 +78,14 @@ class SlyLogger(object):
     critical = debug
 
 
+# ----------------------------------------------------------------------
+# This class is used to hold non-terminal grammar symbols during parsing.
+# It normally has the following attributes set:
+#        .type       = Grammar symbol type
+#        .value      = Symbol value
+#        .lineno     = Starting line number
+#        .index      = Starting lex position
+# ----------------------------------------------------------------------
 
 class YaccSymbol:
     def __str__(self):
@@ -40,6 +94,13 @@ class YaccSymbol:
     def __repr__(self):
         return str(self)
 
+# ----------------------------------------------------------------------
+# This class is a wrapper around the objects actually passed to each
+# grammar rule.   Index lookup and assignment actually assign the
+# .value attribute of the underlying YaccSymbol object.
+# The lineno() method returns the line number of a given
+# item (or 0 if not defined).   
+# ----------------------------------------------------------------------
 
 class YaccProduction:
     __slots__ = ('_slice', '_namemap', '_stack')
@@ -96,6 +157,37 @@ class YaccProduction:
         else:
             raise AttributeError(f"Can't reassign the value of attribute {name!r}")
 
+# -----------------------------------------------------------------------------
+#                          === Grammar Representation ===
+#
+# The following functions, classes, and variables are used to represent and
+# manipulate the rules that make up a grammar.
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# class Production:
+#
+# This class stores the raw information about a single production or grammar rule.
+# A grammar rule refers to a specification such as this:
+#
+#       expr : expr PLUS term
+#
+# Here are the basic attributes defined on all productions
+#
+#       name     - Name of the production.  For example 'expr'
+#       prod     - A list of symbols on the right side ['expr','PLUS','term']
+#       prec     - Production precedence level
+#       number   - Production number.
+#       func     - Function that executes on reduce
+#       file     - File where production function is defined
+#       lineno   - Line number where production function is defined
+#
+# The following attributes are defined or optional.
+#
+#       len       - Length of the production (number of symbols on right hand side)
+#       usyms     - Set of unique symbols found in the production
+# -----------------------------------------------------------------------------
+
 class Production(object):
     reduced = 0
     def __init__(self, number, name, prod, precedence=('right', 0), func=None, file='', line=0):
@@ -107,8 +199,10 @@ class Production(object):
         self.line     = line
         self.prec     = precedence
         
+        # Internal settings used during table construction
         self.len  = len(self.prod)   # Length of the production
 
+        # Create a list of unique production symbols used in the production
         self.usyms = []
         symmap = defaultdict(list)
         for n, s in enumerate(self.prod):
@@ -116,6 +210,8 @@ class Production(object):
             if s not in self.usyms:
                 self.usyms.append(s)
 
+        # Create a name mapping
+        # First determine (in advance) if there are duplicate names
         namecount = defaultdict(int)
         for key in self.prod:
             namecount[key] += 1
@@ -123,6 +219,7 @@ class Production(object):
                 for key in _name_aliases[key]:
                     namecount[key] += 1
 
+        # Now, walk through the names and generate accessor functions
         nameuse = defaultdict(int)
         namemap = { }
         for index, key in enumerate(self.prod):
@@ -144,6 +241,7 @@ class Production(object):
 
         self.namemap = namemap
                 
+        # List of all LR items for the production
         self.lr_items = []
         self.lr_next = None
 
@@ -171,10 +269,12 @@ class Production(object):
     def __getitem__(self, index):
         return self.prod[index]
 
+    # Return the nth lr_item from the production (or None if at the end)
     def lr_item(self, n):
         if n > len(self.prod):
             return None
         p = LRItem(self, n)
+        # Precompute the list of productions immediately following.
         try:
             p.lr_after = Prodnames[p.prod[n+1]]
         except (IndexError, KeyError):
@@ -185,7 +285,29 @@ class Production(object):
             p.lr_before = None
         return p
 
-
+# -----------------------------------------------------------------------------
+# class LRItem
+#
+# This class represents a specific stage of parsing a production rule.  For
+# example:
+#
+#       expr : expr . PLUS term
+#
+# In the above, the "." represents the current location of the parse.  Here
+# basic attributes:
+#
+#       name       - Name of the production.  For example 'expr'
+#       prod       - A list of symbols on the right side ['expr','.', 'PLUS','term']
+#       number     - Production number.
+#
+#       lr_next      Next LR item. Example, if we are ' expr -> expr . PLUS term'
+#                    then lr_next refers to 'expr -> expr PLUS . term'
+#       lr_index   - LR item index (location of the ".") in the prod list.
+#       lookaheads - LALR lookahead symbols for this item
+#       len        - Length of the production (number of symbols on right hand side)
+#       lr_after    - List of all productions that immediately follow
+#       lr_before   - Grammar symbol immediately before
+# -----------------------------------------------------------------------------
 
 class LRItem(object):
     def __init__(self, p, n):
@@ -209,7 +331,11 @@ class LRItem(object):
     def __repr__(self):
         return f'LRItem({self})'
 
-
+# -----------------------------------------------------------------------------
+# rightmost_terminal()
+#
+# Return the rightmost terminal from a list of symbols.  Used in add_production()
+# -----------------------------------------------------------------------------
 def rightmost_terminal(symbols, terminals):
     i = len(symbols) - 1
     while i >= 0:
@@ -218,7 +344,13 @@ def rightmost_terminal(symbols, terminals):
         i -= 1
     return None
 
-
+# -----------------------------------------------------------------------------
+#                           === GRAMMAR CLASS ===
+#
+# The following class represents the contents of the specified grammar along
+# with various computed properties such as first sets, follow sets, LR items, etc.
+# This data is used for critical parts of the table generation process later.
+# -----------------------------------------------------------------------------
 
 class GrammarError(YaccError):
     pass
@@ -266,6 +398,13 @@ class Grammar(object):
     def __getitem__(self, index):
         return self.Productions[index]
 
+    # -----------------------------------------------------------------------------
+    # set_precedence()
+    #
+    # Sets the precedence for a given terminal. assoc is the associativity such as
+    # 'left','right', or 'nonassoc'.  level is a numeric level.
+    #
+    # -----------------------------------------------------------------------------
 
     def set_precedence(self, term, assoc, level):
         assert self.Productions == [None], 'Must call set_precedence() before add_production()'
@@ -275,7 +414,22 @@ class Grammar(object):
             raise GrammarError(f"Associativity of {term!r} must be one of 'left','right', or 'nonassoc'")
         self.Precedence[term] = (assoc, level)
 
-   
+    # -----------------------------------------------------------------------------
+    # add_production()
+    #
+    # Given an action function, this function assembles a production rule and
+    # computes its precedence level.
+    #
+    # The production rule is supplied as a list of symbols.   For example,
+    # a rule such as 'expr : expr PLUS term' has a production name of 'expr' and
+    # symbols ['expr','PLUS','term'].
+    #
+    # Precedence is determined by the precedence of the right-most non-terminal
+    # or the precedence of a terminal specified by %prec.
+    #
+    # A variety of error checks are performed to make sure production symbols
+    # are valid and that %prec is used correctly.
+    # -----------------------------------------------------------------------------
 
     def add_production(self, prodname, syms, func=None, file='', line=0):
 
@@ -345,7 +499,13 @@ class Grammar(object):
         except KeyError:
             self.Prodnames[prodname] = [p]
 
-    
+    # -----------------------------------------------------------------------------
+    # set_start()
+    #
+    # Sets the starting symbol and creates the augmented grammar.  Production
+    # rule 0 is S' -> start where start is the start symbol.
+    # -----------------------------------------------------------------------------
+
     def set_start(self, start=None):
         if callable(start):
             start = start.__name__
@@ -359,7 +519,12 @@ class Grammar(object):
         self.Nonterminals[start].append(0)
         self.Start = start
 
-    
+    # -----------------------------------------------------------------------------
+    # find_unreachable()
+    #
+    # Find all of the nonterminal symbols that can't be reached from the starting
+    # symbol.  Returns a list of nonterminals that can't be reached.
+    # -----------------------------------------------------------------------------
 
     def find_unreachable(self):
 
@@ -376,7 +541,13 @@ class Grammar(object):
         mark_reachable_from(self.Productions[0].prod[0])
         return [s for s in self.Nonterminals if s not in reachable]
 
-    
+    # -----------------------------------------------------------------------------
+    # infinite_cycles()
+    #
+    # This function looks at the various parsing rules and tries to detect
+    # infinite recursion cycles (grammar rules where there is no possible way
+    # to derive a string of only terminals).
+    # -----------------------------------------------------------------------------
 
     def infinite_cycles(self):
         terminates = {}
@@ -435,7 +606,13 @@ class Grammar(object):
 
         return infinite
 
-    
+    # -----------------------------------------------------------------------------
+    # undefined_symbols()
+    #
+    # Find all symbols that were used the grammar, but not defined as tokens or
+    # grammar rules.  Returns a list of tuples (sym, prod) where sym in the symbol
+    # and prod is the production where the symbol was used.
+    # -----------------------------------------------------------------------------
     def undefined_symbols(self):
         result = []
         for p in self.Productions:
@@ -1812,11 +1989,11 @@ class Parser(metaclass=ParserMeta):
         if token:
             lineno = getattr(token, 'lineno', 0)
             if lineno:
-                sys.stderr.write(f'Synatx Error: at line {lineno}, token={token.type}\n')
+                sys.stderr.write(f'sly: Syntax error at line {lineno}, token={token.type}\n')
             else:
-                sys.stderr.write(f'Syntax Error: , token={token.type}')
+                sys.stderr.write(f'sly: Syntax error, token={token.type}')
         else:
-            sys.stderr.write('Parser Error: in input. EOF\n')
+            sys.stderr.write('sly: Parse error in input. EOF\n')
  
     def errok(self):
         '''
@@ -2001,4 +2178,4 @@ class Parser(metaclass=ParserMeta):
                 continue
 
             # Call an error function here
-            raise RuntimeError('Parser Error: internal parser error!!!\n')
+            raise RuntimeError('sly: internal parser error!!!\n')
