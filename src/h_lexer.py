@@ -6,6 +6,7 @@ class Lexer(Lexer):
         WHILE,
         DO,
         TO,
+        DOWNTO,
         IF,
         THEN,
         ELSE,
@@ -89,6 +90,7 @@ class Lexer(Lexer):
     NAME["as"] = AS
     NAME["for"] = FOR
     NAME["do"] = DO
+    NAME["downto"] = DOWNTO
     NAME["to"] = TO
     NAME["while"] = WHILE
     NAME["ReadStr"] = READSTR
@@ -107,15 +109,10 @@ class Lexer(Lexer):
     @_(r'\".*?(?<!\\)(\\\\)*\"')
     def STRING(self, t):
         t.value = t.value[1:-1]
-        t.value = t.value.replace(r"\n", "\n")
-        t.value = t.value.replace(r"\t", "\t")
-        t.value = t.value.replace(r"\\", "\\")
         t.value = t.value.replace(r"\"", "\"")
-        t.value = t.value.replace(r"\a", "\a")
-        t.value = t.value.replace(r"\b", "\b")
-        t.value = t.value.replace(r"\r", "\r")
-        t.value = t.value.replace(r"\t", "\t")
-        t.value = t.value.replace(r"\v", "\v")
+        return t
+    @_(r'\'.*?(?<!\\)(\\\\)*\'')
+    def CHAR(self, t):
         return t
     
 

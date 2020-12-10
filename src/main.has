@@ -1,0 +1,1 @@
+ccode use "stdio.h";int x = 0;for x = 100 downto 10 do	ccode "printf(\"%d \n \");";end;

@@ -1,0 +1,20 @@
+ccode use "dir.h";
+
+function sum : int x , int y
+	return x+y;
+end;
+
+function mkdir : string name 
+	ccode "mkdir(name);";
+end;
+
+
+function abs : int x : as int
+	if x > 0 then
+		return x;
+	else
+		return x * -1;
+	end;
+end;
+
+
