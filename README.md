@@ -106,15 +106,15 @@ end;
 functions :
 ```
 use "hascal.core"
-function sayHello()
+function sayHello();
   print("hello");
 end;
 
-function ret() as string
+function ret() as string;
   return "hello";
 end;
 
-function ret2(string ss)  as string
+function ret2(string ss)  as string;
   print(ss);
 end;
 ```
