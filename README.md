@@ -55,6 +55,9 @@ string[] strs = "hello" , "bye" ;
 float[] fls = 1.0,1.1,1.3;
 bool[] bls = true , false,false;
 char[] chs = 'h','a','s','c','a','l'; 
+
+int[3,3] ages2 = 1,2,3,4,5,6;
+print(ages2[3,3]);//output : 6
 ```
 read values :
 ```
