@@ -1,7 +1,7 @@
 # Hascal
 <b>HASCAL IS CURRENTLY IN DEVELOPMENT</b><br>
 
-Hascal is **simple**,**fast**,**powerful**,**compiled** programming language. \
+Hascal is **simple** ,**fast** ,**powerful** ,**compiled** programming language. \
 You can Countribute to this repo anytime.
 
 
