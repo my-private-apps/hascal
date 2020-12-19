@@ -1,8 +1,7 @@
 # Hascal
 <b>HASCAL IS CURRENTLY IN DEVELOPMENT</b><br>
-This repository contains the Hascal compiler, Hascal's Standard Libraries, tools, and documentation. 
 
-Hascal is a statically typed programming language. \
+Hascal is simple,fast,powerful,compiled programming language. \
 You can Countribute to this repo anytime.
 
 
