@@ -15,7 +15,7 @@ You can Countribute to this repo anytime.
 4. Safe
 5. Support System Programming
 6. Support Functional Programming
-7. Develop front-end with Hascal
+7. Develop website front-end with Hascal
 8. C and JavaScript backends
 9. Translation to C and JavaScript
 ## Get Started
