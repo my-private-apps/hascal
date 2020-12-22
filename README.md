@@ -1,7 +1,7 @@
 **HASCAL IS CURRENTLY IN DEVELOPMENT** 
 # Hascal
 
-Hascal is **simple** ,**fast** ,**powerful** ,**interpreted** programming language. 
+Hascal is **simple** ,**fast** ,**powerful** programming language. 
 
 [Hascal Official Website](https://hascal.github.io)
 ## Hascal Features:
