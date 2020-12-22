@@ -24,15 +24,6 @@ sudo apt install hascal
 ## Syntax
 You can see hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md)
 
-## Standard Libraries
-```
-- hascal.core : main Hascal standard library
-- hascal.math : a library for work with math
-- hascal.string : a library for work with strings
-- hascal.TrEx : try/except library
-- hascal.io : work with files and directories
-- hascal.time : work with time and date
-```
 ## Contributors
 This project exists thanks to all the people who contribute. 
 
