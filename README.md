@@ -16,7 +16,7 @@ On Windows : \
 [Download Hascal for Windows](#)
 
 On Linux : \
-[Download Hascal for Linux](#)\
+[Download Hascal for Linux](#)
 
 ## Syntax
 You can see hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md)
