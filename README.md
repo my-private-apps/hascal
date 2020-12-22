@@ -9,7 +9,7 @@ Hascal is **simple** ,**fast** ,**powerful** programming language.
 2. Fast & Powerful
 3. Simple syntax (combination of Pascal and ruby)
 3. Safe
-4. Develop website front-end with Hascal
+4. Use in website front-end
 
 ## Get Started
 On Windows : \
@@ -17,10 +17,7 @@ On Windows : \
 
 On Linux : \
 [Download Hascal for Linux](#)\
-or :
-```
-sudo apt install hascal
-```
+
 ## Syntax
 You can see hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md)
 
