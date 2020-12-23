@@ -1,0 +1,3 @@
+ccode use "stdio.h";
+const int x = 110;
+printf("%d",x);

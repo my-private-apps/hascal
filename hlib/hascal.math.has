@@ -1,0 +1,45 @@
+ccode use "math";
+
+const PI = 3.14;
+
+function abs(int x) : as int
+    if x > 1 then
+        return x;
+    else
+        return -x;
+    end;
+end;
+
+function cos(float x) : float
+    ccode "cos(x)";
+end;
+
+function sin(float x) : float
+    ccode "sin(x)";
+end;
+
+function max(float a,float b) : as float
+	if a > b then
+		return a;
+	end;
+	return b;
+end;
+
+function min(float a,float b) : as float
+	if a < b then
+		return a;
+	end;
+	return b;
+end;
+
+function sqrt(float x) : as float
+    return ccode "sqrt(x)";
+end;
+
+function pow(float a) : as float
+    return ccode "pow(a)";
+end;
+
+function radians(float degrees) : as float 
+	return degrees * (PI / 180.0);
+end;

@@ -1,0 +1,8 @@
+struct Exception
+    string Message;
+    string ExitCode;
+end;
+
+function TrEx(Exception f1,Exception f2)
+    //something
+end;

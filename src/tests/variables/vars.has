@@ -1,0 +1,10 @@
+int x = 1;
+string str = "Hellp";
+string str2 = "\"Hello\"";
+
+bool tt = true;
+tt = false;
+bool tt2 = false;
+
+char xxx = 'x';
+char xxxx = '$';

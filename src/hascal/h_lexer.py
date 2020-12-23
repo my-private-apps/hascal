@@ -1,4 +1,4 @@
-from core import Lexer
+from .sly import Lexer
 class Lexer(Lexer):
     tokens = {
         NAME,
@@ -18,6 +18,7 @@ class Lexer(Lexer):
         FLOATVAR,
         CHARVAR,
         BOOLVAR,
+        VAR,
         GREATER,
         LESS,
         EQEQ,
@@ -45,10 +46,17 @@ class Lexer(Lexer):
         DOT,
         LBRACE,
         RBRACE,
-        READINT,
-        READSTR,
+        TRUE,
+        FALSE,
+        COMMENT,
+        CONST,
+        STRUCT,
+        AND,
+        OR,
         END}
     ignore = ' \t'
+    ignore_comment_slash = r'//.*'
+
 
     # Tokens
     NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -82,6 +90,7 @@ class Lexer(Lexer):
     NAME["string"] = STRINGVAR
     NAME["char"] = CHARVAR
     NAME["bool"] = BOOLVAR
+    NAME["var"] = VAR
     NAME["print"] = PRINT
     NAME["if"] = IF
     NAME["then"] = THEN
@@ -93,8 +102,13 @@ class Lexer(Lexer):
     NAME["downto"] = DOWNTO
     NAME["to"] = TO
     NAME["while"] = WHILE
-    NAME["ReadStr"] = READSTR
-    NAME["ReadInt"] = READINT
+    NAME["true"] = TRUE
+    NAME["false"] = FALSE
+    NAME["comment"] = COMMENT
+    NAME["const"] = CONST
+    NAME["struct"] = STRUCT
+    NAME["and"] = AND
+    NAME["or"] = OR
     # Ignored pattern
     ignore_newline = r'\n'
 
@@ -109,7 +123,15 @@ class Lexer(Lexer):
     @_(r'\".*?(?<!\\)(\\\\)*\"')
     def STRING(self, t):
         t.value = t.value[1:-1]
+        t.value = t.value.replace(r"\n", "\n")
+        t.value = t.value.replace(r"\t", "\t")
+        t.value = t.value.replace(r"\\", "\\")
         t.value = t.value.replace(r"\"", "\"")
+        t.value = t.value.replace(r"\a", "\a")
+        t.value = t.value.replace(r"\b", "\b")
+        t.value = t.value.replace(r"\r", "\r")
+        t.value = t.value.replace(r"\t", "\t")
+        t.value = t.value.replace(r"\v", "\v")
         return t
     @_(r'\'.*?(?<!\\)(\\\\)*\'')
     def CHAR(self, t):

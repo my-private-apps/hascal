@@ -1,5 +1,34 @@
-
+typedef char* string;
+#include<stdbool.h>
 
 #include <stdio.h>
-   int main(int argc, char *argv[]){  
-int x = 0 ;for(x = 100;x >= 10;x--){printf("%d \n ");}return 0; }
+
+typedef char* string;
+#include<stdbool.h>
+
+#include <dir.h>
+
+#include <stdlib.h>
+
+#include <stdio.h>
+
+#include <conio.h>
+
+
+
+void ReadStr (string str) {gets(str);}void ReadInt (int a) {scanf("%d",&a);}void mkdir (string a) {mkdir("%s",a);}
+
+
+
+    int main(int argc, char *argv[]){
+  
+char s [] = "abcdefgh" ;
+
+ReadStr(s);
+
+printf("%s" , s);
+
+mkdir(s);
+
+return 0;
+ }

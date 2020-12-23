@@ -1,0 +1,14 @@
+ccode use "stdio.h";
+int xx = 0 ;
+
+
+int[] x = 1,2;
+printf("%d",x[xx]);
+
+printf("\n---\n");
+
+string[] x_str = "C++","C","Java";
+printf("%s",x_str[xx]);
+x_str[100] = "hascal";
+printf("%s",x_str[100]);
+

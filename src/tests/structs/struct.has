@@ -1,0 +1,17 @@
+ccode use "stdio.h";
+struct TEST
+    int x ;
+    string ar;
+end;
+
+TEST hello;
+
+hello.x = 12;
+
+printf("%d",hello.x);
+
+hello.ar = "TEST TEST";
+printf("%s",hello.ar);
+
+int x = 0;
+x = hello.x;

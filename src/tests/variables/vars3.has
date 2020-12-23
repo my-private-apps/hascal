@@ -1,0 +1,17 @@
+ccode use "stdio.h";
+int x = 1;
+string str = "Hello";
+string str2 = "\"Hello\"";
+
+bool tt = true;
+tt = false;
+bool tt2 = false;
+
+char xxx = 'x';
+char xxxx = '$';
+
+xxx = str[1];
+printf("%c",xxx);
+
+str[4] = xxx;
+printf("%c",str[4]);

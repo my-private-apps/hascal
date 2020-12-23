@@ -1,0 +1,17 @@
+ccode use "dir.h";
+ccode use "stdlib.h";
+ccode use "stdio.h";
+ccode use "conio.h";
+
+function ReadStr(string str)
+    ccode "gets(str);";
+end;
+
+function ReadInt(int a)
+    ccode "scanf(\"%d\",&a);";
+end;
+
+
+
+
+

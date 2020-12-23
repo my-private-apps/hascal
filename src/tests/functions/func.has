@@ -1,0 +1,38 @@
+ccode use "stdio.h";
+function Hello
+    printf("Hello World");
+end;
+
+Hello();
+
+function Test(int xx)
+    printf("%d",xx);
+end;
+
+int tt = 10;
+Test(tt);
+printf("-----");
+
+function Test2 : as int
+    return 10 * 10/ 25;
+end;
+
+tt = Test2();
+printf("%d",tt);
+printf("-----");
+function Test3(int x) : as int
+    return x * x + 2;
+end;
+
+tt = Test3(2);
+
+printf("%d",tt);
+
+printf("-----");
+
+
+int x = 6;
+while x <= Test3(2) do
+    printf("%d",x);
+    ccode "x--;";
+end;

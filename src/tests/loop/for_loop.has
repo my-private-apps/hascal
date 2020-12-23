@@ -1,0 +1,13 @@
+ccode use "stdio.h";
+int x = 1;
+
+for x to 10 do
+	print("%d",x);
+end;
+
+printf("----");
+
+x = 100;
+for x downto 0 do
+	print("%d",x);
+end;
