@@ -19,5 +19,5 @@ TODO :
 - hascal.os : a library for work with os
 - hascal.cmd : a library for work with command-line
 - hascal.json : a library for work with json files
-- hascal.
+- hascal.micro : a library for program avr microcontrollers(ATmega Series)
 ```
