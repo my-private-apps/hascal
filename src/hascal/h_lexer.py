@@ -38,7 +38,7 @@ class Lexer(Lexer):
         DOTDOT,
         SEM,
         STRING,
-        FLOAT,
+        #FLOAT,
         NUMBER,
         CHAR,
         USE,
@@ -61,7 +61,7 @@ class Lexer(Lexer):
     # Tokens
     NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
     NUMBER = r'\d+'
-    FLOAT = r'\d+\.\d+'
+    #FLOAT = r'\d+\.\d+'
     # Special symbols
     PLUS = r'\+'
     EQEQ = r'=='
@@ -90,6 +90,7 @@ class Lexer(Lexer):
     NAME["string"] = STRINGVAR
     NAME["char"] = CHARVAR
     NAME["bool"] = BOOLVAR
+    NAME["float"] = FLOATVAR
     NAME["var"] = VAR
     NAME["print"] = PRINT
     NAME["if"] = IF
@@ -123,20 +124,13 @@ class Lexer(Lexer):
     @_(r'\".*?(?<!\\)(\\\\)*\"')
     def STRING(self, t):
         t.value = t.value[1:-1]
-        t.value = t.value.replace(r"\n", "\n")
-        t.value = t.value.replace(r"\t", "\t")
         t.value = t.value.replace(r"\\", "\\")
         t.value = t.value.replace(r"\"", "\"")
-        t.value = t.value.replace(r"\a", "\a")
-        t.value = t.value.replace(r"\b", "\b")
-        t.value = t.value.replace(r"\r", "\r")
-        t.value = t.value.replace(r"\t", "\t")
-        t.value = t.value.replace(r"\v", "\v")
         return t
     @_(r'\'.*?(?<!\\)(\\\\)*\'')
     def CHAR(self, t):
+        t.value = t.value[1:-1]
         return t
-    
 
     
 

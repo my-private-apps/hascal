@@ -1,5 +1,6 @@
 # -------------------------------------------------
-# | Newlla Framework v1.0 - HaCross Compiler v1.4 |
+# | Hascal Programming Language --- Compiler v1.2 |
+# | Copyright 2019-2020 Hascal Development Team   | 
 # -------------------------------------------------
 
 from os import execv
@@ -12,13 +13,15 @@ from hascal.h_lexer import Lexer
 if __name__ == '__main__':
     lexer = Lexer()
     parser = Parser()
-    
+    version = "1.2.4"
     if len(argv) == 1 :
         print("Hascal Compiler : No such file or directory")
         print("usage : hascal <inputfile.has> <output_file>")
     elif argv[1] == "help" :
         print("Hascal Compiler v1.2\nCopyright (c) 2019-2020 Hascal Development Team.\nAll rights reserved.\n")
         print("Enter following command in terminal to build a hascal file :\nhascal <filename>")
+    elif argv[1] == "version":
+        print(f"Hascal version : hascal v1.2.4 {sys.platform}")
     else :       
         with open(argv[1], "r") as fin:           
             parser.parse(lexer.tokenize(fin.read()))

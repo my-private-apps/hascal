@@ -3,11 +3,11 @@ ccode use "stdlib.h";
 ccode use "stdio.h";
 ccode use "conio.h";
 
-function ReadStr(string str)
+function ReadStr(str string)
     ccode "gets(str);";
 end;
 
-function ReadInt(int a)
+function ReadInt(a int)
     ccode "scanf(\"%d\",&a);";
 end;
 

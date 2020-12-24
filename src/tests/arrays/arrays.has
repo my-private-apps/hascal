@@ -1,14 +1,15 @@
 ccode use "stdio.h";
-int xx = 0 ;
+const xx : int = 0;
 
 
-int[] x = 1,2;
-printf("%d",x[xx]);
+var x : int [] = 1,2;
+x[2] = 3;
+x[10] = 100;
+printf("%d",x[10]);
 
 printf("\n---\n");
 
-string[] x_str = "C++","C","Java";
-printf("%s",x_str[xx]);
-x_str[100] = "hascal";
-printf("%s",x_str[100]);
+var x_str : string [1]  = "C++";
+printf("%s",x_str[0]);
+
 
