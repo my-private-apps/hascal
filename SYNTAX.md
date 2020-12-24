@@ -1,13 +1,13 @@
 # Hascal Syntax Example
 
-hello world :
+### hello world :
 ```
 use "hascal.core";
 print("Hello World");
 // or :
 print "Hello World" ;
 ```
-variables :
+### variables :
 ```
 var x = 1;
 var str = "Hascal";
@@ -24,7 +24,7 @@ var pi : float = 3.14;
 var testBool : bool testBool = true;
 var ch : char = 'h';
 ```
-arrays:
+### arrays:
 ```
 var ages : int[4] = 12,13,14,15;
 var strs : string[2] = "hello" , "bye" ;
@@ -35,7 +35,7 @@ var chs : char[6] = 'h','a','s','c','a','l';
 var ages2 : int[3,3] = 1,2,3,4,5,6;
 print(ages2[3,3]);//output : 6
 ```
-read values :
+### read values :
 ```
 use "hascal.core";
 var x = 0;
@@ -44,7 +44,7 @@ ReadInt(x);
 var str = "";
 ReadStr(str);
 ```
-comments :
+### comments :
 ```
 // this is a single line comment
 
@@ -54,7 +54,7 @@ comments :
 
 Comment "this is a comment";
 ```
-if...else :
+### if...else :
 ```
 use "hascal.core";
 var x = 1;
@@ -64,7 +64,7 @@ else
   print("x!=1");
 end;
 ```
-for loop :
+### for loop :
 ```
 use "hascal.core";
 var x = 0;
@@ -72,7 +72,7 @@ for x=0 to 10 do
   print(x);
 end;
 ```
-while loop :
+### while loop :
 ```
 use "hsacal.core";
 var x = 1;
@@ -80,7 +80,7 @@ while x==1 do
   print("loop");
 end;
 ```
-functions :
+### functions :
 ```
 use "hascal.core"
 function sayHello()
@@ -95,11 +95,41 @@ function ret2(ss string) as string
   print(ss);
 end;
 ```
-use modules:
+### records
+```
+use "hascal.core";
+
+record Student 
+  var age : int;
+  var name : string ;
+end;
+
+Student johnDoe = new Student() ;
+johnDoe.age = 36 ;
+johnDoe.name = "john doe";
+```
+or :
+```
+use "hascal.core";
+
+record Student 
+  var age : int;
+  var name : string ;
+end;
+
+Student johnDoe = new Student(36,"john doe") ;
+
+print(johnDoe.age);//output : 36
+```
+### use modules:
 ```
 use "your_module_name";
 ```
-use C code in Hascal :
+for use c header files :
+```
+ccode use "stdio.h";
+```
+### use C code in Hascal :
 ```
 use "hascal.core";
 ccode "printf(\"this is ccode in hascal\");";
