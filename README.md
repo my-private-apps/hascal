@@ -9,7 +9,7 @@ Hascal is **simple** ,**fast** ,**powerful** , **compiled** programming language
 2. Fast & Powerful
 3. Simple syntax (combination of Pascal and ruby)
 3. Safe
-4. Use in website front-end
+4. Can be used in web development
 
 ## Get Started
 On Windows : \
