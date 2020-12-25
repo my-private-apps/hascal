@@ -21,6 +21,8 @@ On Linux : \
 ## Syntax
 You can see hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md) .
 
+## Documentation
+You can see Hascal documentation [here](https://github.com/hascal/hascal/wiki)
 ## Contributors
 This project exists thanks to all the people who contribute. 
 
