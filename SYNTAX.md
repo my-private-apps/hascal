@@ -95,16 +95,16 @@ function ret2(ss string) as string
   print(ss);
 end;
 ```
-### records
+### structs
 ```
 use "hascal.core";
 
-record Student 
+struct Student 
   var age : int;
   var name : string ;
 end;
 
-Student johnDoe = new Student() ;
+Student johnDoe = new Student ;
 johnDoe.age = 36 ;
 johnDoe.name = "john doe";
 ```
