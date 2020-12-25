@@ -1,17 +1,13 @@
 ccode use "stdio.h";
-struct TEST
-    int x ;
-    string ar;
+
+struct Student
+    var name : string;
+    var age : int;
 end;
 
-TEST hello;
+var Hasan = new Student ;
+Hasan.name = "Hasan Kashi";
+print("%s",Hasan.name);
 
-hello.x = 12;
-
-printf("%d",hello.x);
-
-hello.ar = "TEST TEST";
-printf("%s",hello.ar);
-
-int x = 0;
-x = hello.x;
+var Hossein = new Student("Hossein",32);
+print("%d",Hossein.age) ;

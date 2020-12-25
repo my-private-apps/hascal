@@ -5,22 +5,22 @@ end;
 
 Hello();
 
-function Test(int xx)
+function Test(xx int)
     printf("%d",xx);
 end;
 
-int tt = 10;
+var tt = 10;
 Test(tt);
 printf("-----");
 
-function Test2 : as int
+function Test2 as int
     return 10 * 10/ 25;
 end;
 
 tt = Test2();
 printf("%d",tt);
 printf("-----");
-function Test3(int x) : as int
+function Test3(x int)  as int
     return x * x + 2;
 end;
 
@@ -31,7 +31,7 @@ printf("%d",tt);
 printf("-----");
 
 
-int x = 6;
+var x = 6;
 while x <= Test3(2) do
     printf("%d",x);
     ccode "x--;";

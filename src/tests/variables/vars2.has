@@ -1,14 +1,14 @@
 ccode use "stdio.h";
-int x = 1;
-string str = "Hellp";
-string str2 = "\"Hello\"";
+var x  = 1;
+var str = "Hello";
+var str2 = "\"Hello\"";
 
-bool tt = true;
+var tt = true;
 tt = false;
-bool tt2 = false;
+var tt2 = false;
 
-char xxx = 'x';
-char xxxx = '$';
+var xxx = 'x';
+var xxxx = '$';
 
 printf("%d",x);
 printf("%s",str);

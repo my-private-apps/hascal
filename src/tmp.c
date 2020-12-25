@@ -1,8 +1,6 @@
 typedef char* string;
 #include<stdbool.h>
 
-#include <stdio.h>
-
 typedef char* string;
 #include<stdbool.h>
 
@@ -16,19 +14,11 @@ typedef char* string;
 
 
 
-void ReadStr (string str) {gets(str);}void ReadInt (int a) {scanf("%d",&a);}void mkdir (string a) {mkdir("%s",a);}
+void ReadStr (string str) {gets(str);}void ReadInt (int a) {scanf("%d",&a);}
 
 
 
     int main(int argc, char *argv[]){
   
-char s [] = "abcdefgh" ;
-
-ReadStr(s);
-
-printf("%s" , s);
-
-mkdir(s);
-
 return 0;
  }

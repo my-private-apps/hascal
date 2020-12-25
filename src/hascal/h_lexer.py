@@ -53,6 +53,7 @@ class Lexer(Lexer):
         STRUCT,
         AND,
         OR,
+        NEW,
         END}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
@@ -110,6 +111,7 @@ class Lexer(Lexer):
     NAME["struct"] = STRUCT
     NAME["and"] = AND
     NAME["or"] = OR
+    NAME["new"] = NEW
     # Ignored pattern
     ignore_newline = r'\n'
 
@@ -124,9 +126,12 @@ class Lexer(Lexer):
     @_(r'\".*?(?<!\\)(\\\\)*\"')
     def STRING(self, t):
         t.value = t.value[1:-1]
-        t.value = t.value.replace(r"\\", "\\")
-        t.value = t.value.replace(r"\"", "\"")
+        #t.value = t.value.replace(r"\\", "\\")
+        #t.value = t.value.replace(r"\"", "\"")
+        t.value = t.value.replace(r"D\"", "\"")
+        t.value = t.value.replace(r"\"D", "\"")
         return t
+    
     @_(r'\'.*?(?<!\\)(\\\\)*\'')
     def CHAR(self, t):
         t.value = t.value[1:-1]

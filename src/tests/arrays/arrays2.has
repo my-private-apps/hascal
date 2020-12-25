@@ -1,8 +1,8 @@
 ccode use "stdio.h";
-int xx = 1;
+var xx = 1;
 
 
-int[2,2] x = 1,2,3,4;
+var x : int[2,2] = 1,2,3,4;
 printf("%d",x[xx,xx]);
 
 //printf("\n---\n");

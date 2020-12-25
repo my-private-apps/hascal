@@ -64,7 +64,7 @@ class Parser(Parser):
     @_('struct_assign')
     def statement(self, p):
         self.src_before_main += "\nstruct {0} {{{1}}};\n".format(p.struct_assign[0],p.struct_assign[1])
-        self.src_before_main += "\ntypedef struct {0};\n".format(p.struct_assign[0])
+        self.src_before_main += "\ntypedef struct {0} {0};\n".format(p.struct_assign[0])
     #----------------------------------
     @_('var_assign')
     def statement(self, p):
@@ -360,6 +360,9 @@ class Parser(Parser):
     @_('VAR NAME DOTDOT INTVAR SEM')
     def var_assign(self, p):
         return "int {0} ;".format(p.NAME)
+    @_('VAR NAME DOTDOT INTVAR ASSIGN num SEM')
+    def var_assign(self, p):
+        return "int {0} = {1} ;".format(p.NAME,p.num)
     @_('VAR NAME ASSIGN num SEM')
     def var_assign(self, p):
         return "int {0} = {1};".format(p.NAME,p.num)
@@ -367,6 +370,9 @@ class Parser(Parser):
     @_('VAR NAME DOTDOT STRINGVAR SEM')
     def var_assign(self, p):
         return "string {0} ;".format(p.NAME)
+    @_('VAR NAME DOTDOT STRINGVAR ASSIGN STRING SEM')
+    def var_assign(self, p):
+        return "string {0} = \"{1}\";".format(p.NAME,p.STRING)
     @_('VAR NAME ASSIGN STRING SEM')
     def var_assign(self, p):
         return "string {0} = \"{1}\";".format(p.NAME,p.STRING)
@@ -374,6 +380,9 @@ class Parser(Parser):
     @_('VAR NAME DOTDOT CHARVAR SEM')
     def var_assign(self, p):
         return "char {0};".format(p.NAME)
+    @_('VAR NAME DOTDOT CHARVAR ASSIGN CHAR SEM')
+    def var_assign(self, p):
+        return "char {0} = \'{1}\';".format(p.NAME,p.CHAR)
     @_('VAR NAME ASSIGN CHAR SEM')
     def var_assign(self, p):
         return "char {0} = \'{1}\';".format(p.NAME,p.CHAR)
@@ -381,13 +390,25 @@ class Parser(Parser):
     @_('VAR NAME DOTDOT BOOLVAR SEM')
     def var_assign(self, p):
         return "bool {0};".format(p.NAME)
+    @_('VAR NAME DOTDOT BOOLVAR ASSIGN boolean SEM')
+    def var_assign(self, p):
+        return "bool {0} = {1};".format(p.NAME,p.boolean)
     @_('VAR NAME ASSIGN boolean SEM')
     def var_assign(self, p):
         return "bool {0} = {1};".format(p.NAME,p.boolean)
     
-    @_('NAME NAME SEM')
+    @_('VAR NAME DOTDOT NAME SEM')
     def var_assign(self, p):
-        return  str("struct {0} {1};".format(p.NAME0,p.NAME1))
+        return  str("{0} {1};".format(p.NAME1,p.NAME0))
+    @_('VAR NAME ASSIGN NEW NAME SEM')
+    def var_assign(self, p):
+        return  str("{0} {1};".format(p.NAME1,p.NAME0))
+    @_('VAR NAME ASSIGN NEW NAME LPAREN arrays_list RPAREN SEM')
+    def var_assign(self, p):
+        return  str("{0} {1} = {{{2}}};".format(p.NAME1,p.NAME0,p.arrays_list))
+    @_('VAR NAME DOTDOT NAME ASSIGN arrays_list SEM')
+    def var_assign(self, p):
+        return  str("{0} {1} = {{{2}}};".format(p.NAME1,p.NAME0,p.arrays_list))
     
     @_('name ASSIGN STRING SEM')
     def var_assign(self, p):

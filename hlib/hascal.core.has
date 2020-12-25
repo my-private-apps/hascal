@@ -8,7 +8,7 @@ function ReadStr(str string)
 end;
 
 function ReadInt(a int)
-    ccode "scanf(\"%d\",&a);";
+    ccode "scanf(D\"%d\"D,&a);";
 end;
 
 
