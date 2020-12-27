@@ -75,6 +75,15 @@ for x=0 to 10 do
   print(x);
 end;
 ```
+
+or :
+```
+use "hascal.core";
+var x = 0;
+for x=100 downto 1 do
+  print(x);
+end;
+```
 ### while loop :
 ```
 use "hsacal.core";
@@ -98,42 +107,26 @@ function ret2(ss string) as string
   print(ss);
 end;
 ```
-### structs
+### classes
 ```
-use "hascal.core";
-
-struct Student 
-  var age : int;
-  var name : string ;
+class Student
+  var name = "";
+  var age = 0;
+  
+  function WhatIsYourName
+    print("My name is ",name);
+  end;
+  
 end;
 
-Student johnDoe = new Student ;
-johnDoe.age = 36 ;
-johnDoe.name = "john doe";
-```
-or :
-```
-use "hascal.core";
+var John = new(Student)
+John.name = "John";
 
-record Student 
-  var age : int;
-  var name : string ;
-end;
-
-Student johnDoe = new Student(36,"john doe") ;
-
-print(johnDoe.age);//output : 36
+John.WhatIsYourName() ; # or : John.WhatIsYourName ;
+# output : My name is John
 ```
+
 ### use modules:
 ```
 use "your_module_name";
-```
-for use c header files :
-```
-ccode use "stdio.h";
-```
-### use C code in Hascal :
-```
-use "hascal.core";
-ccode "printf(\"this is ccode in hascal\");";
 ```
