@@ -43,6 +43,9 @@ ReadInt(x);
 
 var str = "";
 ReadStr(str);
+
+var de = 0.0;
+ReadDec(de);
 ```
 ### comments :
 ```
