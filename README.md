@@ -30,5 +30,6 @@ This project exists thanks to all the people who contribute.
 The compiler and the standard library are licensed under the GNU general public license,
 Please read the [License](https://github.com/hascal/hascal/blob/main/LICENSE) for more details.
 
+## About
 Copyright © 2019-2020  Hascal Development Team, all rights reserved.
 
