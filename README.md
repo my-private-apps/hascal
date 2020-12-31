@@ -21,6 +21,7 @@ On Windows : \
 On Linux : \
 [Download Hascal for Linux](#)
 
+If you are using macos, you must build hascal from the source,[build from source](#)
 ## Syntax
 You can see hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md).
 
