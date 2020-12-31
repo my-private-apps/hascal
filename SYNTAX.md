@@ -130,3 +130,7 @@ John.WhatIsYourName() ; # or : John.WhatIsYourName ;
 ```
 use "your_module_name";
 ```
+for example :
+```
+use "hascal.core";
+```
