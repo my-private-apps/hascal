@@ -23,7 +23,7 @@ On Linux : \
 
 If you are using macOS, you must build Hascal from the source,[build from source](#)
 ## Syntax
-You can see hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md).
+You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md).
 
 ## Documentation
 You can see Hascal documentation [here](https://github.com/hascal/hascal/wiki).
