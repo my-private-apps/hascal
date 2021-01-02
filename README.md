@@ -11,9 +11,8 @@ Hascal is **simple** ,**fast** ,**powerful** , **compiled** programming language
 1. Cross Platform (Linux, Windows,MacOS,Web)
 2. Fast & Powerful
 3. Simple syntax (combination of Pascal , ruby and golang)
-3. Safe
-4. Can be used in web development
-
+4. Safe
+5. Can be used in web development(can compiles to JavaScript)
 ## Get Started
 On Windows : \
 [Download Hascal for Windows](#)
