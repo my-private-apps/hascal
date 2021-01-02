@@ -20,3 +20,58 @@ for run a program without compiling enter following command :
 ```
 hascal run <your_code.has>
 ```
+## hello world
+a hello world program in Hascal :
+```
+use "hascal.core";
+print "Hello World";
+```
+**NOTE:** `use"hascal.core";` must be mentioned at the beginning of each program ,default functions are inside this library.
+
+## Variables
+Variables are like containers in which values can be inserted or changed.
+
+variable defining :
+```
+var name : type ;
+```
+name : your variable name
+type : your variable type
+
+**Types :**
+- int : an integer number
+- string : a string literal
+- bool : a boolean value(true or false)
+- float : a decimal number
+
+example :
+```
+var myvar : string ;
+var my_var : int ;
+var _myvar : float;
+
+```
+
+**NOTE:** names should not start with a number.
+By compiling this code, you will receive an error :
+```
+var 6Apple : int;
+```
+
+## variable assignment
+Do the following to give a value to the variable :
+```
+name = value ;
+```
+
+example :
+```
+var x : int;
+x = 14 ;
+```
+
+You can not assign a value  to a variable as opposed to the original type ,this code have error :
+```
+var myInt : int;
+myint = 1.1; # error
+```
