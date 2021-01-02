@@ -3,7 +3,7 @@ from .sly import Parser
 
 class Parser(Parser):
     tokens = Lexer.tokens
-    src_imports =  "typedef char* string;\n#include<stdbool.h>\n"
+    src_imports =  "typedef char* string;\n#include<stdbool.h>\n#include<string.h>\n"
     src_before_main = "\n\n"
     src_all = "\n \
    int main(int argc, char *argv[]){\n "
@@ -138,14 +138,12 @@ class Parser(Parser):
     def expr(self, p):
         return ""
 
-    @_('NUMBER')
-    def expr(self, p):
-        return p.NUMBER
     @_('name')
     def expr(self, p):
-        return p.name
-    
-    
+        return str(p.name)
+    #@_('NAME')
+    #def expr(self, p):
+    #    return p.NAME
     @_('name LBRACE andis RBRACE')
     def expr(self, p):
         return "{0}{1}".format(p.name,p.andis)
@@ -167,7 +165,9 @@ class Parser(Parser):
     @_('expr PLUS expr')
     def expr(self, p):
         return "{0}+{1}".format(p.expr0,p.expr1)
-
+    @_('num')
+    def expr(self, p):
+        return "{0}".format(p.num)
     @_('expr MINUS expr')
     def expr(self, p):
         return "{0}-{1}".format(p.expr0,p.expr1)
@@ -204,7 +204,7 @@ class Parser(Parser):
     @_('expr EQEQ expr')
     def condition(self, p):
         return str("{0} == {1}".format(p.expr0,p.expr1))
-    
+
     @_('expr NOTEQ expr')
     def condition(self, p):
         return str("{0} != {1}".format(p.expr0,p.expr1))
@@ -224,18 +224,27 @@ class Parser(Parser):
     @_('expr GREATER expr')
     def condition(self, p):
         return str("{0} > {1}".format(p.expr0,p.expr1))
+    
+    #@_('name EQEQ STRING')
+    #def condition(self, p):
+    #    return str("strcmp({0},\"{1}\") > 0".format(p.name,p.STRING))
 
     @_('call_func')
     def condition(self, p):
         return str("{0}".format(p.call_func))
+    @_('condition')
+    def conditions(self, p):
+        return str("{0}".format(p.condition))
     @_('condition AND condition')
-    def condition(self, p):
-        return str("{0} && {1}".format(p.condition0,p.condition1))
-    @_('condition OR condition')
-    def condition(self, p):
-        return str("{0} || {1}".format(p.condition0,p.condition1))
+    def conditions(self, p):
+        return str("{0} && {1}".format(p.conditions,p.condition))
+    @_('conditions OR condition')
+    def conditions(self, p):
+        return str("{0} || {1}".format(p.conditions,p.condition))
 
-
+    @_('NAGHIZ name')
+    def condition(self, p):
+        return str("!{0}".format(p.name))
 #---------------------------------------------#
 #   End Conditions                            #
 #---------------------------------------------#
@@ -471,13 +480,13 @@ class Parser(Parser):
     def array_assigns(self, p):
         return "bool {0} {1} ;".format(p.NAME,p.arrays)
     #--------------------------------
-    @_('IF condition THEN in_statements END SEM')
+    @_('IF conditions THEN in_statements END SEM')
     def if_stmt(self, p):
-        return str("if({0}){{{1}}}".format(p.condition,p.in_statements))
+        return str("if({0}){{{1}}}".format(p.conditions,p.in_statements))
     
-    @_('IF condition THEN in_statements ELSE in_statements END SEM')
+    @_('IF conditions THEN in_statements ELSE in_statements END SEM')
     def if_stmt(self, p):
-        return str("if({0}){{{1}}}else {{{2}}}".format(p.condition,p.in_statements0,p.in_statements1))
+        return str("if({0}){{{1}}}else {{{2}}}".format(p.conditions,p.in_statements0,p.in_statements1))
     #--------------------------------
     @_('FOR name TO expr DO in_statements END SEM')
     def loop_stmt(self, p):

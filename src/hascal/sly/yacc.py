@@ -1989,11 +1989,11 @@ class Parser(metaclass=ParserMeta):
         if token:
             lineno = getattr(token, 'lineno', 0)
             if lineno:
-                sys.stderr.write(f'sly: Syntax error at line {lineno}, token={token.type}\n')
+                sys.stderr.write(f'Hascal: Syntax error at line {lineno}, token={token.type}\n')
             else:
-                sys.stderr.write(f'sly: Syntax error, token={token.type}')
+                sys.stderr.write(f'Hascal: Syntax error, token={token.type}')
         else:
-            sys.stderr.write('sly: Parse error in input. EOF\n')
+            sys.stderr.write('Hascal : Parse error in input. EOF\n')
  
     def errok(self):
         '''
@@ -2178,4 +2178,4 @@ class Parser(metaclass=ParserMeta):
                 continue
 
             # Call an error function here
-            raise RuntimeError('sly: internal parser error!!!\n')
+            raise RuntimeError('Hascal : internal parser error!!!\n')

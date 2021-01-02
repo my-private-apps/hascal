@@ -5,9 +5,9 @@ struct Student
     var age : int;
 end;
 
-var Hasan = new Student ;
-Hasan.name = "Hasan Kashi";
-print("%s",Hasan.name);
+var John0 = new Student ;
+John0.name = "John0";
+print("%s",John0.name);
 
-var Hossein = new Student("Hossein",32);
-print("%d",Hossein.age) ;
+var John1 = new Student("John 1",32);
+print("%d",John0.age) ;

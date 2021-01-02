@@ -54,6 +54,7 @@ class Lexer(Lexer):
         AND,
         OR,
         NEW,
+        NAGHIZ,
         END}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
@@ -83,6 +84,7 @@ class Lexer(Lexer):
     DOT = r'\.'
     LBRACE = r'\['
     RBRACE = r'\]'
+    NAGHIZ = r'\!'
     NAME["ccode"] = CCODE
     NAME["use"] = USE
     NAME["function"] = FUNCTION
