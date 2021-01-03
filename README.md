@@ -34,5 +34,5 @@ The compiler and the standard library are licensed under the GNU general public 
 Please read the [License](https://github.com/hascal/hascal/blob/main/LICENSE) for more details.
 
 ## About
-Copyright © 2019-2020 **Hascal Development Team**, all rights reserved.
+Copyright © 2019-2021 **Hascal Development Team**, all rights reserved.
 
