@@ -20,12 +20,12 @@ On Windows : \
 On Linux : \
 [Download Hascal for Linux](#)
 
-If you are using macOS, you must build Hascal from the source,[build from source](#)
+If you are using MacOS, you must build Hascal from the source,[build from source](#)
 ## Syntax
 You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md).
 
 ## Documentation
-You can see Hascal documentation [here](https://github.com/hascal/hascal/wiki).
+You can see Hascal documentation [here](https://github.com/hascal/hascal/tree/main/docs).
 ## Contributors
 This project exists thanks to all the people who contribute. 
 
