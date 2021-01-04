@@ -19,7 +19,7 @@ pip3 install pyinstaller
 ```
 
 ## TCC Compiler
-Hascal for generate binary code use tccوyou should put a version of tcc compiler in the folder of Hascal compiler.
+Hascal for generate binary code use tcc you should put a version of tcc compiler in the folder of Hascal compiler.
 
 ## Build
 For build Hascal enter following command in terminal :
