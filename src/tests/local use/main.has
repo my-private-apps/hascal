@@ -1,0 +1,4 @@
+use "hascal.core";
+local use "testLib";
+
+Hello();

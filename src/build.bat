@@ -1,0 +1,1 @@
+pyinstaller hascal.py --onefile

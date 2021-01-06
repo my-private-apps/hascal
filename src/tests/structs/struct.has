@@ -10,4 +10,4 @@ John0.name = "John0";
 print("%s",John0.name);
 
 var John1 = new Student("John 1",32);
-print("%d",John0.age) ;
+print("%d",John1.age) ;

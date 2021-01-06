@@ -1,4 +1,3 @@
-
 ccode use "stdio.h";
 ccode use "conio.h";
 
@@ -14,6 +13,7 @@ function ReadInt as int
     return temp;
 end;
 
-
-
+function write(s1 string)
+    ccode "printf(D\"%s\"D,s1);";
+end;
 
