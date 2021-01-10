@@ -1,0 +1,15 @@
+ccode use "stdio.h";
+const xx : int = 0;
+
+
+var x : int [] = 1,2;
+x[2] = 3;
+x[10] = 100;
+printf("%d",x[10]);
+
+printf("\n---\n");
+
+var x_str : string [1]  = "C++";
+printf("%s",x_str[0]);
+
+

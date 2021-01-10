@@ -1,0 +1,12 @@
+ccode use "stdio.h";
+var xx = 1;
+
+
+var x : int[2,2] = 1,2,3,4;
+printf("%d",x[xx,xx]);
+
+//printf("\n---\n");
+
+//string[] x_str = "C++","C","Java";
+//printf("%s",x_str[xx]);
+

@@ -1,4 +1,4 @@
-from sly import Lexer
+from core.sly import Lexer
 class Lexer(Lexer):
     tokens = {
         NAME,
@@ -56,6 +56,7 @@ class Lexer(Lexer):
         NEW,
         NAGHIZ,
         LOCAL,
+        ANDCHAR,
         END}
     ignore = ' \t'
     ignore_comment_slash = r'//.*'
@@ -86,6 +87,7 @@ class Lexer(Lexer):
     LBRACE = r'\['
     RBRACE = r'\]'
     NAGHIZ = r'\!'
+    ANDCHAR = r'\&'
     NAME["ccode"] = CCODE
     NAME["use"] = USE
     NAME["function"] = FUNCTION

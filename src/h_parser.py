@@ -1,5 +1,5 @@
 from h_lexer import Lexer
-from sly import Parser
+from core.sly import Parser
 
 class Parser(Parser):
     tokens = Lexer.tokens
@@ -122,6 +122,7 @@ class Parser(Parser):
     @_('RETURN expr SEM')
     def in_statement(self, p):
         return str("return {0} ; ".format(p.expr))
+    
     #---------------------------------
     @_('loop_stmt')
     def in_statement(self, p):
@@ -150,7 +151,7 @@ class Parser(Parser):
 #---------------------------------------------#
     @_('MINUS expr %prec UMINUS')
     def expr(self, p):
-        return ""
+        return "-{0}".format(p.expr)
 
     @_('name')
     def expr(self, p):
@@ -202,9 +203,9 @@ class Parser(Parser):
     def expr(self, p):
         return "({0})".format(p.expr)
 
-    @_('MINUS NAME')
-    def expr(self, p):
-        return str("{0}{1}".format(p.MINUS,p.NAME))
+    #@_('MINUS expr')
+    #def expr(self, p):
+    #    return str("{0}{1}".format(p.MINUS,p.expr))
     @_('MINUS NUMBER')
     def num(self, p):
         return str("{0}{1}".format(p.MINUS,p.NUMBER))
@@ -245,7 +246,13 @@ class Parser(Parser):
     @_('name EQEQ STRING')
     def condition(self, p):
         return str("strcmp({0},\"{1}\") == 0".format(p.name,p.STRING))
-
+    @_('call_func EQEQ STRING')
+    def condition(self, p):
+        return str("strcmp({0},\"{1}\") == 0".format(p.call_func,p.STRING))
+    @_('STRING EQEQ STRING')
+    def condition(self, p):
+        return str("strcmp(\"{0}\",\"{1}\") == 0".format(p.STRING,p.STRING))
+    
     @_('call_func')
     def condition(self, p):
         return str("{0}".format(p.call_func))
@@ -268,6 +275,9 @@ class Parser(Parser):
     @_('NAME DOT NAME')
     def name(self, p):
         return str(p.NAME0+"."+p.NAME1)
+    @_('ANDCHAR name')
+    def name(self, p):
+        return str("&{0}".format(p.name))
     @_('NAME')
     def name(self, p):
         return str(p.NAME)

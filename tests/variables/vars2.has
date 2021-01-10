@@ -1,0 +1,18 @@
+ccode use "stdio.h";
+var x  = 1;
+var str = "Hello";
+var str2 = "\"Hello\"";
+
+var tt = true;
+tt = false;
+var tt2 = false;
+
+var xxx = 'x';
+var xxxx = '$';
+
+printf("%d",x);
+printf("%s",str);
+printf("%s",str2);
+printf("%c",xxx);
+printf("%c",xxxx);
+printf("%d",tt2);
