@@ -13,7 +13,6 @@ function ReadInt as int
     return temp;
 end;
 
-function write(s1 string)
-    ccode "printf(D\"%s\"D,s1);";
+function Length(s1 string) as int
+    return strlen(s1);
 end;
-

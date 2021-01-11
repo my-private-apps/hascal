@@ -1,6 +1,6 @@
 ccode use "math.h";
 
-//const PI : float = 3.14;
+const PI : float = 3.14;
 
 function abs(x int) as int
     if x > 1 then
@@ -9,15 +9,6 @@ function abs(x int) as int
         return -x;
     end;
 end;
-
-function cos(x float) as float
-    ccode "return cos(x);";
-end;
-
-function sin(x float) as float
-    ccode "return sin(x);";
-end;
-
 function max(a float,b float) as float
 	if a > b then
 		return a;
@@ -30,14 +21,6 @@ function min( a float , b float) as float
 		return a;
 	end;
 	return b;
-end;
-
-function sqrt(x float ) as float
-     ccode "return sqrt(x);";
-end;
-
-function pow(a float) as float
-     ccode " return pow(a)";
 end;
 
 function radians( degrees float )  as float 

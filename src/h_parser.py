@@ -57,7 +57,7 @@ class Parser(Parser):
             with open(path, 'r') as f:
                 parser = Parser()
                 parser.parse(Lexer().tokenize(f.read()))
-                self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_before_main + '\n'
+                self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
         except FileNotFoundError :
             print(f"Hascal : cannot found {p.STRING} library. Are you missing a library ?")
             
@@ -176,7 +176,7 @@ class Parser(Parser):
         return str(p.FALSE)
     @_('CHAR')
     def expr(self, p):
-        return str(p.CHAR)
+        return str('\''+p.CHAR+'\'')
     @_('expr PLUS expr')
     def expr(self, p):
         return "{0}+{1}".format(p.expr0,p.expr1)

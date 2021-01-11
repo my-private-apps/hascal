@@ -1,26 +1,14 @@
-function isAlpha(char ch) as bool
-    if ch == 'a' or ch == 'b' or ch == 'c' or ch == 'd' or ch == 'e' or ch == 'f' then
+function isAlpha(ch char) as bool
+    if ch >= 'a' or ch <= 'z' then
         return true;
     else
-        if ch == 'g' or ch == 'h' or ch == 'i' or ch == 'j' or ch == 'k' or ch == 'l' then
-            return true;
-        else
-            if ch == 'm' or ch == 'n' or ch == 'o' or ch == 'p' or ch == 'q' or ch == 'r' then
-                return true;
-            else
-                if ch == 's' or ch == 't' or ch == 'u' or ch == 'v' or ch == 'w' or ch == 'x'  or ch == 'y'  or ch == 'z' then
-                    return true;
-                else 
-                    return false;
-                end;
-            end;
-        end;
+        return false;
     end;
     return false;
 end;
 
-function isNumber(char ch) as bool
-    if ch == '1' or ch == '2' or ch == '3' or ch == '4' or ch == '5' or ch == '6' or ch == '7' or ch == '8' or ch == '9' or ch == '0' then
+function isNumber(ch char) as bool
+    if ch >= '0' or ch <= '9' then
         return true;
     else
         return false;
