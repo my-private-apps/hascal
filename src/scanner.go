@@ -3,18 +3,20 @@ package main
 import (
 	"unicode"
 )
-
-type Token struct {
-	token_type string
-	token_value string
+type Scanner struct {
+	src string
 }
 
-func scan(src []rune) []Token {
+func (s *Scanner) scan(src []rune) []Token {
 	result := []Token{}
 	pos := 0
 	for pos < len(src) {
 		temp := ""
 		for pos < len(src) && unicode.IsSpace(src[pos]) { pos++ }
+		/*if  string(src[pos]) == "#" { 
+			pos++ 
+			for pos < len(src) && string(src[pos]) != "\n"{pos++}
+		}*/
 		for pos < len(src) && unicode.IsNumber(src[pos]) {
 			temp += string(src[pos])
 			pos++
@@ -41,10 +43,36 @@ func scan(src []rune) []Token {
 				result = append(result, Token{ "READINT", temp })
 			case "if":
 				result = append(result, Token{ "IF", temp })
-			case "then":
+			case "else":
 				result = append(result, Token{ "THEN", temp })
 			case "end":
 				result = append(result, Token{ "END", temp })
+			case "for":
+				result = append(result, Token{ "FOR", temp })
+			case "do":
+				result = append(result, Token{ "DO", temp })
+			case "function":
+				result = append(result, Token{ "FUNCTION", temp })
+			case "use":
+				result = append(result, Token{ "USE", temp })		
+			case "int":
+				result = append(result, Token{ "INTVAR", temp })
+			case "string":
+				result = append(result, Token{ "STRVAR", temp })
+			case "bool":
+				result = append(result, Token{ "BOOLVAR", temp })	
+			case "float":
+				result = append(result, Token{ "FLOATVAR", temp })
+			case "char":
+				result = append(result, Token{ "CHARVAR", temp })
+			case "double":
+				result = append(result, Token{ "DOUBLEVAR", temp })
+			case "long":
+				result = append(result, Token{ "LONGVAR", temp })
+			case "array":
+				result = append(result, Token{ "ARRAYVAR", temp })
+			case "as":
+				result = append(result, Token{ "AS", temp })
 			default :
 				result = append(result, Token{ "NAME", temp })
 			}

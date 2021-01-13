@@ -1,9 +1,1 @@
-var x = "";
-print "Enter a String : ";
-ReadStr x ;
-print x ;
-println "";
-var xx = 0;
-print "Enter a Number :";
-ReadInt xx; 
-print xx ;
+print 12 ;
