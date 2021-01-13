@@ -8,11 +8,10 @@ Hascal is **simple** ,**fast** ,**powerful** , **interpreted** programming langu
 ![draw](https://img.shields.io/github/last-commit/hascal/hascal)
 ![draw](https://img.shields.io/github/license/hascal/hascal)
 ## Hascal Features:
-1. Cross Platform (Linux, Windows,MacOS,Web)
+1. Cross Platform (Linux, Windows,MacOS)
 2. Fast & Powerful
 3. Simple syntax (combination of Pascal , ruby and golang)
 4. Safe
-5. Can be used in web development(can compiles to JavaScript)
 ## Get Started
 On Windows : \
 [Download Hascal for Windows](#)
