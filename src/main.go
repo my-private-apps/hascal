@@ -1,6 +1,6 @@
 /*
 	Hascal Programming Language  --- v1.2
-	Copyiright (c) 2019-2020 Hascal Development Team, all rights reserved.
+	Copyiright (c) 2019-2021 Hascal Development Team, all rights reserved.
 */
 package main
 
