@@ -1,3 +1,0 @@
-ccode use "stdio.h";
-const x : int  = 110;
-printf("%d",x);

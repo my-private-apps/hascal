@@ -1,1 +1,0 @@
-hascal const.has

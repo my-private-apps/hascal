@@ -1,3 +1,0 @@
-ccode use "stdio.h";
-
-ccode "printf(D\"Hello World\"D);";
