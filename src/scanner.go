@@ -17,6 +17,7 @@ func (s *Scanner) scan(src []rune) []Token {
 			pos++ 
 			for pos < len(src) && string(src[pos]) != "\n"{pos++}
 		}*/
+
 		for pos < len(src) && unicode.IsNumber(src[pos]) {
 			temp += string(src[pos])
 			pos++
@@ -25,6 +26,7 @@ func (s *Scanner) scan(src []rune) []Token {
 			result = append(result, Token{ "NUMBER", temp })
 			temp = ""
 		}
+
 		for pos < len(src) && unicode.IsLetter(src[pos]) {
 			temp += string(src[pos])
 			pos++
@@ -86,6 +88,14 @@ func (s *Scanner) scan(src []rune) []Token {
 		if pos < len(src) && src[pos] == '='{
 			pos++
 			result = append(result, Token{ "EQUAL", "=" })
+		}
+		if pos < len(src) && src[pos] == '+'{
+			pos++
+			result = append(result, Token{ "PLUS", "+" })
+		}
+		if pos < len(src) && src[pos] == '-'{
+			pos++
+			result = append(result, Token{ "MINUS", "-" })
 		}
 		if pos < len(src) && src[pos] == '"' {
 			pos++

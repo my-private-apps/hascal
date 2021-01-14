@@ -1,1 +1,2 @@
-print 12 ;
+var yy = 12;
+print yy;
