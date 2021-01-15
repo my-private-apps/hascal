@@ -59,6 +59,19 @@ func walk() node {
 						}
 					}
 					
+				}else if token.token_type == "STRING" {
+					temp_val := token.token_value
+
+					pc++
+					token = pt[pc]
+
+					if CheckSemiColon(token) {
+						return node{
+							kind:"Declare_StrVariable",
+							name :temp_name,
+							value : temp_val,
+						}
+					}
 				}
 
 			}
@@ -100,10 +113,39 @@ func walk() node {
 		}
 	}
 
+	// <name> = <expr> ;
+	if token.token_type == "NAME" {
+		temp_name := token.token_value
+		pc++ 
+		token = pt[pc]
+
+		if token.token_type == "EQUAL" {
+			pc++
+			token = pt[pc]
+
+			if token.token_type == "NUMBER" {
+				res := GenExprInt(token)
+				token = pt[pc]
+
+				if CheckSemiColon(token) {
+					return node {
+						kind : "ExprInt_Assign",
+						name : temp_name,
+						value : res,
+					}
+				}
+				
+			}else if token.token_type == "STRING" {
+				pc++
+				token = pt[pc]
+			}
+		}
+	}
 	log.Fatal(token.token_type," : ",token.token_value)
 	return node {}
 }
 
+// Check semicolon(;) in end of lines
 func CheckSemiColon(t Token)bool{
 	if t.token_type == "SEMI" {
 		pc++
@@ -114,16 +156,20 @@ func CheckSemiColon(t Token)bool{
 	}
 }
 
-/*func GenExprInt(t Token) int{
+func GenExprInt(t Token) string{
 	resault := 0
 
 	
 	if t.token_type == "NUMBER" {
-		nums := [] int { }
+		//nums := [] int { }
+		tmp0 := t.token_value
+		num0,err := strconv.Atoi(tmp0)
+		check(err)
+
 		pc++
 		t = pt[pc]
 
-		for (t.token_type == "NUMBER" || t.token_type == "PLUS" || t.token_type == "MINUS") && pc < len(pt){
+		for pc < len(pt){
 			if t.token_type == "NUMBER" {
 				tmp := t.token_value
 
@@ -138,20 +184,28 @@ func CheckSemiColon(t Token)bool{
 					t = pt[pc]
 
 					if t.token_type == "NUMBER"{
+						tmp2:= t.token_value
+						num2,err := strconv.Atoi(tmp2)
+						check(err)
+						pc++
+						resault = num1 + num2
+						
+						
 
 					}else {
 						ShowError("Parser Error ")
 					}
-				}else if t.token_type == "MINUS" {
-					pc++
-					t = pt[pc]
+				}else  {
+					return "Error"
 				}
+			}else {
+				return string(num0)
 			}
 		}
 		
 	}
-	return resault
-}*/
+	return string(resault)
+}
 func ShowError(s1 string){
 	fmt.Println(s1)
 }

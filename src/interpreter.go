@@ -36,11 +36,33 @@ func interpreter(n node){
 	case "Declare_IntVariable":
 		AddVariable(n.name,n.value,"int")
 		break
+	case "ExprInt_Assign":
+		//AssignVariable(n.name,n.value)
+		a:= 0
+		for a < len(vars) {
+		if vars[a].name == n.name {
+			vars[a].value = n.value
+			fmt.Println(vars[a].value)
+		}
+		a++
+		}
+		
+		break
 	default :
 		fmt.Println("Interpreter Error")
 	}
 }
 
+func AssignVariable(var_name string,var_value string){
+	a:= 0
+	for a < len(vars) {
+		if vars[a].name == var_name {
+			vars[a].value = var_value
+		}
+		a++
+	}
+}
 func AddVariable(var_name string,var_value string,var_type string){
 	vars = append(vars,Variable {var_name,var_value,var_type})
 }
+

@@ -36,7 +36,7 @@ func Hascal(src string){
 
 	// Parse source and create AST
 	tree := p.parse(tokens)
-	
+	//fmt.Println(tree)
 	// run source
 	interpreter(node(tree))
 }
