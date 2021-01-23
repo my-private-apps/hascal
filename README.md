@@ -1,7 +1,7 @@
 **HASCAL IS CURRENTLY IN DEVELOPMENT** 
 # Hascal
 
-Hascal is **simple** ,**fast** ,**powerful** , **interpreted** programming language. 
+Hascal is **simple** ,**fast** ,**powerful** , **compiled** programming language. 
 
 [Hascal Official Website](https://hascal.github.io)
 
@@ -11,7 +11,8 @@ Hascal is **simple** ,**fast** ,**powerful** , **interpreted** programming langu
 1. Cross Platform (Linux, Windows,MacOS)
 2. Fast & Powerful
 3. Simple syntax (combination of Pascal , ruby and golang)
-4. Safe
+4. Can be use in web development(can compiles to javascript)
+
 ## Get Started
 On Windows : \
 [Download Hascal for Windows](#)
@@ -19,17 +20,8 @@ On Windows : \
 On Linux : \
 [Download Hascal for Linux](#)
 
-If you are using MacOS, you must build Hascal from the source,build from source.
+If you are using MacOS, you must build Hascal from the source,[build from source](https://github.com/hascal/hascal/blob/main/BUILD.md).
 
-## Build 
-Prequistes :
-- python 3.X
-
-```
-git clone https://github.com/hascal/hascal
-cd hascal
-build
-```
 ## Syntax
 You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md).
 
