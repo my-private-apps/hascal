@@ -18,8 +18,7 @@ hascal js <your_code.has>
 ## hello world
 a hello world program in Hascal :
 ```
-use "hascal.core";
-print "Hello World";
+print("Hello World");
 ```
 **NOTE:** `use"hascal.core";` must be mentioned at the beginning of each program ,default functions are inside this library.
 
@@ -70,3 +69,18 @@ You can not assign a value  to a variable as opposed to the original type ,this 
 var myInt : int;
 myint = 1.1; # error
 ```
+
+## Constants
+ Constant(const) is a type qualifier a keyword applied to a data type that indicates that the data is read only(wikipedia).
+ 
+ for example :
+ ```
+ const MyConst = "MyName";
+ print(MyConst); # output : MyName
+ ```
+ **NOTE:** You cannot change the const values.
+ for example (compiler return an error):
+ ```
+ const PI = 3.14 ;
+ PI = 3.1416 ; # error
+ ```
