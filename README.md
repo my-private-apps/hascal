@@ -24,13 +24,11 @@ If you are using MacOS, you must build Hascal from the source,build from source.
 ## Build 
 Prequistes :
 - python 3.X
-- golang v1.11 or higher
-- ruby 2.7 or higher(optional)
 
 ```
 git clone https://github.com/hascal/hascal
 cd hascal
-python builder.py
+build
 ```
 ## Syntax
 You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md).
