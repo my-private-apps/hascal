@@ -20,7 +20,6 @@ a hello world program in Hascal :
 ```
 print("Hello World");
 ```
-**NOTE:** `use"hascal.core";` must be mentioned at the beginning of each program ,default functions are inside this library.
 
 ## Variables
 Variables are like containers in which values can be inserted or changed.
@@ -52,7 +51,7 @@ By compiling this code, you will receive an error :
 var 6Apple : int;
 ```
 
-## variable assignment
+### Variable assignment
 Do the following to give a value to the variable :
 ```
 name = value ;
