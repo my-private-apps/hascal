@@ -67,7 +67,7 @@ class Parser(Parser):
     @_('USE STRING SEM')
     def statement(self, p):
         replacedValue = str(p.STRING).replace(".", "\\")
-        path = r'./hsl/{0}.has'.format(replacedValue)
+        path = r'./hlib/{0}.has'.format(replacedValue)
         try :
             with open(path, 'r') as f:
                 parser = Parser()
@@ -93,7 +93,7 @@ class Parser(Parser):
         self.src_imports += "\nimport {0};\n".format(p.STRING)
     @_('LOCAL EXT STRING SEM')
     def statement(self, p):
-        path = r'./hsl/{0}.d'.format(p.STRING)
+        path = r'./hlib/{0}.d'.format(p.STRING)
         try :
             with open(path, 'r') as f:
                 parser = Parser()
@@ -219,10 +219,10 @@ class Parser(Parser):
     # break;
     # continue ;
     @_('break_loop')
-    def statement(self, p):
+    def in_statement(self, p):
         self.src_main += "\n{0}\n".format(p.break_loop)
     @_('continue_loop')
-    def statement(self, p):
+    def in_statement(self, p):
         self.src_main += "\n{0}\n".format(p.continue_loop)
         
     #----------------------------------

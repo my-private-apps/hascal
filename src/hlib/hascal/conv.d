@@ -35,7 +35,6 @@ void main(){
 
 
 
-
 // convert types to int
 int to_int(string s){
 	return to!int(s);

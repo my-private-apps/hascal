@@ -1,7 +1,7 @@
-# ----------------------------------------------------------
-# | Hascal Programming Language --- Hascal Compiler v1.2.4 |
-# | Copyright 2019-2021 Hascal Development Team            |
-# ----------------------------------------------------------
+# --------------------------------------------------------------
+# | Hascal Programming Language --- Hascal Compiler v1.2.4     |
+# | Copyright (c) 2019-2021 Hascal Development Team            |
+# --------------------------------------------------------------
 
 from os import execv
 from os import system
@@ -29,33 +29,6 @@ if __name__ == '__main__':
         print("Enter following command in terminal to run a hascal file :\nhascal run <inputfile.has>")
     elif argv[1] == "version":
         print(f"Hascal version : hascal {version} {sys.platform}")
-    elif argv[1] == "run":
-        try:      
-            if argv[2].endswith("has"):
-                input_output = "cache/{0}".format(argv[2])
-                input_output = input_output[:-3]
-                input_output += "d"
-                with open(argv[2], "r") as fin:           
-                    parser.parse(lexer.tokenize(fin.read()))
-                
-                with open(input_output,"w") as fout:
-                    temp = parser.src_imports
-                    parser.src_imports = temp + "import std.stdio;\n"
-                    fout.write(parser.src_imports +parser.src_before_main+ parser.src_all + parser.src_main + parser.src_end)
-
-                if sys.platform.startswith('linux'):
-                    try :
-                        system(f"dmd -run cache/{input_output}")
-                    except:
-                        print(Fore.RED + "Hascal : Your code has error",end=' ')
-
-                elif sys.platform.startswith('win32'):
-                    try :
-                        system(f"dmd -run {input_output}")
-                    except:
-                        print(Fore.RED + "Hascal : Your code has error",end=' ')
-        except FileNotFoundError :
-            print(Fore.RED+f"Hascal : Cannot found {argv[1]}\nHascal : No such file or directory")
     else :       
         try:      
             if argv[1].endswith("has"):

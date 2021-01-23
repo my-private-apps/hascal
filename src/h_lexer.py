@@ -13,7 +13,7 @@ class Lexer(Lexer):
         ASSIGN,
         COMMA,
         LPAREN,RPAREN,
-        #DOTDOT,
+        DOTDOT,
         #FLOAT,
         SEM,
         STRING,NUMBER,CHAR,
@@ -31,7 +31,7 @@ class Lexer(Lexer):
         #IN,
         LBC,RBC,
         ARRAY,
-        EXT,BREAK,CONTINUE
+        EXT,BREAK,CONTINUE,
         END}
     ignore = ' \t'
     ignore_comment_slash = r'#.*'
@@ -43,7 +43,7 @@ class Lexer(Lexer):
     #FLOAT = r'\d+\.\d+'
     # Special symbols
 
-    #DOTDOT = r':'
+    DOTDOT = r':'
     PLUS = r'\+'
     EQEQ = r'=='
     MINUS = r'-'
