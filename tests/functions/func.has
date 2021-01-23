@@ -1,0 +1,37 @@
+function Hello
+    print("Hello World");
+end;
+
+Hello();
+
+function Test(xx int)
+    print(xx);
+end;
+
+var tt = 10;
+Test(tt);
+print("-----");
+
+function Test2 as int
+    return 10 * 10/ 25;
+end;
+
+tt = Test2();
+print(tt);
+print("-----");
+function Test3(x int)  as int
+    return x * x + 2;
+end;
+
+tt = Test3(2);
+
+print(tt);
+
+print("-----");
+
+
+var x = 6;
+while x <= Test3(2) do
+    print(x);
+    x = x - 1;
+end;

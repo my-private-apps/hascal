@@ -1,0 +1,10 @@
+use "hascal.convert";
+
+var x = to_string(1.1);
+print(x);
+
+var xx = to_float("1.1");
+print(xx);
+
+var xxx = to_int("1");
+print(xxx);

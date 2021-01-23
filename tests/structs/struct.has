@@ -1,0 +1,12 @@
+
+struct Student
+    var name : string;
+    var age : int;
+end;
+
+var John0 = new Student ;
+John0.name = "John0";
+print(John0.name);
+
+var John1 = new Student("John 1",32);
+print(John1.age) ;

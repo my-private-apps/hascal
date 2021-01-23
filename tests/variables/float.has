@@ -1,0 +1,10 @@
+var PI = 3.14;
+print(PI);
+
+var PI_2 : float ;
+PI_2 = PI + 1.0;
+
+print(PI_2);
+
+const PIII = 3.14;
+print(PIII);

@@ -1,3 +1,0 @@
-var yy = 12;
-yy = 13;
-print yy;

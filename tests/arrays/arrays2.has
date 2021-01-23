@@ -1,0 +1,11 @@
+var xx = 1;
+
+
+array x : int[2] {1,2};
+print(x[xx]);
+
+print("\n---\n");
+
+array x_str : string[] {"C++","C","Java"};
+print(x_str[xx]);
+

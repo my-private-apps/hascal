@@ -1,0 +1,17 @@
+var x  = 1;
+var str = "Hello";
+var str2 = "\"Hello\"";
+
+var tt = true;
+tt = false;
+var tt2 = false;
+
+var xxx = 'x';
+var xxxx = '$';
+
+print(x);
+print(str);
+print(str2);
+print(xxx);
+print(xxxx);
+print(tt2);

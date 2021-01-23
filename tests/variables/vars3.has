@@ -1,0 +1,21 @@
+var x = 1;
+
+var str = "Hello".dup;
+
+var str2 = "\"Hello\"";
+
+print(str[0]);
+str[0] = 'h';
+print(str);
+var tt = true;
+tt = false;
+var tt2 = false;
+
+var xxx = "x".dup;
+var xxxx = "$".dup;
+
+xxx[0] = str[1];
+print(xxx);
+
+str[4] = xxx[0];
+print(str[4]);

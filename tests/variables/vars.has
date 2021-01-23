@@ -1,0 +1,22 @@
+var x = 1;
+var str = "Hellp";
+var str2 = "\"Hello\"";
+
+var tt = true;
+tt = false;
+var tt2 = false;
+
+var xxx = 'x';
+var xxxx = '$';
+
+var str3 : string ;
+str3 = "Test";
+
+var x_2 : int;
+x_2 = 1;
+var tt3 : bool ;
+tt3 = true;
+var xxx2 : char ;
+xxx2 = 'x';
+var xxxx2 : char;
+xxxx2 = '$';

@@ -1,0 +1,12 @@
+var x = 1;
+
+for x = 1 to 10 do
+	print(x);
+end;
+
+print("----");
+
+x = 100;
+for x = 100 downto 0 do
+	print(x);
+end;

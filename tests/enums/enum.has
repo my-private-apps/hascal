@@ -1,0 +1,8 @@
+enum X
+    H,
+    F
+end;
+
+var aa = new X ;
+aa = X.F;
+print(aa);

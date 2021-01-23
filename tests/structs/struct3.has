@@ -1,0 +1,10 @@
+struct S
+    var x : int ;
+    var y : int;
+end;
+
+function foo(ss S) as int
+    return ss.x;
+end;
+
+print(foo(S(1,2)));

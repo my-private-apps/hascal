@@ -1,0 +1,20 @@
+function isAlpha(ch char) as bool
+    if ch >= 'a' or ch <= 'z' then
+        return true;
+    else
+        return false;
+    end;
+    return false;
+end;
+
+function isNumber(ch char) as bool
+    if ch >= '0' or ch <= '9' then
+        return true;
+    else
+        return false;
+    end; 
+
+    return false;
+end;
+
+
