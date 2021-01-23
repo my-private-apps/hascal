@@ -18,34 +18,39 @@ var ch = 'h';
 or:
 ```
 use "hascal.core";
-var x : int = 1 ;
-var str : string = "Hascal";
-var pi : float = 3.14;
-var testBool : bool testBool = true;
-var ch : char = 'h';
+var x : int ;
+x = 1 ;
+var str : string;
+str = "Hascal";
+var pi : float ;
+pi = 3.14;
+var testBool : bool;
+testBool = true;
+var ch : char;
+ch = 'h';
 ```
 ### arrays:
 ```
-var ages : int[4] = 12,13,14,15;
-var strs : string[2] = "hello" , "bye" ;
-var fls : float[3] = 1.0,1.1,1.3;
-var bls : bool[3] = true , false,false;
-var chs : char[6] = 'h','a','s','c','a','l'; 
+array ages : int[4]{ 12,13,14,15};
+array strs : string[2] { "hello" , "bye"} ;
+array fls : float[3] { 1.0,1.1,1.3};
+array bls : bool[3] {true , false,false};
+array chs : char[6] {'h','a','s','c','a','l'}; 
 
-var ages2 : int[3,3] = 1,2,3,4,5,6;
+var ages2 : int[3,3] { 1,2,3,4,5,6};
 print(ages2[3,3]);//output : 6
 ```
 ### read values :
 ```
 use "hascal.core";
 var x = 0;
-ReadInt(x);
+x = ReadInt();
 
 var str = "";
-ReadStr(str);
+str = ReadStr();
 
-var de = 0.0;
-ReadDec(de);
+var fl = 0.0;
+fl = ReadFloat();
 ```
 ### comments :
 ```
@@ -95,7 +100,7 @@ end;
 ### functions :
 ```
 use "hascal.core"
-function sayHello()
+function sayHello
   print("hello");
 end;
 
@@ -107,9 +112,9 @@ function ret2(ss string) as string
   print(ss);
 end;
 ```
-### classes
+### structs
 ```
-class Student
+struct Student
   var name = "";
   var age = 0;
   
@@ -119,7 +124,7 @@ class Student
   
 end;
 
-var John = new(Student)
+var John = new Student;
 John.name = "John";
 
 John.WhatIsYourName() ; # or : John.WhatIsYourName ;
@@ -133,4 +138,9 @@ use "your_module_name";
 for example :
 ```
 use "hascal.core";
+```
+
+use local hascal module(library):
+```
+local use "mylib";
 ```
