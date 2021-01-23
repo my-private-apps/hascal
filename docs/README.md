@@ -93,3 +93,11 @@ myint = 1.1; # error
  const PI = 3.14 ;
  PI = 3.1416 ; # error
  ```
+
+## Read values from user
+You can read values from user with `ReadStr,ReadInt,ReadFloat,ReadChar`.
+for example :
+```
+var x = 0;
+x = ReadInt();
+```
