@@ -21,6 +21,16 @@ a hello world program in Hascal :
 print("Hello World");
 ```
 
+## Print values
+for example :
+```
+print("Hello World");
+print(1+1);
+print(1.2);
+print(true);
+print('$');
+```
+
 ## Variables
 Variables are like containers in which values can be inserted or changed.
 
