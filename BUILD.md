@@ -4,7 +4,7 @@ Prequistes :
 ```
 - python v3.8 or higher
 - pyinstaller 
-- a build of tcc compiler # see : https://bellard.org/tcc/
+- a build of dmd compiler # see : https://dlang.org/
 ```
 
 ## Install Pyinstaller
@@ -18,8 +18,8 @@ if use Linux :
 pip3 install pyinstaller
 ```
 
-## TCC Compiler
-Hascal for generate binary code use tcc you should put a version of tcc compiler in the folder of Hascal compiler.
+## DMD Compiler
+Hascal for generate binary code use dmd you should put a version of dmd compiler in the folder of Hascal compiler.
 
 ## Build
 For build Hascal enter following command in terminal :
