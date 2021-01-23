@@ -15,11 +15,6 @@ if you want to compile your program to JavaScript enter following command:
 ```
 hascal js <your_code.has>
 ```
-
-for run a program without compiling enter following command :
-```
-hascal run <your_code.has>
-```
 ## hello world
 a hello world program in Hascal :
 ```
