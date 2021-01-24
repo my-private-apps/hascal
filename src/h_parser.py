@@ -263,7 +263,13 @@ class Parser(Parser):
 
     @_('STRING PLUS STRING')
     def expr(self, p):
-        return "{0}~{1}".format(p.STRING0,p.STRING1)
+        return "\"{0}\"~{1}".format(p.STRING0,p.STRING1)
+    @_('STRING PLUS expr')
+    def expr(self, p):
+        return "\"{0}\"~{1}".format(p.STRING,p.expr)
+    @_('expr PLUS STRING')
+    def expr(self, p):
+        return "{0}~\"{1}\"".format(p.expr,p.STRING)
     
     @_('expr DOT expr')
     def expr(self, p):
