@@ -12,7 +12,7 @@ Hascal is **simple** ,**fast** ,**powerful** , **compiled** programming language
 2. Fast & Powerful
 3. Simple syntax (combination of Pascal , ruby and golang)
 4. Can be use in web development(can compiles to javascript)
-
+5. DMD back-end
 ## Get Started
 On Windows : \
 [Download Hascal for Windows](#)
