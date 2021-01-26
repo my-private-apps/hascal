@@ -1,12 +1,1 @@
-function ReadStr as string
-    var tmp : string;
-    tmp = readln();
-    return tmp;
-end;
-
-function ReadInt as int
-    var tmp : int;
-    readf("%d",tmp);
-    return tmp ;
-end;
-
+local ext "hascal/core";

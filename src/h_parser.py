@@ -6,9 +6,9 @@ class Parser(Parser):
     #src_imports =  "typedef char* string;\n#include<stdbool.h>\n#include<string.h>\n"
     src_imports = "" #"import std.stdio;\n"
     src_before_main = "\n\n"
-    src_all = "\nvoid main(string[] args){\n "
+    src_all = "\nint main(string[] args){\n "
     src_main = " "
-    src_end =  "\n}"
+    src_end =  "\nreturn 0;}"
     precedence = (
         ('left', PLUS, MINUS),
         ('left', TIMES, DIVIDE),
@@ -28,37 +28,52 @@ class Parser(Parser):
     @_('statements')
     def statements(self, p):
         return str(p.statements)
-    
+
     @_('in_statement')
     def in_statements(self, p):
-        return p.in_statement
-    @_('in_statements in_statement')
+        return str(p.in_statement)
+    @_('in_statements in_statements')
     def in_statements(self, p):
-        return p.in_statements + p.in_statement
-
+        return str(p.in_statements0 + p.in_statements1)
+    @_('in_statements')
+    def in_statements(self, p):
+        return str(p.in_statements)
+    
     #----------------------------------
     
-    # function <name>
+    # function <name> {
     #   <in_statements>
-    # end;
+    # }
     
     # or:
     
-    # function <name>(<params>)
+    # function <name>() {
     #   <in_statements>
-    # end;
+    # }
     
     # or:
     
-    # function <name> as <return_type>
+    # function <name>(<params>) {
     #   <in_statements>
-    # end;
+    # }
     
     # or:
     
-    # function <name>(<params>) as <return_type>
+    # function <name> as <return_type> {
     #   <in_statements>
-    # end;
+    # }
+    
+    # or:
+
+    # function <name>() as <return_type> {
+    #   <in_statements>
+    # }
+    
+    # or:
+    
+    # function <name>(<params>) as <return_type> {
+    #   <in_statements>
+    # }
     @_('func_declare')
     def statement(self, p):
         self.src_before_main += "\n{0}\n".format(p.func_declare)
@@ -103,9 +118,10 @@ class Parser(Parser):
 
     #----------------------------------
 
-    # struct <name>
+    # struct <name> {
     #   <vars>
-    # end;
+    #   <functions>
+    # }
     @_('struct_assign')
     def statement(self, p):
         self.src_before_main += "\n{0}\n".format(p.struct_assign)
@@ -124,42 +140,36 @@ class Parser(Parser):
         self.src_main += "\n{0}\n".format(p.const_assign)
     #----------------------------------
 
-    # if <condition> then
+    # if <condition> {
     #   <in_statements>
-    # end;
+    # }
     @_('if_stmt')
     def statement(self, p):
         self.src_main += "\n{0}\n".format(p.if_stmt)
     #----------------------------------
 
-    # enum <name>
+    # enum <name> {
     #   <enum_names>
-    # end;
+    # }
     @_('enum_declare')
     def statement(self, p):
         self.src_main += "\n{0}\n".format(p.enum_declare)
     #---------------------------------
-    # for <name> to <expr> do
+    # for <name> to <expr> {
     #   <in_statements>
-    # end;
+    # }
     
     # or :
     
-    # for <name> downto <expr> do
+    # for <name> downto <expr> {
     #   <in_statements>
-    # end;
-
-    # or :
-    
-    # foreach <name> in <expr> do
-    #   <in_statements>
-    # end;
+    # }
     
     # or :
     
-    # while <condition> do
+    # while <condition> {
     #   <in_statements>
-    # end;
+    # }
     @_('loop_stmt')
     def statement(self, p):
         self.src_main += "\n{0}\n".format(p.loop_stmt)
@@ -261,22 +271,15 @@ class Parser(Parser):
     def expr(self, p):
         return "{0}".format(p.float)
 
-    @_('STRING PLUS STRING')
-    def expr(self, p):
-        return "\"{0}\"~{1}".format(p.STRING0,p.STRING1)
-    @_('STRING PLUS expr')
-    def expr(self, p):
-        return "\"{0}\"~{1}".format(p.STRING,p.expr)
-    @_('expr PLUS STRING')
-    def expr(self, p):
-        return "{0}~\"{1}\"".format(p.expr,p.STRING)
-    
     @_('expr DOT expr')
     def expr(self, p):
         return "{0}.{1}".format(p.expr0,p.expr1)
     @_('expr PLUS expr')
     def expr(self, p):
         return "{0}+{1}".format(p.expr0,p.expr1)
+    @_('expr ALFA expr')
+    def expr(self, p):
+        return "{0}~{1}".format(p.expr0,p.expr1)
     @_('expr MINUS expr')
     def expr(self, p):
         return "{0}-{1}".format(p.expr0,p.expr1)
@@ -290,6 +293,14 @@ class Parser(Parser):
     @_('STRING')
     def expr(self, p):
         return str('"'+p.STRING+'"')
+
+    @_('arrays_list')
+    def expr(self, p):
+        return str(p.arrays_list)
+
+    @_('LBRACE andis RBRACE')
+    def expr(self, p):
+        return "[{0}]".format(p.andis)
     
     @_('LPAREN expr RPAREN')
     def expr(self, p):
@@ -334,14 +345,16 @@ class Parser(Parser):
     @_('expr GREATER expr')
     def condition(self, p):
         return str("{0} > {1}".format(p.expr0,p.expr1))
-        
+    @_('expr')
+    def condition(self, p):
+        return str("{0}".format(p.expr))
     @_('call_func')
     def condition(self, p):
         return str("{0}".format(p.call_func))
     @_('condition')
     def conditions(self, p):
         return str("{0}".format(p.condition))
-    @_('condition AND condition')
+    @_('conditions AND condition')
     def conditions(self, p):
         return str("{0} && {1}".format(p.conditions,p.condition))
     @_('conditions OR condition')
@@ -388,12 +401,9 @@ class Parser(Parser):
     @_('expr')
     def param_call(self, p):
         return p.expr
-    @_('name LPAREN params_call RPAREN')
+    @_('call_func')
     def param_call(self, p):
-        return "{0}({1})".format(p.name,p.params_call)
-    @_('andis')
-    def param_call(self, p):
-        return "{0}".format(p.andis)
+        return "{0}".format(p.call_func)
     #------------------------------
     @_('param')
     def params(self, p):
@@ -428,6 +438,26 @@ class Parser(Parser):
     @_('NAME NAME ')
     def param(self, p):
         return "{0} {1} ".format(p.NAME1,p.NAME0)
+
+    @_('NAME LBRACE expr RBRACE INTVAR')
+    def param(self, p):
+        return "int ["+p.expr+"] "+ p.NAME
+    @_('NAME LBRACE expr RBRACE STRINGVAR ')
+    def param(self, p):
+        return "string ["+p.expr+"] "+ p.NAME
+    @_('NAME LBRACE expr RBRACE BOOLVAR ')
+    def param(self, p):
+        return "bool ["+p.expr+"] "+ p.NAME
+    @_('NAME LBRACE expr RBRACE CHARVAR ')
+    def param(self, p):
+        return "char ["+p.expr+"] "+ p.NAME
+    @_('NAME LBRACE expr RBRACE FLOATVAR ')
+    def param(self, p):
+        return "float ["+p.expr+"] "+ p.NAME
+    @_('NAME LBRACE expr RBRACE NAME ')
+    def param(self, p):
+        return "{0} [{1}] {2}".format(p.NAME1,p.expr,p.NAME0)
+    
     @_('INTVAR')
     def return_type(self, p):
         return "int"
@@ -473,9 +503,9 @@ class Parser(Parser):
     @_('array_list COMMA array_list_t')
     def array_list(self, p):
         return str("{0},{1}".format(p.array_list,p.array_list_t))
-    @_('')
+    @_(' ')
     def array(self, p):
-        return ""
+        return " "
     @_('expr')
     def array(self, p):
         return str("[{0}]".format(p.expr))
@@ -543,9 +573,7 @@ class Parser(Parser):
     @_('name ASSIGN expr SEM')
     def var_assign(self, p):
         return  str("{0} = {1};".format(p.name,p.expr))        
-    @_('name LBRACE expr RBRACE ASSIGN STRING SEM')
-    def var_assign(self, p):
-        return  str("{0}[{1}] = \"{2}\";".format(p.name,p.expr,p.STRING))        
+       
     @_('name LBRACE expr RBRACE ASSIGN expr SEM')
     def var_assign(self, p):
         return  str("{0}[{1}] = {2};".format(p.name,p.expr0,p.expr1))
@@ -555,7 +583,7 @@ class Parser(Parser):
         return  str("{0} = {1};".format(p.name,p.call_func))        
     @_('name LBRACE expr RBRACE ASSIGN call_func SEM')
     def var_assign(self, p):
-        return  str("{0}[{1}] = {2}".format(p.name,p.expr,p.call_func))
+        return  str("{0}[{1}] = {2};".format(p.name,p.expr,p.call_func))
 
     @_('name ASSIGN arrays_list SEM')
     def var_assign(self, p):
@@ -590,35 +618,43 @@ class Parser(Parser):
     def continue_loop(self, p):
         return "continue;"
     #--------------------------------
-    @_('ARRAY NAME DOTDOT INTVAR LBRACE arrays RBRACE arrays_list SEM')
+    @_('VAR NAME DOTDOT INTVAR LBRACE arrays RBRACE arrays_list SEM')
     def array_assigns(self, p):
         return "int {0} {1} = {2} ;".format(p.arrays,p.NAME,p.arrays_list)
 
-    @_('ARRAY NAME DOTDOT STRINGVAR LBRACE arrays RBRACE arrays_list SEM')
+    @_('VAR NAME DOTDOT STRINGVAR LBRACE arrays RBRACE arrays_list SEM')
     def array_assigns(self, p):
         return "string {0} {1} = {2};".format(p.arrays,p.NAME,p.arrays_list)
     
-    @_('ARRAY NAME DOTDOT BOOLVAR LBRACE arrays RBRACE arrays_list SEM')
+    @_('VAR NAME DOTDOT BOOLVAR LBRACE arrays RBRACE arrays_list SEM')
     def array_assigns(self, p):
         return "bool {0} {1} = {2};".format(p.arrays,p.NAME,p.arrays_list)
+    
+    @_('VAR NAME DOTDOT name LBRACE arrays RBRACE arrays_list SEM')
+    def array_assigns(self, p):
+        return "{0} {1} {2} = {3} ;".format(p.name,p.arrays,p.NAME,p.arrays_list)
     #--------------------------------
-    @_('IF conditions THEN in_statements END SEM')
+    @_('IF conditions LBC in_statements RBC')
     def if_stmt(self, p):
         return str("if({0}){{{1}}}".format(p.conditions,p.in_statements))
     
-    @_('IF conditions THEN in_statements ELSE in_statements END SEM')
+    @_('IF conditions LBC in_statements RBC ELSE LBC in_statements RBC')
     def if_stmt(self, p):
         return str("if({0}){{{1}}}else {{{2}}}".format(p.conditions,p.in_statements0,p.in_statements1))
+
+    @_('IF conditions LBC in_statements RBC ELSE if_stmt')
+    def if_stmt(self, p):
+        return str("if({0}){{{1}}}else {2}".format(p.conditions,p.in_statements,p.if_stmt))
     #--------------------------------
-    @_('FOR name ASSIGN expr TO expr DO in_statements END SEM')
+    @_('FOR name ASSIGN expr TO expr  LBC in_statements RBC')
     def loop_stmt(self, p):
         return str("for({0}={1};{2} <= {3};{4}++){{{5}}}".format(p.name,p.expr0,p.name,p.expr1,p.name,p.in_statements))
-    @_('FOR name ASSIGN expr DOWNTO expr DO in_statements END SEM')
+    @_('FOR name ASSIGN expr DOWNTO expr LBC in_statements RBC')
     def loop_stmt(self, p):
         return str("for({0}={1};{2} >= {3};{4}--){{{5}}}".format(p.name,p.expr0,p.name,p.expr1,p.name,p.in_statements))
-    @_('WHILE condition DO in_statements END SEM')
+    @_('WHILE conditions LBC in_statements RBC')
     def loop_stmt(self, p):
-        return str("while({0}){{{1}}}".format(p.condition,p.in_statements))
+        return str("while({0}){{{1}}}".format(p.conditions,p.in_statements))
     #-------------------------------
     @_('name LPAREN params_call RPAREN')
     def call_func(self, p):
@@ -631,7 +667,7 @@ class Parser(Parser):
         return "writeln({0})".format(p.params_call)
     #-------------------------------
     
-    @_('STRUCT NAME struct_declares END SEM')
+    @_('STRUCT NAME LBC struct_declares RBC')
     def struct_assign(self, p):
         return "\nstruct {0} {{{1}}}\n".format(p.NAME,p.struct_declares)
     
@@ -642,19 +678,19 @@ class Parser(Parser):
     def struct_declares(self, p):
         return "{0}\n{1}".format(p.struct_declares,p.struct_declare)
     
-    @_('VAR NAME AS INTVAR  SEM')
+    @_('VAR NAME DOTDOT INTVAR  SEM')
     def struct_declare(self, p):
         return "\nint {0} ;".format(p.NAME)        
-    @_('VAR NAME AS STRINGVAR SEM')
+    @_('VAR NAME DOTDOT STRINGVAR SEM')
     def struct_declare(self, p):
         return "\nstring {0};".format(p.NAME)
-    @_('VAR NAME AS CHARVAR SEM')
+    @_('VAR NAME DOTDOT CHARVAR SEM')
     def struct_declare(self, p):
         return "\nchar {0} ;".format(p.NAME)
-    @_('VAR NAME AS BOOLVAR  SEM')
+    @_('VAR NAME DOTDOT BOOLVAR  SEM')
     def struct_declare(self, p):
         return "\nbool {0} ;".format(p.NAME)
-    @_('VAR NAME AS NAME SEM')
+    @_('VAR NAME DOTDOT NAME SEM')
     def struct_declares(self, p):
         return "\n{0} {1} ;".format(p.NAME0,p.NAME1)
     @_('const_assign')
@@ -663,24 +699,30 @@ class Parser(Parser):
     @_('func_declare')
     def struct_declare(self, p):
         return "\n{0}\n".format(p.func_declare)
+    @_('array_assigns')
+    def struct_declare(self, p):
+        return "\n{0}\n".format(p.array_assigns)
     #--------------------------------
-    @_('FUNCTION NAME in_statements END SEM')
+    @_('FUNCTION NAME LPAREN RPAREN LBC in_statements RBC')
     def func_declare(self, p):
         return "void {0} () {{{1}}}\n".format(p.NAME,p.in_statements)
-
-    @_('FUNCTION NAME LPAREN params RPAREN in_statements END SEM')
+    @_('FUNCTION NAME LBC in_statements RBC')
+    def func_declare(self, p):
+        return "void {0} () {{{1}}}\n".format(p.NAME,p.in_statements)
+    
+    @_('FUNCTION NAME LPAREN params RPAREN LBC in_statements RBC')
     def func_declare(self, p):
         return "\nvoid {0} ({1}) {{{2}}}\n".format(p.NAME,p.params,p.in_statements)
 
-    @_('FUNCTION NAME  AS return_type  in_statements END SEM')
+    @_('FUNCTION NAME LPAREN RPAREN  AS return_type LBC in_statements RBC')
     def func_declare(self, p):
         return "\n{0} {1} () {{{2}}}\n".format(p.return_type,p.NAME,p.in_statements)
 
-    @_('FUNCTION NAME LPAREN params RPAREN  AS return_type  in_statements END SEM')
+    @_('FUNCTION NAME LPAREN params RPAREN  AS return_type LBC  in_statements RBC')
     def func_declare(self, p):
         return "{0} {1} ({2}) {{{3}}}".format(p.return_type,p.NAME,p.params,p.in_statements)
     #--------------------------------
-    @_('ENUM NAME enum_names END SEM')
+    @_('ENUM NAME LBC enum_names RBC')
     def enum_declare(self, p):
         return "\nenum {0} {{{1}}}\n".format(p.NAME,p.enum_names)
     @_('enum_name')

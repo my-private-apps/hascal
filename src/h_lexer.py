@@ -2,14 +2,14 @@ from core.sly import Lexer
 class Lexer(Lexer):
     tokens = {
         NAME,
-        FOR,WHILE,DO,TO,DOWNTO,
-        IF,THEN,ELSE,
+        FOR,WHILE,TO,DOWNTO,
+        IF,ELSE,#ELIF,
         RETURN,AS,
         PRINT,
         INTVAR,STRINGVAR,FLOATVAR,CHARVAR,BOOLVAR,
         CONST,VAR,LOCAL,
         GREATER,LESS,EQEQ,NOTEQ,GREATEREQ,LESSEQ,
-        PLUS,TIMES,MINUS,DIVIDE,DOT,
+        PLUS,TIMES,MINUS,DIVIDE,DOT,ALFA,
         ASSIGN,
         COMMA,
         LPAREN,RPAREN,
@@ -27,12 +27,11 @@ class Lexer(Lexer):
         AND,OR,
         NEW,
         NOT,
-        
+        ANDCHAR,
         #IN,
         LBC,RBC,
         ARRAY,
-        EXT,BREAK,CONTINUE,
-        END}
+        EXT,BREAK,CONTINUE}
     ignore = ' \t'
     ignore_comment_slash = r'#.*'
 
@@ -65,10 +64,10 @@ class Lexer(Lexer):
     NOT = r'\!'
     LBC = r'\{'
     RBC = r'\}'
-    
+    ALFA = r'~'
+    ANDCHAR = r'&'
     NAME["use"] = USE
     NAME["function"] = FUNCTION
-    NAME["end"] = END
     NAME["int"] = INTVAR
     NAME["string"] = STRINGVAR
     NAME["char"] = CHARVAR
@@ -77,12 +76,11 @@ class Lexer(Lexer):
     NAME["var"] = VAR
     NAME["print"] = PRINT
     NAME["if"] = IF
-    NAME["then"] = THEN
+    #NAME["elif"] = ELIF
     NAME["else"] = ELSE
     NAME["return"] = RETURN
     NAME["as"] = AS
     NAME["for"] = FOR
-    NAME["do"] = DO
     NAME["downto"] = DOWNTO
     NAME["to"] = TO
     NAME["while"] = WHILE

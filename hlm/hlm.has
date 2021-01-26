@@ -2,8 +2,10 @@
 # this is a part of Hascal Programming Language
 # hlm.has
 
-use "log";
-use "net.http";
+use "log"; # import log library for log errors
+use "net.http"; # import net.http library for download libs
+use "hascal.file"; # import hascal.file library for uninstall libs
+
 
 if args.length <= 2 then
     print("hlm : no commands found\nusage : hlm <command> <lib_name>");
@@ -12,11 +14,12 @@ if args.length <= 2 then
     print("\tuninstall");
 else 
     if args[1] == "install" then
-        print("Installing from https://raw.githubusercontent.com/hascal/hlm-libs/main/libs/",args[2],".has");
+        print("Installing from https://raw.githubusercontent.com/hascal/hlm-libs/main/libs/",args[2] + ".has");
         download("https://raw.githubusercontent.com/hascal/hlm-libs/main/libs/" + args[2] + ".has", "hlib/"+args[2]+".has");
     else
         if args[1] == "uninstall" then
-            print("This Commands is not available");
+            print("Uninstalling ",args[2]);
+            RemoveFile(args[2]);
         else
             log("hlm : cannot found\""+args[2]+"\" command. ");
         end;

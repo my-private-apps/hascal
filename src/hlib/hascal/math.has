@@ -1,27 +1,27 @@
 ext "std.math : sin,cos,tan,PI";
 
-function abs(x int) as int
-    if x > 1 then
+function abs(x int) as int {
+    if x > 1 {
         return x;
-    else
+    }else{
         return -x;
-    end;
-end;
+    }
+}
 
-function max(a float,b float) as float
-	if a > b then
+function max(a float,b float) as float {
+	if a > b {
 		return a;
-	end;
+	}
 	return b;
-end;
+}
 
-function min( a float , b float) as float
-	if a < b then
+function min( a float , b float) as float {
+	if a < b {
 		return a;
-	end;
+	}
 	return b;
-end;
+}
 
-function radians( degrees float )  as float 
+function radians( degrees float )  as float {
 	return degrees * (PI / 180.0);
-end;
+}

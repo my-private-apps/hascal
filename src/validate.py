@@ -8,6 +8,7 @@ class Variable(object):
 
 class Validate():
     variables = []
+    funcs = []
     def __init__(self):
         pass
     def AddVariable(self ,var_type,var_name,var_value):
@@ -28,13 +29,11 @@ class Validate():
             else:
                 print(f"Error : {var_name} not defined\n")
                 return False
-    def ExistVar(self,name):
-        for x in self.variables :
-            if x.name == name :
-                return True
-            else:
-                print(f"Error : {name} not defined\n")
-                return False
+    def Exist(self,name):
+        if x in self.variables or xx in self.funcs :
+            return True
+        else:
+            print(f"Error : {name} not defined.")
 
 
         

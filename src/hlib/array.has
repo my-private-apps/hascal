@@ -1,7 +1,4 @@
-# Log.has library
+# array.has library
 # this file is a part of Hascal Compiler
 # Copyright (c) 2019-2020 Hascal Development Team
-
-function log(s string){
-    print(s);
-}
+local ext "array";

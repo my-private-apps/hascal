@@ -21,12 +21,9 @@ if __name__ == '__main__':
     if len(argv) == 1 :
         print(Fore.GREEN + "Hascal Compiler : No such file or directory")
         print(Fore.GREEN + "usage : hascal <inputfile.has>")
-        print("or(run your code):")
-        print(Fore.GREEN + "usage : hascal run <inputfile.has>")
     elif argv[1] == "help" :
         print("Hascal Compiler v1.2.0\nCopyright (c) 2019-2021 Hascal Development Team.\nAll rights reserved.\n")
         print("Enter following command in terminal to build a hascal file :\nhascal <inputfile.has>")
-        print("Enter following command in terminal to run a hascal file :\nhascal run <inputfile.has>")
     elif argv[1] == "version":
         print(f"Hascal version : hascal {version} {sys.platform}")
     else :       

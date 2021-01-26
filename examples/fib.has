@@ -1,11 +1,13 @@
-function fib(n int) as int
-    if n <= 2 then 
+# fib.has > 
+function fib(n int) as int{
+    if n <= 2 { 
         return 1;
-    else 
+    }
+    else { 
         return fib(n-1) + fib(n-2);
-    end;
-end;
+    }
+}
 
 var nn = 4;
 
-print(fib(nn));
+print(fib(nn)); # output : 3
