@@ -1,0 +1,10 @@
+use "json"; # import json library for work with json files on hascal
+
+var json_file = File("db.json","r"); # open json file
+
+var myjson = ""; 
+json_file.readf("%s",myjson) ; 
+
+var j : JSONValue ;
+j = parseJSON(myjson);
+print(j["name"].str);

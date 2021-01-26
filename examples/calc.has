@@ -1,20 +1,26 @@
 use "hascal.core";
-function Calculate(opr string,num1 int,num2 int)
+function Calculate(opr string,num1 int,num2 int){
     var sum : int ;
-    if opr == "+" then
+    if opr == "+" {
         sum = num1 + num2 ;
         print(sum);
-    else 
-        if opr == "-" then
+    }else if opr == "-" {
             sum = num1 - num2 ;
             print(sum);
-        end;
-    end;
-end;
+    }else if opr == "*" {
+         sum = num1 * num2 ;
+        print(sum);
+    }else if opr == "/" {
+         sum = num1 / num2 ;
+        print(sum);
+    }else {
+        print("Error : operation '",opr,"' is invalid");
+    }
+}
 
 var _num1 = 0;
 var _num2 = 0;
-var operation = "";
+var operation : string;
 print("Enter num1 :");
 _num1 = ReadInt();
 

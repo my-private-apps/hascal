@@ -1,0 +1,28 @@
+struct Token{
+    var kind : string;
+    var value : string;
+}
+
+var xxx = new Token ;
+var x = "Hello";
+
+if x == "sdfds" {
+    print("sdfsd");
+}else if x == "Hello" {
+    print("Hello");
+}
+
+var xx = 0;
+for xx = 0 to 100 {
+    print(xx);
+}
+
+while xx < 1000 {
+    print(xx);
+    xx = xx +1;
+}
+
+function sayHello(s string){
+    print("fgdfg");
+}
+sayHello("sds");

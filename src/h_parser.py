@@ -717,6 +717,9 @@ class Parser(Parser):
     @_('FUNCTION NAME LPAREN RPAREN  AS return_type LBC in_statements RBC')
     def func_declare(self, p):
         return "\n{0} {1} () {{{2}}}\n".format(p.return_type,p.NAME,p.in_statements)
+    @_('FUNCTION NAME AS return_type LBC in_statements RBC')
+    def func_declare(self, p):
+        return "\n{0} {1} () {{{2}}}\n".format(p.return_type,p.NAME,p.in_statements)
 
     @_('FUNCTION NAME LPAREN params RPAREN  AS return_type LBC  in_statements RBC')
     def func_declare(self, p):

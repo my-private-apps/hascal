@@ -1,7 +1,7 @@
 var x = "Hello";
 
-if x == "Hello" then 
+if x == "Hello" { 
     print("test0");
-else
+}else{
     print("test1");
-end;
+}
