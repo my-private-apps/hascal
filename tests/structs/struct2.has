@@ -1,10 +1,10 @@
 
-struct Student
+struct Student{
     var name : string ;
-end;
-function testtt(ss Student)
+}
+function testtt(ss Student){
     print(ss.name);
-end;
+}
 
 var ssss = new Student("sfds");
 

@@ -1,8 +1,8 @@
 
-struct Student
+struct Student{
     var name : string;
     var age : int;
-end;
+}
 
 var John0 = new Student ;
 John0.name = "John0";

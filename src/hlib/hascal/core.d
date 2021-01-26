@@ -1,16 +1,16 @@
 import std.conv;
 import core.stdc.stdio;
-void ReadStr(string x){
-	/*string tmp;
+import std.string : strip;
+string ReadStr(){
+	string tmp;
 	tmp = readln();
-	return tmp;*/
-	x = readln();
+	return strip(tmp);
 }
 
 int ReadInt(){
-	int tmp;
-	readf!" %d"(tmp);
-	return tmp;
+	string tmp;
+	tmp = readln();
+	return to_int(strip(tmp));
 }
 
 int to_int(string s){
