@@ -1,0 +1,7 @@
+var names = ["Mohammad","Ali","Zahra","Hasan","Hossein"];
+#var names : string[] = ["Mohammad","Ali","Zahra","Hasan","Hossein"];
+var x = 0;
+while x < names.length {
+    print(names[x]);
+    x = x + 1 ;
+}

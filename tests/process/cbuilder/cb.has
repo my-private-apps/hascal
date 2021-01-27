@@ -1,0 +1,3 @@
+use "process";
+
+ExcuteCommand("gcc test.c");

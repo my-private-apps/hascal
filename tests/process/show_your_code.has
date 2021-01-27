@@ -1,0 +1,4 @@
+use "process";
+
+var commands = "type showme.has";
+ShellCommand(commands);

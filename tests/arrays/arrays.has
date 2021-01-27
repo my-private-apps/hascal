@@ -1,7 +1,7 @@
 # Test Comment
 const xx  = 0;
 
-var x : int [] {1,2};
+var x : int [] = [1,2];
 
 x.length = 11;
 x[2] = 3;
@@ -10,7 +10,7 @@ print(x[10]);
 
 print("\n---\n");
 
-var x_str : string [1] {"Hascal"} ;
+var x_str : string [1] = ["Hascal"] ;
 print(x_str[0]);
 
 

@@ -1,0 +1,6 @@
+function test(s string[]){
+    print(s[0]);
+}
+
+var arr : string[] = ["Hello"];
+test(arr);

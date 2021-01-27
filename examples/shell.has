@@ -1,0 +1,11 @@
+# a simple shell written in hascal
+use "hascal.core";
+use "process";
+
+var comm = "";
+
+while true {
+    write(">>>");
+    comm = ReadStr();
+    ExcuteCommand(comm);
+}

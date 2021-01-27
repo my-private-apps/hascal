@@ -1,0 +1,12 @@
+# a simple shell app
+use "hascal.core";
+use "process";
+var comm = "";
+
+while true {
+    write(">>>");
+    comm = "";
+    comm = ReadStr();
+    ShellCommand(comm);
+
+}

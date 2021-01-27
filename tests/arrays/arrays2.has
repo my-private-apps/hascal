@@ -1,11 +1,11 @@
 var xx = 1;
 
 
-var x : int[2] {1,2};
+var x : int[2] = [1,2];
 print(x[xx]);
 
 print("\n---\n");
 
-var x_str : string[] {"C++","C","Java"};
+var x_str : string[] = ["C++","C","Java"];
 print(x_str[xx]);
 
