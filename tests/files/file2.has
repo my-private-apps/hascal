@@ -1,5 +1,5 @@
 use "hascal.file";
-var f = File("d.txt","w");
+var f = File("test.txt","w");
 
 f.write("Hello");
 f.close();

@@ -1,0 +1,2 @@
+use "hascal.file";
+mkdir("MyDir");

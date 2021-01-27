@@ -18,4 +18,9 @@ xxx[0] = str[1];
 print(xxx);
 
 str[4] = xxx[0];
-print(str[4]);
+print(str);
+
+var s1 = "Hasan";
+var s2 = "Kashi";
+var sum = s1 ~ " " ~ s2 ;
+print(sum) ;#output : Hasan Kashi
