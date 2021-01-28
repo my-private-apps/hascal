@@ -1,0 +1,5 @@
+use "zip";
+use "hascal.file";
+var myfile = File("readyforzip.txt","r");
+
+CreateZipFromFile(myfile.name,ReadFromFile(myfile.name),"out.zip");
