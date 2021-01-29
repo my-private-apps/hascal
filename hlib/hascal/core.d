@@ -1,17 +1,31 @@
 import std.conv;
 import core.stdc.stdio;
 import std.string : strip;
+import core.stdc.stdlib : exit ;
 string ReadStr(){
 	string tmp;
 	tmp = readln();
-	return strip(tmp);
+	tmp.length = tmp.length - 1 ; // remove new line in end of string
+	return tmp;
 }
 
 int ReadInt(){
+	try{
+		string tmp;
+		tmp = readln();
+		return to_int(strip(tmp));
+	}catch(Exception e){
+		writeln("Runtime Error : entered value are invalid");
+	}
+	return 0;
+}
+
+float ReadFloat(){
 	string tmp;
 	tmp = readln();
-	return to_int(strip(tmp));
+	return to_float(strip(tmp));
 }
+
 
 int to_int(string s){
 	return to!int(s);

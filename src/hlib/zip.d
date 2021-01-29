@@ -5,7 +5,7 @@ import std.string : representation;
 
 void CreateZipFromFile(string file_name,string file_data,string output){
 	ArchiveMember file = new ArchiveMember();
-	file.name = "test1.txt";
+	file.name = file_name;
     file.expandedData(file_data.dup.representation);
     file.compressionMethod = CompressionMethod.none;
 	

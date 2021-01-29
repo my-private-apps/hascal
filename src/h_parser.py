@@ -1,6 +1,8 @@
 from h_lexer import Lexer
 from core.sly import Parser
 
+from os import getenv
+import sys
 class Parser(Parser):
     tokens = Lexer.tokens
     #src_imports =  "typedef char* string;\n#include<stdbool.h>\n#include<string.h>\n"
@@ -81,15 +83,42 @@ class Parser(Parser):
     # use "<lib_name>";
     @_('USE STRING SEM')
     def statement(self, p):
-        replacedValue = str(p.STRING).replace(".", "\\")
-        path = r'./hlib/{0}.has'.format(replacedValue)
-        try :
-            with open(path, 'r') as f:
-                parser = Parser()
-                parser.parse(Lexer().tokenize(f.read()))
-                self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
-        except FileNotFoundError :
-            print(f"Hascal : cannot found {replacedValue} library. Are you missing a library ?")
+        if sys.platform.startswith('win32'):
+            tmp = p.STRING
+            path = tmp.split('.')
+            final_path = str(getenv('HPATH') + "\\hlib"+"\\")
+            
+            ends_of_path = path[-1]
+            for x in path[:-1]:
+                final_path += x + "\\"
+            final_path += ends_of_path + ".has"
+
+            try :
+                with open(final_path, 'r') as f:
+                    parser = Parser()
+                    parser.parse(Lexer().tokenize(f.read()))
+                    self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
+            except FileNotFoundError :
+                print(f"Hascal : cannot found {p.STRING} library. Are you missing a library ?")
+                
+        elif sys.platform.startswith('linux'):
+            tmp = p.STRING
+            path = tmp.split('.')
+            final_path = str(getenv('HPATH') + "\\hlib"+"\\")
+            
+            ends_of_path = path[-1]
+            for x in path[:-1]:
+                final_path += x + "\\"
+            final_path += ends_of_path + ".has"
+
+            try :
+                with open(final_path, 'r') as f:
+                    parser = Parser()
+                    parser.parse(Lexer().tokenize(f.read()))
+                    self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
+            except FileNotFoundError :
+                print(f"Hascal : cannot found {p.STRING} library. Are you missing a library ?")
+        
     # local use "<lib_name>";   
     @_('LOCAL USE STRING SEM')
     def statement(self, p):
@@ -108,9 +137,18 @@ class Parser(Parser):
         self.src_imports += "\nimport {0};\n".format(p.STRING)
     @_('LOCAL EXT STRING SEM')
     def statement(self, p):
+        tmp = p.STRING
+        path = tmp.split('.')
+        final_path = str(getenv('HPATH') + "\\hlib"+"\\")
+            
+        ends_of_path = path[-1]
+        for x in path[:-1]:
+            final_path += x + "\\"
+        final_path += ends_of_path + ".d"
+        
         path = r'./hlib/{0}.d'.format(p.STRING)
         try :
-            with open(path, 'r') as f:
+            with open(final_path, 'r') as f:
                 parser = Parser()
                 self.src_imports += '\n'+f.read()+ '\n'
         except FileNotFoundError :
@@ -627,7 +665,7 @@ class Parser(Parser):
     
     @_('VAR NAME DOTDOT name LBRACE arrays RBRACE SEM')
     def array_assigns(self, p):
-        return "{0} {1} {2} ;".format(p.name,p.arrays,p.NAME,p.arrays_list)
+        return "{0} {1} {2} ;".format(p.name,p.arrays,p.NAME)
     #--------------------------------
     @_('IF conditions LBC in_statements RBC')
     def if_stmt(self, p):

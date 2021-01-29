@@ -1,0 +1,11 @@
+# A simple vector library for hascal
+struct Vector2D {
+    var x : float ;
+    var y : float;
+}
+
+struct Vector3D {
+    var x : float;
+    var y : float;
+    var z : float;
+}

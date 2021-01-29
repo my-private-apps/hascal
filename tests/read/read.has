@@ -1,0 +1,13 @@
+use "hascal.core";
+var x : bool ;
+var tmp = ReadStr();
+
+if tmp == "true" {
+    x = true;
+}else if tmp == "false" {
+    x = false;
+}else {
+    print("please enter a valid boolean");
+}
+
+print(x);
