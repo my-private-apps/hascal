@@ -1,0 +1,1 @@
+hascal systime.has

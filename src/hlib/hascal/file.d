@@ -1,7 +1,11 @@
 import std.file;
 
 void RemoveFile(string s){
-	std.file.remove(s);
+	try {
+		std.file.remove(s);
+	}catch(Exception e){
+		writeln("Runtime Error : cannot remove '",s,"' file");
+	}
 }
 string ReadFromFile(string file_name){
 	try{
