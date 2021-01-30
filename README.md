@@ -21,8 +21,7 @@ On Windows : \
 On Linux : \
 [Download Hascal for Linux](#)
 
-If you are using MacOS, you must build Hascal from the source,[build from source](https://github.com/hascal/hascal/blob/main/BUILD.md).
-
+***NOTE:*** Hascal Compiler are not supported in MacOS.
 ## Syntax
 You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md).
 
