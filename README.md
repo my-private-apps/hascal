@@ -7,7 +7,6 @@ Hascal is **simple** , **fast** , **powerful** , **compiled**  programming langu
 
 ![draw](https://img.shields.io/github/last-commit/hascal/hascal)
 ![draw](https://img.shields.io/github/license/hascal/hascal)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/93e010e4-0c04-45f6-affe-40add56521a4/deploy-status)](https://app.netlify.com/sites/sad-colden-ea0784/deploys)
 ## Hascal Features:
 1. Cross Platform (Linux, Windows,MacOS)
 2. Fast & Powerful
