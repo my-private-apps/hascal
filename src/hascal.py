@@ -22,10 +22,10 @@ if __name__ == '__main__':
     if len(argv) == 1 :
         print(Fore.GREEN + "Hascal Compiler : No such file or directory")
         print(Fore.GREEN + "usage : hascal <inputfile.has>")
-    elif argv[1] == "help" or argv[1] == "-h" :
+    elif argv[1] == "help" or argv[1] == "-h" or argv[1] == "--help":
         print("Hascal Compiler v1.2.0\nCopyright (c) 2019-2021 Hascal Development Team.\nAll rights reserved.\n")
         print("Enter following command in terminal to build a hascal file :\nhascal <inputfile.has>")
-    elif argv[1] == "version" or argv[1] == "-v" :
+    elif argv[1] == "version" or argv[1] == "-v" or argv[1] == "--version":
         print(f"Hascal version : hascal {version} {sys.platform}")
     else :
         if sys.platform.startswith('win32'):
