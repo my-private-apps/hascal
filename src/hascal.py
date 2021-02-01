@@ -22,14 +22,14 @@ if __name__ == '__main__':
     if len(argv) == 1 :
         print(Fore.GREEN + "Hascal Compiler : No such file or directory")
         print(Fore.GREEN + "usage : hascal <inputfile.has>")
-    elif argv[1] == "help" :
+    elif argv[1] == "help" or argv[1] == "-h" :
         print("Hascal Compiler v1.2.0\nCopyright (c) 2019-2021 Hascal Development Team.\nAll rights reserved.\n")
         print("Enter following command in terminal to build a hascal file :\nhascal <inputfile.has>")
-    elif argv[1] == "version":
+    elif argv[1] == "version" or argv[1] == "-v" :
         print(f"Hascal version : hascal {version} {sys.platform}")
     else :
         if sys.platform.startswith('win32'):
-            if argv[1].endswith("has"):
+            if argv[1].endswith(".has"):
                 input_output = "{0}".format(argv[1])
                 input_output = input_output[:-3]
                 input_output += "d"
@@ -51,8 +51,10 @@ if __name__ == '__main__':
                     check_call(['dmd',input_output],stdout=DEVNULL,stderr=STDOUT)
                 except:
                     print(Fore.RED + "Hascal : Your code has error",end=' ')
+            else:
+                print(Fore.RED + "Hascal : Please add \".has\" to your file",end=' ')
         elif sys.platform.startswith('linux'):
-            if argv[1].endswith("has"):
+            if argv[1].endswith(".has"):
                 input_output = "{0}".format(argv[1])
                 input_output = input_output[:-3]
                 input_output += "d"
