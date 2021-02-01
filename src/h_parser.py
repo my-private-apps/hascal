@@ -134,7 +134,13 @@ class Parser(Parser):
             
     @_('EXT STRING SEM')
     def statement(self, p):
-        self.src_imports += "\nimport {0};\n".format(p.STRING)
+        final_path = p.STRING + ".d"
+        try :
+            with open(final_path, 'r') as f:
+                parser = Parser()
+                self.src_imports += '\n'+f.read()+ '\n'
+        except FileNotFoundError :
+            print(f"Hascal : cannot found {p.STRING} library. Are you missing a library ?")
     @_('LOCAL EXT STRING SEM')
     def statement(self, p):
         tmp = p.STRING
@@ -166,6 +172,8 @@ class Parser(Parser):
     #----------------------------------
 
     # var <name> : <var_type> ;
+    # or:
+    # var <name> : <var_type> = <expr> ;
     # or:
     # var <name> = <expr> ;
     @_('var_assign')
@@ -404,22 +412,20 @@ class Parser(Parser):
 #---------------------------------------------#
 #   End Conditions                            #
 #---------------------------------------------#
-    @_('name_tt')
-    def name(self, p):
-        return str(p.name_tt)
-
     @_('name_t')
     def name(self, p):
-        return str(p.name_t)
+        return p.name_t
+    
     @_('name DOT name_t')
     def name(self, p):
-        return str(p.name_t)
-                   
+        return p.name +"."+ p.name_t
+
     @_('NAME DOT NAME')
     def name_t(self, p):
         return str(p.NAME0+"."+p.NAME1)
+    
     @_('NAME')
-    def name_tt(self, p):
+    def name_t(self, p):
         return str(p.NAME)
 
     #------------------------------
@@ -596,7 +602,6 @@ class Parser(Parser):
     @_('VAR NAME ASSIGN NEW NAME LPAREN params_call RPAREN SEM')
     def var_assign(self, p):
         return  str("{0} {1} = {{{2}}};".format(p.NAME1,p.NAME0,p.params_call))
-    
     @_('VAR NAME DOTDOT FLOATVAR SEM')
     def var_assign(self, p):
         return "float {0};".format(p.NAME)
@@ -604,7 +609,12 @@ class Parser(Parser):
     @_('expr ASSIGN expr SEM')
     def var_assign(self, p):
         return str("{0} = {1};".format(p.expr0,p.expr1))
-    
+    @_('expr ASSIGN NEW name  SEM')
+    def var_assign(self, p):
+        return str("{0} = {1}();".format(p.expr,p.name))
+    @_('expr ASSIGN NEW NAME LPAREN params_call RPAREN SEM')
+    def var_assign(self, p):
+        return  str("{0} = {1}({2});".format(p.expr,p.NAME,p.params_call))
     #--------------------------------
     @_('CONST NAME ASSIGN expr SEM')
     def const_assign(self, p):
@@ -740,8 +750,8 @@ class Parser(Parser):
     def struct_declare(self, p):
         return "\nfloat {0} ;".format(p.NAME)
     @_('VAR NAME DOTDOT NAME SEM')
-    def struct_declares(self, p):
-        return "\n{0} {1} ;".format(p.NAME0,p.NAME1)
+    def struct_declare(self, p):
+        return "\n{0} {1} ;".format(p.NAME1,p.NAME0)
     @_('const_assign')
     def struct_declare(self, p):
         return "\n{0}".format(p.const_assign)
