@@ -66,63 +66,65 @@ Comment "this is a comment";
 ```
 use "hascal.core";
 var x = 1;
-if x== 1 then
+if x == 1 {
   print("x==1");
-else
+}
+else {
   print("x!=1");
-end;
+}
+
 ```
 ### for loop :
 ```
 use "hascal.core";
 var x = 0;
-for x=0 to 10 do
+for x = 0 to 10 {
   print(x);
-end;
+}
 ```
 
 or :
 ```
 use "hascal.core";
 var x = 0;
-for x=100 downto 1 do
+for x = 100 downto 1 {
   print(x);
-end;
+}
 ```
 ### while loop :
 ```
 use "hsacal.core";
 var x = 1;
-while x==1 do
+while x == 1 {
   print("loop");
-end;
+}
 ```
 ### functions :
 ```
 use "hascal.core"
-function sayHello
+function sayHello() {
   print("hello");
-end;
+}
 
-function ret() as string
+function ret() as string {
   return "hello";
-end;
+}
 
-function ret2(ss string) as string
+function ret2(ss string) as string {
   print(ss);
-end;
+}
 ```
 ### structs
 ```
-struct Student
+struct Student {
   var name = "";
   var age = 0;
   
-  function WhatIsYourName
+  function WhatIsYourName() {
     print("My name is ",name);
-  end;
+  }
   
-end;
+}
 
 var John = new Student;
 John.name = "John";
