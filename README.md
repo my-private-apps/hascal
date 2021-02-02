@@ -15,7 +15,17 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 - Can be use in web development(can compiles to javascript)
 - DMD back-end
 
+## Example
+```hascal
+use "hascal.core";
+print("what is your name ?");
+var name = ReadStr();
+print("Hello ,",name);
+```
+You can see more Hascal examples [here](https://github.com/hascal/hascal/tree/main/examples).
+
 ## Syntax
+
 You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md).
 
 ## Documentation
