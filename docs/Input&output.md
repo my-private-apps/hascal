@@ -23,6 +23,7 @@ You can read any type of values from user with one of this functions:
 This is an example for `ReadInt` function:
 
 ```hascal
+use "hascal.core";
 var x = 0;
 x = ReadInt();
 ```
