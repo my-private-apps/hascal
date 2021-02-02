@@ -575,6 +575,9 @@ class Parser(Parser):
     @_('VAR NAME DOTDOT INTVAR SEM')
     def var_assign(self, p):
         return "int {0} ;".format(p.NAME)
+    @_('VAR NAME DOTDOT INTVAR ASSIGN expr SEM')
+    def var_assign(self, p):
+        return "int {0} = {1};".format(p.NAME,p.expr)
     
     @_('VAR NAME ASSIGN expr SEM')
     def var_assign(self, p):
@@ -583,18 +586,30 @@ class Parser(Parser):
     @_('VAR NAME DOTDOT STRINGVAR SEM')
     def var_assign(self, p):
         return "string {0} ;".format(p.NAME)
+    @_('VAR NAME DOTDOT STRINGVAR ASSIGN expr SEM')
+    def var_assign(self, p):
+        return "string {0} = {1} ;".format(p.NAME,p.expr)
     
     @_('VAR NAME DOTDOT CHARVAR SEM')
     def var_assign(self, p):
         return "char {0};".format(p.NAME)
+    @_('VAR NAME DOTDOT CHARVAR ASSIGN CHAR SEM')
+    def var_assign(self, p):
+        return "char {0} = {1};".format(p.NAME,p.CHAR)
     
     @_('VAR NAME DOTDOT BOOLVAR SEM')
     def var_assign(self, p):
         return "bool {0};".format(p.NAME)
+    @_('VAR NAME DOTDOT BOOLVAR ASSIGN boolean SEM')
+    def var_assign(self, p):
+        return "bool {0} = {1};".format(p.NAME,p.boolean)
     
     @_('VAR NAME DOTDOT NAME SEM')
     def var_assign(self, p):
         return  str("{0} {1};".format(p.NAME1,p.NAME0))
+    @_('VAR NAME DOTDOT NAME LPAREN params_call RPAREN SEM')
+    def var_assign(self, p):
+        return  str("{0} {1} = {{{2}}};".format(p.NAME1,p.NAME0,p.params_call))
     
     @_('VAR NAME ASSIGN NEW name SEM')
     def var_assign(self, p):
@@ -602,10 +617,14 @@ class Parser(Parser):
     @_('VAR NAME ASSIGN NEW NAME LPAREN params_call RPAREN SEM')
     def var_assign(self, p):
         return  str("{0} {1} = {{{2}}};".format(p.NAME1,p.NAME0,p.params_call))
+    
     @_('VAR NAME DOTDOT FLOATVAR SEM')
     def var_assign(self, p):
         return "float {0};".format(p.NAME)
-         
+    @_('VAR NAME DOTDOT FLOATVAR ASSIGN expr SEM')
+    def var_assign(self, p):
+        return "float {0} = {1};".format(p.NAME,p.expr)
+    
     @_('expr ASSIGN expr SEM')
     def var_assign(self, p):
         return str("{0} = {1};".format(p.expr0,p.expr1))
