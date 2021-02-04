@@ -1,16 +1,16 @@
 from h_lexer import Lexer
 from core.sly import Parser
-
 from os import getenv
 import sys
 class Parser(Parser):
     tokens = Lexer.tokens
-    #src_imports =  "typedef char* string;\n#include<stdbool.h>\n#include<string.h>\n"
-    src_imports = "" #"import std.stdio;\n"
+    #---------------------
+    src_imports = ""
     src_before_main = "\n\n"
     src_all = "\nint main(string[] args){\n "
     src_main = " "
     src_end =  "\nreturn 0;}"
+    #---------------------
     precedence = (
         ('left', PLUS, MINUS),
         ('left', TIMES, DIVIDE),
@@ -80,6 +80,10 @@ class Parser(Parser):
     def statement(self, p):
         self.src_before_main += "\n{0}\n".format(p.func_declare)
     #----------------------------------
+    @_('pass_stmt')
+    def statement(self, p):
+        return " "
+    #----------------------------------
     # use "<lib_name>";
     @_('USE STRING SEM')
     def statement(self, p):
@@ -99,7 +103,7 @@ class Parser(Parser):
                     parser.parse(Lexer().tokenize(f.read()))
                     self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
             except FileNotFoundError :
-                print(f"Hascal : cannot found {p.STRING} library. Are you missing a library ?")
+                print(f"CompileError : cannot found {p.STRING} library. Are you missing a library ?")
                 
         elif sys.platform.startswith('linux'):
             tmp = p.STRING
@@ -117,7 +121,7 @@ class Parser(Parser):
                     parser.parse(Lexer().tokenize(f.read()))
                     self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
             except FileNotFoundError :
-                print(f"Hascal : cannot found {p.STRING} library. Are you missing a library ?")
+                print(f"CompileError : cannot found {p.STRING} library. Are you missing a library ?")
         
     # local use "<lib_name>";   
     @_('LOCAL USE STRING SEM')
@@ -130,7 +134,59 @@ class Parser(Parser):
                 parser.parse(Lexer().tokenize(f.read()))
                 self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_before_main + '\n' + parser.src_main + '\n'
         except FileNotFoundError :
-            print(f"Hascal : cannot found {replacedValue} library. Are you missing a library ?"+path)
+            print(f"CompileError : cannot found {replacedValue} library. Are you missing a library ?"+path)
+    #--------------------------------
+    # use <lib_name>;
+    @_('USE name SEM')
+    def statement(self, p):
+        if sys.platform.startswith('win32'):
+            tmp = p.name
+            path = tmp.split('.')
+            final_path = str(getenv('HPATH') + "\\hlib"+"\\")
+            
+            ends_of_path = path[-1]
+            for x in path[:-1]:
+                final_path += x + "\\"
+            final_path += ends_of_path + ".has"
+
+            try :
+                with open(final_path, 'r') as f:
+                    parser = Parser()
+                    parser.parse(Lexer().tokenize(f.read()))
+                    self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
+            except FileNotFoundError :
+                print(f"CompileError : cannot found {p.name} library. Are you missing a library ?")
+                
+        elif sys.platform.startswith('linux'):
+            tmp = p.name
+            path = tmp.split('.')
+            final_path = str(getenv('HPATH') + "\\hlib"+"\\")
+            
+            ends_of_path = path[-1]
+            for x in path[:-1]:
+                final_path += x + "\\"
+            final_path += ends_of_path + ".has"
+
+            try :
+                with open(final_path, 'r') as f:
+                    parser = Parser()
+                    parser.parse(Lexer().tokenize(f.read()))
+                    self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
+            except FileNotFoundError :
+                print(f"CompileError : cannot found {p.name} library. Are you missing a library ?")
+        
+    # local use <lib_name>;   
+    @_('LOCAL USE name SEM')
+    def statement(self, p):
+        replacedValue = str(p.name).replace(".", "\\")
+        path = r'{0}.has'.format(replacedValue)
+        try :
+            with open(path, 'r') as f:
+                parser = Parser()
+                parser.parse(Lexer().tokenize(f.read()))
+                self.src_imports += '\n'+parser.src_imports+'\n' + parser.src_before_main + '\n' + parser.src_main + '\n'
+        except FileNotFoundError :
+            print(f"CompileError : cannot found {replacedValue} library. Are you missing a library ?"+path)
             
     @_('EXT STRING SEM')
     def statement(self, p):
@@ -140,7 +196,7 @@ class Parser(Parser):
                 parser = Parser()
                 self.src_imports += '\n'+f.read()+ '\n'
         except FileNotFoundError :
-            print(f"Hascal : cannot found {p.STRING} library. Are you missing a library ?")
+            print(f"CompileError : cannot found {p.STRING} library. Are you missing a library ?")
     @_('LOCAL EXT STRING SEM')
     def statement(self, p):
         tmp = p.STRING
@@ -158,7 +214,7 @@ class Parser(Parser):
                 parser = Parser()
                 self.src_imports += '\n'+f.read()+ '\n'
         except FileNotFoundError :
-            print(f"Hascal : cannot found {p.STRING} library. Are you missing a library ?")
+            print(f"CompileError : cannot found {p.STRING} library. Are you missing a library ?")
 
     #----------------------------------
 
@@ -279,6 +335,10 @@ class Parser(Parser):
     @_('array_assigns')
     def in_statement(self, p):
         return "\n{0}\n".format(p.array_assigns)
+    #----------------------------------
+    @_('pass_stmt')
+    def in_statement(self, p):
+        return " "
 #---------------------------------------------#
 #   Expertions                                #
 #---------------------------------------------#
@@ -815,3 +875,7 @@ class Parser(Parser):
     @_('NAME')
     def enum_name(self, p):
         return "\n{0}\n".format(p.NAME)
+    #--------------------------------
+    @_('PASS SEM')
+    def pass_stmt(self, p):
+        return ""

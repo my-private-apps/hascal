@@ -20,59 +20,58 @@ if __name__ == '__main__':
     parser = Parser()
     version = "1.2.4"
     if len(argv) == 1 :
-        print(Fore.GREEN + "Hascal Compiler : No such file or directory")
-        print(Fore.GREEN + "usage : hascal <inputfile.has>")
+        print(f"Hascal Compiler v{version} {sys.platform} ")
+        print("Copyright (c) 2019-2021 Hascal Development Team,\nAll rights reserved.\n")
+        print("usage : hascal <inputfile.has>")
+        print("enter following command for show help :\n\thascal --help")
     elif argv[1] == "help" or argv[1] == "-h" or argv[1] == "--help":
-        print("Hascal Compiler v1.2.0\nCopyright (c) 2019-2021 Hascal Development Team.\nAll rights reserved.\n")
+        print(f"Hascal Compiler v{version} {sys.platform}\nCopyright (c) 2019-2021 Hascal Development Team,\nAll rights reserved.\n")
         print("Enter following command in terminal to build a hascal file :\nhascal <inputfile.has>")
+        print("\nother commands :")
+        print("\t--help , -h , help : show help")
+        print("\t--version , -v , version : show compiler version")
     elif argv[1] == "version" or argv[1] == "-v" or argv[1] == "--version":
-        print(f"Hascal version : hascal {version} {sys.platform}")
+        print(f"Hascal Compiler v{version} {sys.platform} ")
+        print("Copyright (c) 2019-2021 Hascal Development Team,\nAll rights reserved.")
     else :
         if sys.platform.startswith('win32'):
             if argv[1].endswith(".has"):
-                input_output = "{0}".format(argv[1])
-                input_output = input_output[:-3]
-                input_output += "d"
-                input_output = getenv('HPATH') + "\\cache\\" + input_output
+                output_d = "tmp.d"
                 try :
                     with open(argv[1], "r") as fin:           
                         parser.parse(lexer.tokenize(fin.read()))
                 except FileExistsError:
                     print(Fore.RED+f"Hascal : Cannot found {argv[1]}\nHascal : No such file or directory")
 
-                with open(input_output,"w") as fout:
+                with open(output_d,"w") as fout:
                     temp = parser.src_imports
                     parser.src_imports = "\nimport std.stdio;\n" + temp
                     fout.write(parser.src_imports +parser.src_before_main+ parser.src_all + parser.src_main + parser.src_end)
-                output_file = argv[1]
-                output_file_name =  ""
 
                 try :
-                    check_call(['dmd',input_output],stdout=DEVNULL,stderr=STDOUT)
+                    tmp0 = argv[1]
+                    tmp = '-of='+tmp0[:-4]
+                    check_call(['dmd',output_d,tmp],stdout=DEVNULL,stderr=STDOUT)
                 except:
                     print(Fore.RED + "Hascal : Your code has error",end=' ')
             else:
                 print(Fore.RED + "Hascal : Please add \".has\" to your file",end=' ')
         elif sys.platform.startswith('linux'):
             if argv[1].endswith(".has"):
-                input_output = "{0}".format(argv[1])
-                input_output = input_output[:-3]
-                input_output += "d"
-                input_output = getenv('HPATH') + "/cache/" + input_output 
+                output_d = "tmp.d"
                 try :
                     with open(argv[1], "r") as fin:           
                         parser.parse(lexer.tokenize(fin.read()))
                 except FileExistsError:
                     print(Fore.RED+f"Hascal : Cannot found {argv[1]}\nHascal : No such file or directory")
                 
-                with open(input_output,"w") as fout:
+                with open(output_d,"w") as fout:
                     temp = parser.src_imports
                     parser.src_imports = "\nimport std.stdio;\n" + temp
                     fout.write(parser.src_imports +parser.src_before_main+ parser.src_all + parser.src_main + parser.src_end)
-                output_file = argv[1]
-                output_file_name =  ""
-
                 try :
-                    check_call(['dmd',input_output],stdout=DEVNULL,stderr=STDOUT)
+                    tmp0 = argv[1]
+                    tmp = '-of='+tmp0[:-4]
+                    check_call(['dmd',output_d,tmp],stdout=DEVNULL,stderr=STDOUT)
                 except:
                     print(Fore.RED + "Hascal : Your code has error",end=' ')

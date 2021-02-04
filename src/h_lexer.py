@@ -10,7 +10,7 @@ class Lexer(Lexer):
         CONST,VAR,LOCAL,
         GREATER,LESS,EQEQ,NOTEQ,GREATEREQ,LESSEQ,
         PLUS,TIMES,MINUS,DIVIDE,DOT,ALFA,
-        ASSIGN,
+        ASSIGN,PASS,
         COMMA,
         LPAREN,RPAREN,
         DOTDOT,
@@ -98,6 +98,7 @@ class Lexer(Lexer):
     NAME["ext"] = EXT
     NAME["break"] = BREAK
     NAME["continue"] = CONTINUE
+    NAME["pass"] = PASS
     # Ignored pattern
     ignore_newline = r'\n'
 
