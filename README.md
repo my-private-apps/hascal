@@ -22,9 +22,9 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 
 ## Example
 ```hascal
-use "hascal.core";
+use hascal.core ;
 print("what is your name ?");
-var name = ReadStr();
+var name : string = ReadStr();
 print("Hello ,",name);
 ```
 You can see more Hascal examples [here](https://github.com/hascal/hascal/tree/main/examples).
