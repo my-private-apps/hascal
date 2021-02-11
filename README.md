@@ -18,7 +18,7 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 - Fast & Powerful
 - Simple syntax (combination of Pascal , JavaScript and Golang)
 - Can be use in web development(can compiles to javascript)
-- DMD back-end
+- Dlang on Back-End
 
 ## Example
 ```hascal
