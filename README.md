@@ -16,9 +16,18 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 ## Hascal Features:
 - Cross Platform (Linux, Windows)
 - Fast & Powerful
-- Simple syntax (combination of Pascal , JavaScript and Golang)
+- C-Family Syntax
 - Can be use in web development(can compiles to javascript)
 - Dlang on Back-End
+- Native binaries with no dependency
+- Garbage Collection
+
+## Why use Hascal ?
+
+Hascal is so powerful and we listed its important features above.
+you can see that Hascal is perfect in front of many, many other well-known programming languages.
+Also, We have tested many programming languages for Hascal's Back-End, including: C, C++, Assembly, GoLang, Rust, Pascal, and DLang.
+DLang was the best and as you can see, we have used it for our purpose.
 
 ## Example
 ```hascal
