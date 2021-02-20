@@ -1,4 +1,5 @@
 @ECHO OFF
+cd src
 cls
 python --version
 echo =====================
@@ -8,4 +9,4 @@ Installing pyinstaller
 pip install pyinstaller
 echo =====================
 Building
-pyinstaller --noconfirm --onefile --console --name "hascal"  "src/hascal.py"
+pyinstaller --noconfirm --onefile --console --name "hascal"  "hascal.py"
