@@ -39,7 +39,7 @@ You can see more Hascal examples [here](https://github.com/hascal/hascal/tree/ma
 
 ## Syntax
 
-You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/main/SYNTAX.md).
+You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/main/syntax.md).
 
 ## Documentation
 > You can find documentations on installation and using Hascal [here](https://github.com/hascal/hascal/tree/main/docs)
