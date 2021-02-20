@@ -1,3 +1,4 @@
+
 class Variable(object):
     def __init__(self, t_type, t_name, t_value):
         self.type = t_type
