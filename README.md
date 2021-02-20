@@ -30,7 +30,7 @@ Also, We have tested many programming languages for Hascal's Back-End, including
 DLang was the best and as you can see, we have used it for our purpose.
 
 ## Example
-```hascal
+```dart
 print("what is your name ?");
 var name = ReadStr();
 print("Hello ,",name);

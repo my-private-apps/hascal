@@ -4,18 +4,86 @@
 # | Copyright (c) 2019-2021 Hascal Development Team            |
 # --------------------------------------------------------------
 
-from os import execv, system, getenv
+from os import execv, system, getenv, path, listdir
 from sys import argv
 import sys
 from subprocess import DEVNULL, STDOUT, check_call
 from h_parser import Parser
 from h_lexer import Lexer
+from h_error import HascalException
 from core.colorama import init, Fore
 from pathlib import Path
 
 class HascalExecutor():
-    def __init__(self, filename, ):
-        pass
+    def __init__(self, filename, lexer, parser):
+        # the name of the file
+        self.filename = self.__get_file_name(filename)
+
+        self.lexical_analyser = lexer
+        self.token_parser = parser
+
+        # the (.d) output file
+        self.dlang_output_filename = self.__get_dlang_filename(self.filename)
+
+        self.execute_hascal_script()
+
+
+    def __get_file_name(self, filename):
+        if not filename.endswith(".has"):
+            has_source_error = HascalException(
+                "The specified file is not a hascal(.has) file",
+                "UnsupportedExtension"
+            )
+            sys.exit()
+        
+        return filename
+
+    # get the django filename
+    def __get_dlang_filename(self, filename):
+        filename = path.basename(filename).split(".")[0]
+        return f"{filename}.d"
+
+    # the main execution process
+    def execute_hascal_script(self):
+        file_content = self.read_file(self.filename)
+        parsed_content = self.token_parser.parse(
+            self.lexical_analyser.tokenize(file_content)
+        )
+
+        self.__create_dlang_source()
+
+    # read the file
+    def read_file(self, filename):
+        if path.exists(filename):
+            with open(filename, "r") as file_reader:
+                return str(file_reader.read())
+        else:
+            file_not_found = HascalException(
+                f"{filename} not found",
+                "FileNotFound"
+            )
+
+    def __create_dlang_source(self):
+        temp = self.token_parser.src_imports
+        self.token_parser.src_imports = "\nimport std.stdio;\n" + temp
+
+        with open(self.dlang_output_filename, "w") as dlang_writer:
+            dlang_writer.write(
+                parser.src_imports + parser.src_before_main +
+                parser.src_all + parser.src_main +
+                parser.src_end
+            )
+        try:
+            check_call(
+                ['dmd', self.dlang_output_filename, '-of=' + argv[1][:-4]] ,stdout=DEVNULL,stderr=STDOUT
+            )
+        except:
+            exception = HascalException(
+                "Your code has an error",
+                "UnknownException"
+            )
+
+ 
 
 # Main
 if __name__ == '__main__':
@@ -80,5 +148,9 @@ if __name__ == '__main__':
         #     else:
         #         print(Fore.RED + "Hascal : Please add \".has\" to your file",
         #               end=' ')
-        print(argv[1])
+        hascal_executor = HascalExecutor(
+            argv[1],
+            lexer,
+            parser
+        )
        

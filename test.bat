@@ -1,3 +1,5 @@
 @echo off
 cls
-C:\Users\user\Pictures\hascal\hascal examples\shell.has
+cd src
+python -B hascal.py ..\examples\fib.has
+cd ..
