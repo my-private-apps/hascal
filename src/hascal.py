@@ -69,9 +69,9 @@ class HascalExecutor():
 
         with open(self.dlang_output_filename, "w") as dlang_writer:
             dlang_writer.write(
-                parser.src_imports + parser.src_before_main +
-                parser.src_all + parser.src_main +
-                parser.src_end
+                self.token_parser.src_imports + self.token_parser.src_before_main +
+                self.token_parser.src_all + self.token_parser.src_main +
+                self.token_parser.src_end
             )
         try:
             check_call(
