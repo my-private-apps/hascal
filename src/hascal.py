@@ -15,7 +15,11 @@ from pathlib import Path
 # Main
 if __name__ == '__main__':
     init()
+
+    # create a new lexer
     lexer = Lexer()
+
+    # create a new parser
     parser = Parser()
     version = "1.2.4"
     if len(argv) == 1:

@@ -1,3 +1,5 @@
+from h_error import HascalException
+
 class Variable(object):
     def __init__(self, t_type, t_name, t_value):
         self.type = t_type
@@ -19,7 +21,7 @@ class Validate():
     def AddVariable(self, var_type, var_name, var_value):
         for x in self.variables:
             if x == var_name:
-                print(f"Error : variable existed {var_name}")
+                exception = HascalException(f"variable existed {var_name}")
             else:
                 self.variables.append(Variable(var_type, var_name, var_value))
 
@@ -30,14 +32,14 @@ class Validate():
                     x.value = assign_value
                     return True
                 else:
-                    print(f"Error : Incompatible types : {var_name}")
+                    exception = HascalException(f"Incompatible types : {var_name}")
                     return False
             else:
-                print(f"Error : {var_name} not defined\n")
+                exception = HascalException(f"{var_name} not defined\n")
                 return False
 
     def Exist(self, name):
         if x in self.variables or xx in self.funcs:
             return True
         else:
-            print(f"Error : {name} not defined.")
+            exception = HascalException(f"{name} not defined.")

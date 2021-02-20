@@ -3,10 +3,10 @@ cd src
 cls
 python --version
 echo =====================
-pip -v
+pip --version
 echo =====================
-Installing pyinstaller
+echo Installing pyinstaller
 pip install pyinstaller
 echo =====================
-Building
+echo Building
 pyinstaller --noconfirm --onefile --console --name "hascal"  "hascal.py"
