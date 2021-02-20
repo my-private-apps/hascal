@@ -12,6 +12,11 @@ from h_parser import Parser
 from h_lexer import Lexer
 from core.colorama import init, Fore
 from pathlib import Path
+
+class HascalExecutor():
+    def __init__(self, filename, ):
+        pass
+
 # Main
 if __name__ == '__main__':
     init()
@@ -45,59 +50,35 @@ if __name__ == '__main__':
             "Copyright (c) 2019-2021 Hascal Development Team,\nAll rights reserved."
         )
     else:
-        if sys.platform.startswith('win32'):
-            if argv[1].endswith(".has"):
-                output_d = "tmp.d"
-                try:
-                    with open(argv[1], "r") as fin:
-                        parser.parse(lexer.tokenize(fin.read()))
-                except FileExistsError:
-                    print(
-                        Fore.RED +
-                        f"Hascal : Cannot found {argv[1]}\nHascal : No such file or directory"
-                    )
+        # if sys.platform.startswith('win32'):
+        #     if argv[1].endswith(".has"):
+        #         output_d = "tmp.d"
+        #         try:
+        #             with open(argv[1], "r") as fin:
+        #                 parser.parse(lexer.tokenize(fin.read()))
+        #         except FileExistsError:
+        #             print(
+        #                 Fore.RED +
+        #                 f"Hascal : Cannot found {argv[1]}\nHascal : No such file or directory"
+        #             )
 
-                with open(output_d, "w") as fout:
-                    temp = parser.src_imports
-                    parser.src_imports = "\nimport std.stdio;\n" + temp
-                    fout.write(parser.src_imports + parser.src_before_main +
-                               parser.src_all + parser.src_main +
-                               parser.src_end)
+        #         with open(output_d, "w") as fout:
+        #             temp = parser.src_imports
+        #             parser.src_imports = "\nimport std.stdio;\n" + temp
+        #             fout.write(parser.src_imports + parser.src_before_main +
+        #                        parser.src_all + parser.src_main +
+        #                        parser.src_end)
 
-                try:
-                    tmp0 = argv[1]
-                    tmp = '-of=' + tmp0[:-4]
-                    check_call(['dmd', output_d, tmp],
-                               stdout=DEVNULL,
-                               stderr=STDOUT)
-                except:
-                    print(Fore.RED + "Hascal : Your code has error", end=' ')
-            else:
-                print(Fore.RED + "Hascal : Please add \".has\" to your file",
-                      end=' ')
-        elif sys.platform.startswith('linux'):
-            if argv[1].endswith(".has"):
-                output_d = "tmp.d"
-                try:
-                    with open(argv[1], "r") as fin:
-                        parser.parse(lexer.tokenize(fin.read()))
-                except FileExistsError:
-                    print(
-                        Fore.RED +
-                        f"Hascal : Cannot found {argv[1]}\nHascal : No such file or directory"
-                    )
-
-                with open(output_d, "w") as fout:
-                    temp = parser.src_imports
-                    parser.src_imports = "\nimport std.stdio;\n" + temp
-                    fout.write(parser.src_imports + parser.src_before_main +
-                               parser.src_all + parser.src_main +
-                               parser.src_end)
-                try:
-                    tmp0 = argv[1]
-                    tmp = '-of=' + tmp0[:-4]
-                    check_call(['dmd', output_d, tmp],
-                               stdout=DEVNULL,
-                               stderr=STDOUT)
-                except:
-                    print(Fore.RED + "Hascal : Your code has error", end=' ')
+        #         try:
+        #             tmp0 = argv[1]
+        #             tmp = '-of=' + tmp0[:-4]
+        #             check_call(['dmd', output_d, tmp],
+        #                        stdout=DEVNULL,
+        #                        stderr=STDOUT)
+        #         except:
+        #             print(Fore.RED + "Hascal : Your code has error", end=' ')
+        #     else:
+        #         print(Fore.RED + "Hascal : Please add \".has\" to your file",
+        #               end=' ')
+        print(argv[1])
+       
