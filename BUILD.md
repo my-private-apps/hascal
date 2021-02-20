@@ -1,14 +1,16 @@
 # Build from source
 
 Prequistes :
-```
+
 - python v3.8 or higher
 - pyinstaller 
-- a build of dmd compiler # see : https://dlang.org/
-```
+- a build of [dmd](https://dlang.org/) compiler
+
+<hr>
 
 ## Install Pyinstaller
-Enter following command in your cmd :
+
+>Enter the following command in your terminal
 ```
 pip install pyinstaller
 ```
@@ -23,8 +25,13 @@ Hascal for generate binary code use dmd you should put a version of dmd compiler
 
 ## Build
 For build Hascal enter following command in terminal :
-```
+```sh
 pyinstaller hascal.py --onefile
 ```
+or
+```sh
+pyinstaller --noconfirm --onefile --console --name "hascal"  "hascal.py"
+```
+
 
 Excutable file compiled in src/dist folder.
