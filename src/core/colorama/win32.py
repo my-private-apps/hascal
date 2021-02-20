@@ -27,14 +27,13 @@ else:
             ("srWindow", wintypes.SMALL_RECT),
             ("dwMaximumWindowSize", COORD),
         ]
+
         def __str__(self):
             return '(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d)' % (
-                self.dwSize.Y, self.dwSize.X
-                , self.dwCursorPosition.Y, self.dwCursorPosition.X
-                , self.wAttributes
-                , self.srWindow.Top, self.srWindow.Left, self.srWindow.Bottom, self.srWindow.Right
-                , self.dwMaximumWindowSize.Y, self.dwMaximumWindowSize.X
-            )
+                self.dwSize.Y, self.dwSize.X, self.dwCursorPosition.Y,
+                self.dwCursorPosition.X, self.wAttributes, self.srWindow.Top,
+                self.srWindow.Left, self.srWindow.Bottom, self.srWindow.Right,
+                self.dwMaximumWindowSize.Y, self.dwMaximumWindowSize.X)
 
     _GetStdHandle = windll.kernel32.GetStdHandle
     _GetStdHandle.argtypes = [
@@ -84,26 +83,23 @@ else:
     _FillConsoleOutputAttribute.restype = wintypes.BOOL
 
     _SetConsoleTitleW = windll.kernel32.SetConsoleTitleW
-    _SetConsoleTitleW.argtypes = [
-        wintypes.LPCWSTR
-    ]
+    _SetConsoleTitleW.argtypes = [wintypes.LPCWSTR]
     _SetConsoleTitleW.restype = wintypes.BOOL
 
     def _winapi_test(handle):
         csbi = CONSOLE_SCREEN_BUFFER_INFO()
-        success = _GetConsoleScreenBufferInfo(
-            handle, byref(csbi))
+        success = _GetConsoleScreenBufferInfo(handle, byref(csbi))
         return bool(success)
 
     def winapi_test():
-        return any(_winapi_test(h) for h in
-                   (_GetStdHandle(STDOUT), _GetStdHandle(STDERR)))
+        return any(
+            _winapi_test(h)
+            for h in (_GetStdHandle(STDOUT), _GetStdHandle(STDERR)))
 
     def GetConsoleScreenBufferInfo(stream_id=STDOUT):
         handle = _GetStdHandle(stream_id)
         csbi = CONSOLE_SCREEN_BUFFER_INFO()
-        success = _GetConsoleScreenBufferInfo(
-            handle, byref(csbi))
+        success = _GetConsoleScreenBufferInfo(handle, byref(csbi))
         return csbi
 
     def SetConsoleTextAttribute(stream_id, attrs):
@@ -134,8 +130,8 @@ else:
         length = wintypes.DWORD(length)
         num_written = wintypes.DWORD(0)
         # Note that this is hard-coded for ANSI (vs wide) bytes.
-        success = _FillConsoleOutputCharacterA(
-            handle, char, length, start, byref(num_written))
+        success = _FillConsoleOutputCharacterA(handle, char, length, start,
+                                               byref(num_written))
         return num_written.value
 
     def FillConsoleOutputAttribute(stream_id, attr, length, start):
@@ -145,8 +141,8 @@ else:
         length = wintypes.DWORD(length)
         num_written = wintypes.DWORD(0)
         # Note that this is hard-coded for ANSI (vs wide) bytes.
-        return _FillConsoleOutputAttribute(
-            handle, attribute, length, start, byref(num_written))
+        return _FillConsoleOutputAttribute(handle, attribute, length, start,
+                                           byref(num_written))
 
     def SetConsoleTitle(title):
         return _SetConsoleTitleW(title)

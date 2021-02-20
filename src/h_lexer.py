@@ -1,40 +1,72 @@
 from core.sly import Lexer
+
+
 class Lexer(Lexer):
     tokens = {
         NAME,
-        FOR,WHILE,TO,DOWNTO,
-        IF,ELSE,#ELIF,
-        RETURN,AS,
+        FOR,
+        WHILE,
+        TO,
+        DOWNTO,
+        IF,
+        ELSE,  #ELIF,
+        RETURN,
+        AS,
         PRINT,
-        INTVAR,STRINGVAR,FLOATVAR,CHARVAR,BOOLVAR,
-        CONST,VAR,LOCAL,
-        GREATER,LESS,EQEQ,NOTEQ,GREATEREQ,LESSEQ,
-        PLUS,TIMES,MINUS,DIVIDE,DOT,ALFA,
-        ASSIGN,PASS,
+        INTVAR,
+        STRINGVAR,
+        FLOATVAR,
+        CHARVAR,
+        BOOLVAR,
+        CONST,
+        VAR,
+        LOCAL,
+        GREATER,
+        LESS,
+        EQEQ,
+        NOTEQ,
+        GREATEREQ,
+        LESSEQ,
+        PLUS,
+        TIMES,
+        MINUS,
+        DIVIDE,
+        DOT,
+        ALFA,
+        ASSIGN,
+        PASS,
         COMMA,
-        LPAREN,RPAREN,
+        LPAREN,
+        RPAREN,
         DOTDOT,
         #FLOAT,
         SEM,
-        STRING,NUMBER,CHAR,
+        STRING,
+        NUMBER,
+        CHAR,
         USE,
         FUNCTION,
-        
-        LBRACE,RBRACE,
-        TRUE,FALSE,
-        
-        STRUCT,ENUM,
-        AND,OR,
+        LBRACE,
+        RBRACE,
+        TRUE,
+        FALSE,
+        STRUCT,
+        ENUM,
+        AND,
+        OR,
         NEW,
         NOT,
         ANDCHAR,
         #IN,
-        LBC,RBC,
+        LBC,
+        RBC,
         ARRAY,
-        EXT,BREAK,CONTINUE}
+        EXT,
+        BREAK,
+        CONTINUE
+    }
     ignore = ' \t'
     ignore_comment_slash = r'#.*'
-
 
     # Tokens
     NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -116,11 +148,8 @@ class Lexer(Lexer):
         #t.value = t.value.replace(r"\\", "\\")
         #t.value = t.value.replace(r"\"", "\"")
         return t
-    
+
     @_(r'\'.*?(?<!\\)(\\\\)*\'')
     def CHAR(self, t):
         t.value = t.value[1:-1]
         return t
-
-    
-
