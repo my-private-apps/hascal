@@ -31,14 +31,13 @@ ch = 'h';
 ```
 ### arrays:
 ```dart
-array ages : int[4]{ 12,13,14,15};
-array strs : string[2] { "hello" , "bye"} ;
-array fls : float[3] { 1.0,1.1,1.3};
-array bls : bool[3] {true , false,false};
-array chs : char[6] {'h','a','s','c','a','l'}; 
+var ages : int[4] = [12,13,14,15];
+var strs : string[2] = ["hello" , "bye"];
+var fls : float[3] = [1.0,1.1,1.3];
+var bls : bool[3] = [true , false,false];
+var chs : char[6] ['h','a','s','c','a','l']; 
 
-var ages2 : int[3,3] { 1,2,3,4,5,6};
-print(ages2[3,3]);//output : 6
+var names = ["ali","mohammad"];
 ```
 ### read values :
 ```dart
@@ -54,13 +53,7 @@ fl = ReadFloat();
 ```
 ### comments :
 ```dart
-// this is a single line comment
-
-/*
-  this is a multi line comment
-*/
-
-Comment "this is a comment";
+# this is a single line comment
 ```
 
 ## Conditionals
