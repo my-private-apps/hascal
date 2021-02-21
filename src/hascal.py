@@ -13,7 +13,6 @@ from h_lexer import Lexer
 from h_error import HascalException
 from core.colorama import init, Fore
 from pathlib import Path
-import argparse as argparse
 
 
 HASCAL_COMPILER_VERSION = '1.2.4'
@@ -66,6 +65,7 @@ class HascalExecutor():
                 f"{filename} not found",
                 "FileNotFound"
             )
+            sys.exit()
 
     def __create_dlang_source(self):
         temp = self.token_parser.src_imports
