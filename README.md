@@ -23,6 +23,7 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 - [X] Native binaries with no dependency
 - [X] Garbage Collection
 - [X] Package Manager(hlm)
+- [X] Project Generator
 
 
 ## Why use Hascal ?
