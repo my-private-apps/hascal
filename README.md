@@ -3,7 +3,7 @@
 # Hascal
 This is the official repository for Hascal, a **simple**, **fast**, **powerful** and **compiled** programming language. 
 
-> [Hascal Official Website](https://hascal.github.io)
+> Visit [Hascal's Official Website](https://hascal.github.io)
 
 ![draw](https://img.shields.io/github/last-commit/hascal/hascal)
 ![draw](https://img.shields.io/github/license/hascal/hascal)
@@ -13,14 +13,17 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 ![draw](https://badgen.net/github/stars/hascal/hascal)
 ![draw](https://badgen.net/github/contributors/hascal/hascal)
 
+
 ## Hascal Features:
-- Cross Platform (Linux, Windows)
-- Fast & Powerful
-- C-Family Syntax
-- Can be use in web development(can compiles to javascript)
-- LLVM + Dlang on Back-End
-- Native binaries with no dependency
-- Garbage Collection
+- [X] Cross Platform (Linux, Windows)
+- [X] Fast & Powerful
+- [X] C-Family Syntax
+- [X] Can be use in web development(can compiles to javascript)
+- [X] LLVM + Dlang on Back-End
+- [X] Native binaries with no dependency
+- [X] Garbage Collection
+- [X] Package Manager(hlm)
+
 
 ## Why use Hascal ?
 
@@ -30,7 +33,7 @@ Also, We have tested many programming languages for Hascal's Back-End, including
 DLang was the best and as you can see, we have used it for our purpose.
 
 ## Example
-```hascal
+```dart
 print("what is your name ?");
 var name = ReadStr();
 print("Hello ,",name);

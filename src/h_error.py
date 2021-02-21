@@ -1,4 +1,4 @@
-from clint.textui import colored as Color
+from core.colorama import Fore, init
 
 class HascalException(object):
     def __init__(self, exception_message, exception_type="Exception",  line_number="[~]", details=""):
@@ -12,6 +12,7 @@ class HascalException(object):
         self.__evoke_exception_message()
 
     def __evoke_exception_message(self):
+        init()
         output_messages = [
             f"[{self.exception_type}] at {self.line_number}\n"
             f"{self.exception_message}"
@@ -20,5 +21,5 @@ class HascalException(object):
 
         for element_index in range(len(output_messages)):
             print(
-                Color.red(output_messages[element_index])
+                Fore.RED + str(output_messages[element_index])
             )
