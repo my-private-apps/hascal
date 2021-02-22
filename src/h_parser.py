@@ -1,6 +1,7 @@
 from h_lexer import Lexer
 from core.sly import Parser
 from os import getenv, path
+from h_error import HascalException
 import sys
 
 
@@ -114,8 +115,8 @@ class Parser(Parser):
                 parser.parse(Lexer().tokenize(f.read()))
                 self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
         except FileNotFoundError:
-            print(
-                f"CompileError : cannot found {p.STRING} library. Are you missing a library ?"
+            exception = HascalException(
+                f"CompileError : cannot find module {p.STRING}. Are you missing a library ?"
             )
 
     # local use "<lib_name>";
@@ -129,9 +130,8 @@ class Parser(Parser):
                 parser.parse(Lexer().tokenize(f.read()))
                 self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_before_main + '\n' + parser.src_main + '\n'
         except FileNotFoundError:
-            print(
-                f"CompileError : cannot found {replacedValue} library. Are you missing a library ?"
-                + path)
+            HascalException(
+                f"CompileError : cannot found {replacedValue} library. Are you missing a library ?")
 
     #--------------------------------
     # use <lib_name>;
