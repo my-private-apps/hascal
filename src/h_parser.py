@@ -1,6 +1,7 @@
 from h_lexer import Lexer
 from core.sly import Parser
-from os import getenv
+from os import getenv, path
+from h_error import HascalException
 import sys
 
 
@@ -91,45 +92,28 @@ class Parser(Parser):
     # use "<lib_name>";
     @_('USE STRING SEM')
     def statement(self, p):
-        if sys.platform.startswith('win32'):
-            tmp = p.STRING
-            path = tmp.split('.')
-            final_path = str(getenv('HPATH') + "\\hlib" + "\\")
+        tmp = p.STRING
+        path_of_mod = tmp.split('.')
+        # modules_path == str(getenv('HPATH') + "\\hlib" + "\\")
+        modules_path = path.join(str(getenv('HPATH')), "hlib")
 
-            ends_of_path = path[-1]
-            for x in path[:-1]:
-                final_path += x + "\\"
-            final_path += ends_of_path + ".has"
+        for module_index in range(len(path_of_mod)):
+            module_name = path_of_mod[module_index]
 
-            try:
-                with open(final_path, 'r') as f:
-                    parser = Parser()
-                    parser.parse(Lexer().tokenize(f.read()))
-                    self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
-            except FileNotFoundError:
-                print(
-                    f"CompileError : cannot found {p.STRING} library. Are you missing a library ?"
-                )
+            if module_index == (len(path_of_mod) - 1):
+                module_name = f"{module_name}.has"
 
-        elif sys.platform.startswith('linux'):
-            tmp = p.STRING
-            path = tmp.split('.')
-            final_path = str(getenv('HPATH') + "\\hlib" + "\\")
+            modules_path = path.join(modules_path, module_name)
 
-            ends_of_path = path[-1]
-            for x in path[:-1]:
-                final_path += x + "\\"
-            final_path += ends_of_path + ".has"
-
-            try:
-                with open(final_path, 'r') as f:
-                    parser = Parser()
-                    parser.parse(Lexer().tokenize(f.read()))
-                    self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
-            except FileNotFoundError:
-                print(
-                    f"CompileError : cannot found {p.STRING} library. Are you missing a library ?"
-                )
+        try:
+            with open(modules_path, 'r') as f:
+                parser = Parser()
+                parser.parse(Lexer().tokenize(f.read()))
+                self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
+        except FileNotFoundError:
+            exception = HascalException(
+                f"CompileError : cannot find module {p.STRING}. Are you missing a library ?"
+            )
 
     # local use "<lib_name>";
     @_('LOCAL USE STRING SEM')
@@ -142,9 +126,9 @@ class Parser(Parser):
                 parser.parse(Lexer().tokenize(f.read()))
                 self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_before_main + '\n' + parser.src_main + '\n'
         except FileNotFoundError:
-            print(
+            HascalException(
                 f"CompileError : cannot found {replacedValue} library. Are you missing a library ?"
-                + path)
+            )
 
     #--------------------------------
     # use <lib_name>;

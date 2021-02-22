@@ -4,7 +4,7 @@ Simple Documentation:
 - [Installation](Installation.md)
 - [Getting Started](GettingStarted.md)
 - [Compile](Compile.md)
-- [First Application](FirstApplication.md)
+- [Creating a project](FirstApplication.md)
 - [Input & Output](Input&output.md)
 - [Variables](Variables.md)
 
