@@ -1,6 +1,6 @@
 from h_lexer import Lexer
 from core.sly import Parser
-from os import getenv
+from os import getenv, path
 import sys
 
 
@@ -92,16 +92,24 @@ class Parser(Parser):
     @_('USE STRING SEM')
     def statement(self, p):
         tmp = p.STRING
-        path = tmp.split('.')
-        final_path = str(getenv('HPATH') + "\\hlib" + "\\")
+        path_of_mod = tmp.split('.')
+        # modules_path == str(getenv('HPATH') + "\\hlib" + "\\")
+        modules_path = path.join(
+            str(getenv('HPATH')), "hlib"
+        )
 
-        ends_of_path = path[-1]
-        for x in path[:-1]:
-            final_path += x + "\\"
-        final_path += ends_of_path + ".has"
+        for module_index in range(len(path_of_mod)):
+            module_name = path_of_mod[module_index]
+
+            if module_index == (len(path_of_mod) - 1):
+                module_name = f"{module_name}.has"
+
+            modules_path = path.join(
+                modules_path, module_name
+            )
 
         try:
-            with open(final_path, 'r') as f:
+            with open(modules_path, 'r') as f:
                 parser = Parser()
                 parser.parse(Lexer().tokenize(f.read()))
                 self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
@@ -109,26 +117,6 @@ class Parser(Parser):
             print(
                 f"CompileError : cannot found {p.STRING} library. Are you missing a library ?"
             )
-
-        # elif sys.platform.startswith('linux'):
-        #     tmp = p.STRING
-        #     path = tmp.split('.')
-        #     final_path = str(getenv('HPATH') + "\\hlib" + "\\")
-
-        #     ends_of_path = path[-1]
-        #     for x in path[:-1]:
-        #         final_path += x + "\\"
-        #     final_path += ends_of_path + ".has"
-
-        #     try:
-        #         with open(final_path, 'r') as f:
-        #             parser = Parser()
-        #             parser.parse(Lexer().tokenize(f.read()))
-        #             self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
-        #     except FileNotFoundError:
-        #         print(
-        #             f"CompileError : cannot found {p.STRING} library. Are you missing a library ?"
-        #         )
 
     # local use "<lib_name>";
     @_('LOCAL USE STRING SEM')
