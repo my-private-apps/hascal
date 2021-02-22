@@ -91,45 +91,44 @@ class Parser(Parser):
     # use "<lib_name>";
     @_('USE STRING SEM')
     def statement(self, p):
-        if sys.platform.startswith('win32'):
-            tmp = p.STRING
-            path = tmp.split('.')
-            final_path = str(getenv('HPATH') + "\\hlib" + "\\")
+        tmp = p.STRING
+        path = tmp.split('.')
+        final_path = str(getenv('HPATH') + "\\hlib" + "\\")
 
-            ends_of_path = path[-1]
-            for x in path[:-1]:
-                final_path += x + "\\"
-            final_path += ends_of_path + ".has"
+        ends_of_path = path[-1]
+        for x in path[:-1]:
+            final_path += x + "\\"
+        final_path += ends_of_path + ".has"
 
-            try:
-                with open(final_path, 'r') as f:
-                    parser = Parser()
-                    parser.parse(Lexer().tokenize(f.read()))
-                    self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
-            except FileNotFoundError:
-                print(
-                    f"CompileError : cannot found {p.STRING} library. Are you missing a library ?"
-                )
+        try:
+            with open(final_path, 'r') as f:
+                parser = Parser()
+                parser.parse(Lexer().tokenize(f.read()))
+                self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
+        except FileNotFoundError:
+            print(
+                f"CompileError : cannot found {p.STRING} library. Are you missing a library ?"
+            )
 
-        elif sys.platform.startswith('linux'):
-            tmp = p.STRING
-            path = tmp.split('.')
-            final_path = str(getenv('HPATH') + "\\hlib" + "\\")
+        # elif sys.platform.startswith('linux'):
+        #     tmp = p.STRING
+        #     path = tmp.split('.')
+        #     final_path = str(getenv('HPATH') + "\\hlib" + "\\")
 
-            ends_of_path = path[-1]
-            for x in path[:-1]:
-                final_path += x + "\\"
-            final_path += ends_of_path + ".has"
+        #     ends_of_path = path[-1]
+        #     for x in path[:-1]:
+        #         final_path += x + "\\"
+        #     final_path += ends_of_path + ".has"
 
-            try:
-                with open(final_path, 'r') as f:
-                    parser = Parser()
-                    parser.parse(Lexer().tokenize(f.read()))
-                    self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
-            except FileNotFoundError:
-                print(
-                    f"CompileError : cannot found {p.STRING} library. Are you missing a library ?"
-                )
+        #     try:
+        #         with open(final_path, 'r') as f:
+        #             parser = Parser()
+        #             parser.parse(Lexer().tokenize(f.read()))
+        #             self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_main + '\n' + parser.src_before_main + '\n'
+        #     except FileNotFoundError:
+        #         print(
+        #             f"CompileError : cannot found {p.STRING} library. Are you missing a library ?"
+        #         )
 
     # local use "<lib_name>";
     @_('LOCAL USE STRING SEM')
