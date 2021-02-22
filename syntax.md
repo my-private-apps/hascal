@@ -4,7 +4,7 @@
 ```dart
 use "hascal.core";
 print("Hello World");
-// or :
+# or :
 print "Hello World" ;
 ```
 ### variables :
