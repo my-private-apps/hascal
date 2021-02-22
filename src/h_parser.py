@@ -95,9 +95,7 @@ class Parser(Parser):
         tmp = p.STRING
         path_of_mod = tmp.split('.')
         # modules_path == str(getenv('HPATH') + "\\hlib" + "\\")
-        modules_path = path.join(
-            str(getenv('HPATH')), "hlib"
-        )
+        modules_path = path.join(str(getenv('HPATH')), "hlib")
 
         for module_index in range(len(path_of_mod)):
             module_name = path_of_mod[module_index]
@@ -105,9 +103,7 @@ class Parser(Parser):
             if module_index == (len(path_of_mod) - 1):
                 module_name = f"{module_name}.has"
 
-            modules_path = path.join(
-                modules_path, module_name
-            )
+            modules_path = path.join(modules_path, module_name)
 
         try:
             with open(modules_path, 'r') as f:
@@ -131,7 +127,8 @@ class Parser(Parser):
                 self.src_imports += '\n' + parser.src_imports + '\n' + parser.src_before_main + '\n' + parser.src_main + '\n'
         except FileNotFoundError:
             HascalException(
-                f"CompileError : cannot found {replacedValue} library. Are you missing a library ?")
+                f"CompileError : cannot found {replacedValue} library. Are you missing a library ?"
+            )
 
     #--------------------------------
     # use <lib_name>;
