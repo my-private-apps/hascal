@@ -132,8 +132,8 @@ struct Student {
 var John = new Student;
 John.name = "John";
 
-John.WhatIsYourName() ; # or : John.WhatIsYourName ;
-// output : My name is John
+John.WhatIsYourName() ; 
+# output : My name is John
 ```
 
 ## Modules
