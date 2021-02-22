@@ -1,6 +1,6 @@
 > HASCAL IS CURRENTLY IN DEVELOPMENT
 
-# Hascal
+# The Hascal Programming Language
 This is the official repository for Hascal, a **simple**, **fast**, **powerful** and **compiled** programming language. 
 
 > Visit [Hascal's Official Website](https://hascal.github.io)
