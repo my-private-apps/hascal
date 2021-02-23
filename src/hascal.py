@@ -3,7 +3,15 @@
 # | Copyright (c) 2019-2021 Hascal Development Team            |
 # --------------------------------------------------------------
 
-from os import execv, system, getenv, path, listdir, system
+# from os import execv, system, getenv, path, listdir, system, mkdir
+from os import (
+    execv,
+    system,
+    getenv,
+    path,
+    listdir,
+    mkdir
+)
 from sys import argv
 import sys
 from subprocess import DEVNULL, STDOUT, check_call
@@ -42,6 +50,7 @@ class HascalExecutor():
     # get the django filename
     def __get_dlang_filename(self, filename):
         filename = path.basename(filename).split(".")[0]
+        mkdir("build")
         return path.join("build", f"{filename}.d")
 
     # the main execution process
@@ -77,7 +86,13 @@ class HascalExecutor():
             #     ['dmd', self.dlang_output_filename, '-of=' + argv[1][:-4]],
             #     stdout=DEVNULL,
             #     stderr=STDOUT)
-            check_call(["dmd", f"{self.dlang_output_filename}"])
+            check_call(
+                [
+                    "dmd",
+                    f"{self.dlang_output_filename}",
+                    f"-of={path.join('build', 'dist', 'main.exe')}"
+                ]
+            )
         except:
             exception = HascalException("Your code has an error",
                                         "UnknownException")
