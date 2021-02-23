@@ -913,9 +913,13 @@ class Parser(Parser):
     def call_func(self, p):
         return "writeln({0})".format(p.params_call)
 
+    @_('PUTS LESS params_call GREATER')
+    def call_func(self, p):
+        return "write({0})".format(p.params_call)
+
     @_('PUTS LPAREN params_call RPAREN')
     def call_func(self, p):
-        return "writeln({0})".format(p.params_call)
+        return "write({0})".format(p.params_call)
 
     #-------------------------------
 

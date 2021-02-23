@@ -3,4 +3,4 @@ print("what is your name ?");
 var name = ReadStr();
 print("Hello ,",name);
 
-puts("lolllo");
+puts<"loloo">;
