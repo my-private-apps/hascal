@@ -24,7 +24,7 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 - [x] Garbage Collection
 - [x] Package Manager(hlm)
 - [x] Project Generator
-- [x] Inspired by C,C#,TypeScript,JavaScript,Pascal
+- [x] Inspired by C,C#,Swift,TypeScript,JavaScript,Pascal
 
 ## Why use Hascal ?
 
