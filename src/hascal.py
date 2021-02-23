@@ -10,8 +10,10 @@ from os import (
     getenv,
     path,
     listdir,
-    mkdir
+    mkdir,
+    getcwd
 )
+import platform as platform
 from sys import argv
 import sys
 from subprocess import DEVNULL, STDOUT, check_call
@@ -50,7 +52,8 @@ class HascalExecutor():
     # get the django filename
     def __get_dlang_filename(self, filename):
         filename = path.basename(filename).split(".")[0]
-        mkdir("build")
+        if "build" not in listdir(getcwd()):
+            mkdir("build")
         return path.join("build", f"{filename}.d")
 
     # the main execution process
@@ -90,13 +93,12 @@ class HascalExecutor():
                 [
                     "dmd",
                     f"{self.dlang_output_filename}",
-                    f"-of={path.join('build', 'dist', 'main.exe')}"
+                    f"-of={path.join('build', 'dist', 'main')}"
                 ]
             )
         except:
             exception = HascalException("Your code has an error",
                                         "UnknownException")
-
 
 class HascalArgumentParser(object):
     def __init__(self, command_line_argument):
