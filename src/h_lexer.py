@@ -26,6 +26,7 @@ class Lexer(Lexer):
         EQEQ,
         NOTEQ,
         GREATEREQ,
+        ARROW,
         LESSEQ,
         PLUS,
         TIMES,
@@ -63,7 +64,8 @@ class Lexer(Lexer):
         ARRAY,
         EXT,
         BREAK,
-        CONTINUE
+        CONTINUE,
+        PUTS
     }
     ignore = ' \t'
     ignore_comment_slash = r'#.*'
@@ -88,6 +90,7 @@ class Lexer(Lexer):
     NOTEQ = r'!='
     LESSEQ = r'<='
     GREATEREQ = r'>='
+    ARROW = r"=>"
     LESS = r'<'
     GREATER = r'>'
     DOT = r'\.'
@@ -107,6 +110,7 @@ class Lexer(Lexer):
     NAME["float"] = FLOATVAR
     NAME["var"] = VAR
     NAME["print"] = PRINT
+    NAME["puts"] = PUTS
     NAME["if"] = IF
     #NAME["elif"] = ELIF
     NAME["else"] = ELSE

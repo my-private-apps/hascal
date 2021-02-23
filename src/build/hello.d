@@ -174,4 +174,6 @@ auto name = ReadStr();
 
 writeln("Hello ," , name);
 
+writeln("lolllo");
+
 return 0;}

@@ -913,6 +913,10 @@ class Parser(Parser):
     def call_func(self, p):
         return "writeln({0})".format(p.params_call)
 
+    @_('PUTS LPAREN params_call RPAREN')
+    def call_func(self, p):
+        return "writeln({0})".format(p.params_call)
+
     #-------------------------------
 
     @_('STRUCT NAME LBC struct_declares RBC')
