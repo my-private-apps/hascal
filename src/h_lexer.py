@@ -65,7 +65,8 @@ class Lexer(Lexer):
         EXT,
         BREAK,
         CONTINUE,
-        PUTS
+        PUTS,
+        PTR
     }
     ignore = ' \t'
     ignore_comment_slash = r'#.*'
@@ -75,7 +76,6 @@ class Lexer(Lexer):
     NUMBER = r'\d+'
     #FLOAT = r'\d+\.\d+'
     # Special symbols
-
     DOTDOT = r':'
     PLUS = r'\+'
     EQEQ = r'=='
@@ -90,7 +90,6 @@ class Lexer(Lexer):
     NOTEQ = r'!='
     LESSEQ = r'<='
     GREATEREQ = r'>='
-    ARROW = r"=>"
     LESS = r'<'
     GREATER = r'>'
     DOT = r'\.'
@@ -111,6 +110,7 @@ class Lexer(Lexer):
     NAME["var"] = VAR
     NAME["print"] = PRINT
     NAME["puts"] = PUTS
+    NAME["ptr"] = PTR
     NAME["if"] = IF
     #NAME["elif"] = ELIF
     NAME["else"] = ELSE

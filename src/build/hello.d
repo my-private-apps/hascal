@@ -172,8 +172,8 @@ writeln("what is your name ?");
 
 auto name = ReadStr();
 
-writeln("Hello ," , name);
+auto age = 9;
 
-write("loloo");
+writeln(&name);
 
 return 0;}

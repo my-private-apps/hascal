@@ -666,6 +666,7 @@ class Parser(Parser):
     def return_type(self, p):
         return "{0}[]".format(p.NAME)
 
+
     #------------------------------
     @_('expr')
     def andis_t(self, p):
@@ -913,13 +914,16 @@ class Parser(Parser):
     def call_func(self, p):
         return "writeln({0})".format(p.params_call)
 
-    @_('PUTS LESS params_call GREATER')
+    @_("PTR LESS params_call GREATER")
     def call_func(self, p):
-        return "write({0})".format(p.params_call)
+        values = p.params_call.split(",")[0]
+        return f"&{values}"
 
     @_('PUTS LPAREN params_call RPAREN')
     def call_func(self, p):
         return "write({0})".format(p.params_call)
+
+
 
     #-------------------------------
 
@@ -954,6 +958,7 @@ class Parser(Parser):
     @_('VAR NAME DOTDOT FLOATVAR  SEM')
     def struct_declare(self, p):
         return "\nfloat {0} ;".format(p.NAME)
+
 
     @_('VAR NAME DOTDOT NAME SEM')
     def struct_declare(self, p):
