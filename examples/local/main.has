@@ -1,3 +1,9 @@
-local use "../use.has";
+use "hascal.core";
 
-print("Hai");
+
+use "hascal.core";
+
+
+use "hascal.core";
+
+

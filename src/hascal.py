@@ -3,7 +3,7 @@
 # | Copyright (c) 2019-2021 Hascal Development Team            |
 # --------------------------------------------------------------
 
-from os import execv, system, getenv, path, listdir
+from os import execv, system, getenv, path, listdir, system
 from sys import argv
 import sys
 from subprocess import DEVNULL, STDOUT, check_call
@@ -42,7 +42,7 @@ class HascalExecutor():
     # get the django filename
     def __get_dlang_filename(self, filename):
         filename = path.basename(filename).split(".")[0]
-        return f"{filename}.d"
+        return path.join("build", f"{filename}.d")
 
     # the main execution process
     def execute_hascal_script(self):
@@ -73,10 +73,11 @@ class HascalExecutor():
                                self.token_parser.src_main +
                                self.token_parser.src_end)
         try:
-            check_call(
-                ['dmd', self.dlang_output_filename, '-of=' + argv[1][:-4]],
-                stdout=DEVNULL,
-                stderr=STDOUT)
+            # check_call(
+            #     ['dmd', self.dlang_output_filename, '-of=' + argv[1][:-4]],
+            #     stdout=DEVNULL,
+            #     stderr=STDOUT)
+            check_call(["dmd", f"{self.dlang_output_filename}"])
         except:
             exception = HascalException("Your code has an error",
                                         "UnknownException")

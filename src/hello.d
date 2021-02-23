@@ -168,4 +168,10 @@ float to_float(bool s){
 
 int main(string[] args){
   
+writeln("what is your name ?");
+
+auto name = ReadStr();
+
+writeln("Hello ," , name);
+
 return 0;}
