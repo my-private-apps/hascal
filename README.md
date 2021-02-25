@@ -18,9 +18,8 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 ![draw](https://badgen.net/github/tag/hascal/hascal)
 ![draw](https://badgen.net/github/stars/hascal/hascal)
 ![draw](https://badgen.net/github/contributors/hascal/hascal)
-
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Github all releases](https://img.shields.io/github/downloads/hascal/hascal/total.svg)](https://GitHub.com/hascal/hascal/releases/)
+
 ## Hascal Features:
 - [x] Cross Platform (Linux, Windows)
 - [x] Fast & Powerful
