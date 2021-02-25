@@ -1,3 +1,0 @@
-local use "../use.has";
-
-print("Hai");

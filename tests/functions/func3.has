@@ -1,6 +1,6 @@
-function test(s string[]){
+function test(s:[string]){
     print(s[0]);
 }
 
-var arr : string[] = ["Hello"];
+var arr : [string] ;arr = ["Hello"];
 test(arr);

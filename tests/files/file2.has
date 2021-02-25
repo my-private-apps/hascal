@@ -1,6 +1,0 @@
-use "hascal.file";
-var f = File("test.txt","w");
-
-f.write("Hello");
-f.close();
-RemoveFile(f.name);

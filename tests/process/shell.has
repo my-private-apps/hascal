@@ -1,10 +1,7 @@
-use "hascal.core";
-use "process";
-
 var comm = "";
 
 while true {
-    write(">>>");
+    print2(">>>");
     comm = ReadStr();
     ExcuteCommand(comm);
 }

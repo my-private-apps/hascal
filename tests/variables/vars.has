@@ -14,6 +14,9 @@ str3 = "Test";
 
 var x_2 : int;
 x_2 = 1;
+
+var f_1 : float;
+f_1 = 3.14;
 var tt3 : bool ;
 tt3 = true;
 var xxx2 : char ;

@@ -1,5 +1,3 @@
-use "hascal.math";
-
 print(tan(45.0));
 
 print(abs(-2));

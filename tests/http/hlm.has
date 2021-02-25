@@ -1,0 +1,25 @@
+# Hascal Library Manager v0.3 --- Written in Hascal
+# this is a part of Hascal Programming Language
+# hlm.has
+
+use log; # import log library for log errors
+
+if argv.length <= 2 {
+    print("hlm : no commands found\nusage : hlm <command> <lib_name>");
+    print("commands :\n");
+    print("\tinstall");
+    print("\tuninstall");
+}else {
+    if argv[1] == "install" {
+        print("Installing from https://github.com/hascal/hlm-libs/main/libs/" , argv[2], ".has");
+        download("https://raw.githubusercontent.com/hascal/hlm-libs/main/libs/" ~ argv[2] ~ ".has" , "hlib/" ~ argv[2] ~ ".has");
+    }else{
+        if argv[1] == "uninstall" {
+            print("Uninstalling ", argv[2],"...");
+            RemoveFile(argv[2]);
+			print("...Uninstalled ");
+        }else{
+            log("hlm : cannot found\"" ~ argv[2] ~ "\" command. ");
+        }
+    }
+}

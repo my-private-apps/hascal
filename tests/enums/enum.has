@@ -2,6 +2,6 @@ enum X{
     H,
     F
 }
-var aa = new X ;
+var aa : X ;
 aa = X.F;
 print(aa);
