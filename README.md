@@ -19,7 +19,7 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 - [x] Fast & Powerful
 - [x] C-Family Syntax
 - [x] Can be use in web development(can compiles to javascript)
-- [x] LLVM + Dlang on Back-End
+- [x] Dlang on Back-End
 - [x] Native binaries with no dependency
 - [x] Garbage Collection
 - [x] Package Manager(hlm)
