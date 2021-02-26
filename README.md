@@ -57,7 +57,7 @@ You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/m
 This project exists thanks to all the people who contribute. 
 
 ## License
-The compiler and the standard library are licensed under the **"GNU general public license"**,
+The compiler and the standard libraries are licensed under the **"GNU general public license"**,
 Read the [License](https://github.com/hascal/hascal/blob/main/LICENSE) for more details.
 
 ## About
