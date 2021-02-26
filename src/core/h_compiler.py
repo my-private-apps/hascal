@@ -26,7 +26,8 @@ class Generator(object):
                           'GetYear','GetMonth','GetDay','GetHour','GetMinute','GetSecond',
                           'download','upload','get','post',
                           'isAlpha','isAlphaNum','isDigit','isUpper','isWhite','toLower','toUpper',
-                          'ShellCommand','ExcuteCommand']
+                          'ShellCommand','ExcuteCommand',
+                          'isFile','isDir','rmdir','mkdir','getcwd','thisExePath','listdir']
 
       def generate(self, tree,use=False):
             if self.test(tree):

@@ -172,14 +172,14 @@ void RemoveFile(string s){
 	}
 }
 
-string ReadFromFile(string file_name){
+string ReadFromFile(File file){
 	try{
 		string tmp;
-		auto f = File(file_name,"r");
+		auto f = File(file.name,"r");
 		f.readf!"%s"(tmp);
 		return tmp;
 	}catch(Exception e){
-		writeln("Runtime Error : cannot read '",file_name,"' file.");
+		writeln("Runtime Error : cannot read '",file.name,"' file.");
 	}
 	return "";
 }
@@ -198,6 +198,19 @@ void CloseFile(File myfile){
 	}catch(Exception e){
 		writeln("Runtime Error : cannot close '",myfile.name,"' file.");
 	}
+}
+
+string[] listdir(string pathname)
+{
+    import std.algorithm;
+    import std.array;
+    import std.file;
+    import std.path;
+
+    return std.file.dirEntries(pathname, SpanMode.shallow)
+        .filter!(a => a.isFile)
+        .map!(a => std.path.baseName(a.name))
+        .array;
 }
 
 int GetYear(){
