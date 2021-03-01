@@ -28,7 +28,7 @@ int ReadInt(){
 	}
 	return 0;
 }
-
+int create_float_iun
 float ReadFloat(){
 	try {
 		string tmp;
