@@ -914,6 +914,7 @@ class Parser(Parser):
     def call_func(self, p):
         return "writeln({0})".format(p.params_call)
 
+    # ptr<var_name>
     @_("PTR LESS params_call GREATER")
     def call_func(self, p):
         values = p.params_call.split(",")[0]
