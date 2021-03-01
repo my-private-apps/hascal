@@ -1,0 +1,6 @@
+use physics;
+
+print(Kinetic_Energy(10,10));
+print(Pressure(40,10));
+print(Work(12,1));
+print(cm_to_m(100));

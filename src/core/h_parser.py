@@ -117,6 +117,13 @@ class Parser(Parser):
       def struct_stmt(self, p):
             return ('struct',p.NAME,p.block_struct)
       #-----------------------------------
+      @_('BREAK SEM')
+      def statement(self, p):
+            return ('break')
+      @_('CONTINUE SEM')
+      def statement(self, p):
+            return ('continue')
+      #-----------------------------------
       @_('FUNCTION NAME LPAREN params RPAREN LBC block_func RBC')
       def statement(self, p):
             return ('function','void', p.NAME, p.params, p.block_func)
@@ -177,6 +184,9 @@ class Parser(Parser):
       @_('expr DIVIDE expr')
       def expr(self, p):
             return ('div', p.expr0, p.expr1)
+      @_('expr POW expr')
+      def expr(self, p):
+            return ('pow', p.expr0, p.expr1)
       @_('MINUS expr %prec UMINUS')
       def expr(self, p):
             return ('sub', ('number', 0), p.expr)
@@ -185,7 +195,7 @@ class Parser(Parser):
             return ('add_cont', p.expr0, p.expr1)
       @_('LPAREN expr RPAREN')
       def expr(self, p):
-            return p.expr
+            return ('paren_expr',p.expr)
 
       @_('NAME LPAREN args RPAREN')
       def expr(self, p):

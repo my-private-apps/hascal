@@ -75,7 +75,7 @@ class HascalCompiler(object):
 
         # compile with dmd compiler
         try :
-            check_call(['dmd',"com.d", tmp],stdout=DEVNULL,stderr=STDOUT)
+            check_call(['dmd',"com.d", tmp])#,stdout=DEVNULL,stderr=STDOUT)
             os.remove("com.d")
         except :
             output_messages = [

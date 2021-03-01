@@ -18,7 +18,7 @@ class Generator(object):
 
             # init functions list
             self.funcs = ['print','print2',
-                          'ReadStr','ReadInt','ReadFloat',
+                          'ReadStr','ReadInt','ReadFloat','ReadChar',
                           'sin','cos','tan','PI','fmax','fmin','abs',
                           'exit',
                           'to_int','to_string','to_float',
@@ -27,7 +27,8 @@ class Generator(object):
                           'download','upload','get','post',
                           'isAlpha','isAlphaNum','isDigit','isUpper','isWhite','toLower','toUpper',
                           'ShellCommand','ExcuteCommand',
-                          'isFile','isDir','rmdir','mkdir','getcwd','thisExePath','listdir']
+                          'isFile','isDir','rmdir','mkdir','getcwd','thisExePath','listdir',
+                          'split']
 
       def generate(self, tree,use=False):
             if self.test(tree):
@@ -259,6 +260,14 @@ class Generator(object):
             # return <expr> ;
             if node[0] == 'return':
                   return "return %s;\n" % self.walk(node[1])
+            #-----------------------------------------
+            # break  ;
+            if node[0] == 'break':
+                  return "break;\n"
+            
+            # continue  ;
+            if node[0] == 'continue':
+                  return "continue;\n"
             #-----------------------------------------
             # use <lib_name> ;
             if node[0] == 'use':
@@ -504,6 +513,10 @@ class Generator(object):
                   return "%s * %s" % (self.walk(node[1]), self.walk(node[2]))
             if node[0] == 'div':
                   return "%s / %s" % (self.walk(node[1]), self.walk(node[2]))
+            if node[0] == 'pow':
+                  return "%s ^ %s" % (self.walk(node[1]), self.walk(node[2]))
+            if node[0] == 'paren_expr':
+                  return "(%s)" % (self.walk(node[1]))
             # --------------end of operators-----------------  
 
             # ---------------conditions---------------------

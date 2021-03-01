@@ -8,7 +8,7 @@ class Lexer(Lexer):
                 INTVAR, STRINGVAR, CHARVAR,BOOLVAR,FLOATVAR,
                 NUMBER, STRING,CHAR,
                 GREATER, LESS, EQEQ, NOTEQ, GREATEREQ, LESSEQ,
-                PLUS, TIMES, MINUS, DIVIDE,ALPHA,
+                PLUS, TIMES, MINUS, DIVIDE,ALPHA,POW,
                 DOT,
                 ASSIGN,
                 COMMA, COLON,
@@ -20,6 +20,7 @@ class Lexer(Lexer):
                 SEM,
                 USE,LOCAL,
                 FUNCTION,
+                BREAK,CONTINUE,
                 STRUCT,ENUM}
         ignore = ' \t'
         ignore_comment_slash = r'#.*'
@@ -32,6 +33,7 @@ class Lexer(Lexer):
         EQEQ   = r'=='
         MINUS  = r'-'
         TIMES  = r'\*'
+        POW  = r'\^'
         DIVIDE = r'/'
         ASSIGN = r'='
         LPAREN = r'\('
@@ -78,6 +80,9 @@ class Lexer(Lexer):
         
         NAME["true"] = TRUE
         NAME["false"] = FALSE
+        
+        NAME["break"] = BREAK
+        NAME["continue"] = CONTINUE
 
         @_(r'"([^\n\\]|\\\S)*?"')
         def STRING(self, t):
