@@ -1,3 +1,2 @@
-use "log";
-
+use log;
 log("Error : fdfd");

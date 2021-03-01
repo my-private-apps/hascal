@@ -2,6 +2,8 @@ var x = "Hello";
 
 if x == "Hello" { 
     print("test0");
-}else{
+}else if x=="hello" {
     print("test1");
+}else {
+print("test2");
 }

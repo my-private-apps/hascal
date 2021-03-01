@@ -1,1 +1,2 @@
-use "hascal.core";
+use log;
+log("error");

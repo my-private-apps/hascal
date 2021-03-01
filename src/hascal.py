@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #--------------------------------------------------------------
 # | Hascal Programming Language --- Hascal Compiler v1.2.4     |
 # | Copyright (c) 2019-2021 Hascal Development Team            |
@@ -157,3 +158,15 @@ class HascalArgumentParser(object):
 
 if __name__ == "__main__":
     hascal_argument_parser = HascalArgumentParser(argv)
+=======
+#!/usr/bin/env python3
+from sys import argv 
+from core.h_builder import HascalCompiler
+if __name__ == "__main__":    
+      HascalCompiler(argv)
+            
+
+      
+      
+      
+>>>>>>> upstream/main

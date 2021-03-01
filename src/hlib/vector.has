@@ -1,6 +1,5 @@
-# A simple vector library for hascal
 struct Vector2D {
-    var x : float ;
+    var x : float;
     var y : float;
 }
 

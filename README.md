@@ -1,6 +1,10 @@
-> HASCAL IS CURRENTLY IN DEVELOPMENT
+
+<p align="center">
+  <img style="text-align:center" src="https://raw.githubusercontent.com/hascal/hascal/main/hascal-logo.png" height="127px" width="128px">
+</p>
 
 # The Hascal Programming Language
+
 This is the official repository for Hascal, a **simple**, **fast**, **powerful** and **compiled** programming language. 
 
 > Visit [Hascal's Official Website](https://hascal.github.io)
@@ -12,19 +16,18 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 ![draw](https://badgen.net/github/tag/hascal/hascal)
 ![draw](https://badgen.net/github/stars/hascal/hascal)
 ![draw](https://badgen.net/github/contributors/hascal/hascal)
-
+[![Github all releases](https://img.shields.io/github/downloads/hascal/hascal/total.svg)](https://GitHub.com/hascal/hascal/releases/)
 
 ## Hascal Features:
-- [X] Cross Platform (Linux, Windows)
-- [X] Fast & Powerful
-- [X] C-Family Syntax
-- [X] Can be use in web development(can compiles to javascript)
-- [X] LLVM + Dlang on Back-End
-- [X] Native binaries with no dependency
-- [X] Garbage Collection
-- [X] Package Manager(hlm)
-- [X] Project Generator
-
+- [x] Cross Platform (Linux, Windows)
+- [x] Fast & Powerful
+- [x] C-Family Syntax
+- [x] Can be use in web development(can compiles to javascript)
+- [x] Dlang on Back-End
+- [x] Native binaries with no dependency
+- [x] Garbage Collection
+- [x] Package Manager(hlm) written in Hascal
+- [x] Inspired by C,C#,Swift,TypeScript,JavaScript,Pascal
 
 ## Why use Hascal ?
 
@@ -52,7 +55,7 @@ You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/m
 This project exists thanks to all the people who contribute. 
 
 ## License
-The compiler and the standard library are licensed under the **"GNU general public license"**,
+The compiler and the standard libraries are licensed under the **"GNU general public license"**,
 Read the [License](https://github.com/hascal/hascal/blob/main/LICENSE) for more details.
 
 ## About

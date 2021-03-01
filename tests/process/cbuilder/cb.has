@@ -1,3 +1,2 @@
-use "process";
-
-ExcuteCommand("gcc test.c");
+ExcuteCommand("gcc test.c -o test");
+ExcuteCommand("gcc -std=c11 nqueen.c -o nqueen");

@@ -1,0 +1,4 @@
+function x() : int{
+	return 3*3;
+}
+print(x());

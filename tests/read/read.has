@@ -1,4 +1,3 @@
-use "hascal.core";
 var x : bool ;
 var tmp = ReadStr();
 

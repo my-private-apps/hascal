@@ -3,7 +3,7 @@ struct Token{
     var value : string;
 }
 
-var xxx = new Token ;
+var xxx: Token ;
 var x = "Hello";
 
 if x == "sdfds" {
@@ -22,7 +22,7 @@ while xx < 1000 {
     xx = xx +1;
 }
 
-function sayHello(s string){
+function sayHello(s:string){
     print("fgdfg");
 }
 sayHello("sds");

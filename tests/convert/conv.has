@@ -1,5 +1,3 @@
-use "hascal.core";
-
 var x = to_string(1.1);
 print(x);
 

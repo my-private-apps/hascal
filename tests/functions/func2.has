@@ -1,16 +1,18 @@
-function Im_Developer(name string,job string) as Developer{
-    var tmp = new Developer ;
-    tmp.name = name;
-    tmp.job = job;
-    return tmp ;
-}
-
 struct Developer{
     var name : string ;
     var job : string ;
 }
 
-var Hasan = new Developer;
+function Im_Developer(name:string,job:string): Developer{
+    var tmp : Developer ;
+    tmp.name = name;
+    tmp.job = job;
+    return tmp ;
+}
+
+
+
+var Hasan : Developer;
 Hasan = Im_Developer("Hasan Kashi","Golang,Pascal,Dlang Developer");
 
 print(Hasan.name);

@@ -5,8 +5,8 @@ python --version
 echo =====================
 pip --version
 echo =====================
-echo Installing Packages
+echo Installing Packages...
 pip install -r requirements.txt
 echo =====================
-echo Building
+echo Building...
 pyinstaller --noconfirm --onefile --console --name "hascal"  "hascal.py"

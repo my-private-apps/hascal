@@ -1,4 +1,3 @@
-use "hascal.file";
 var f = File("test.txt","w");
 
 WriteToFile(f,"Hello");

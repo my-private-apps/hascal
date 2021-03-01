@@ -3,7 +3,7 @@ struct S{
     var y : int;
 }
 
-function foo(ss S) as int{
+function foo(ss:S): int{
     return ss.x;
 }
 
