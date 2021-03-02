@@ -51,6 +51,13 @@ You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/m
 ## Documentation
 > You can find documentations on installation and using Hascal [here](https://github.com/hascal/hascal/tree/main/docs)
 
+## Todo
+- adding multi-syntax
+- adding a library for electrical engineering
+- adding a library for create a simple web server
+- adding a tool for create android applications with hascal(Hascal Android Bootstrapper)
+- adding macOS support
+
 ## Thanks
 This project exists thanks to all the people who contribute. 
 

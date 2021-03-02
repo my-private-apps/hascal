@@ -75,7 +75,7 @@ class HascalCompiler(object):
 
         # compile with dmd compiler
         try :
-            check_call(['dmd',"com.d", tmp])#,stdout=DEVNULL,stderr=STDOUT)
+            check_call(['dmd',"com.d", tmp],stdout=DEVNULL,stderr=STDOUT)
             os.remove("com.d")
         except :
             output_messages = [
@@ -83,6 +83,7 @@ class HascalCompiler(object):
                 "Check these items :",
                 "\t1-incompatible types",
                 "\t2-functions arguements and types and length of arguments",
+                "\t3-modify consts",
                 "\tand more..."
                 "\nif you could not troubleshooting your code , create an issue in hascal github repository(github.com/hascal/hascal) ,we helps you "
             ]

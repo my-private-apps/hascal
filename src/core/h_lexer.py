@@ -7,7 +7,7 @@ class Lexer(Lexer):
                 RETURN,
                 INTVAR, STRINGVAR, CHARVAR,BOOLVAR,FLOATVAR,
                 NUMBER, STRING,CHAR,
-                GREATER, LESS, EQEQ, NOTEQ, GREATEREQ, LESSEQ,
+                GREATER, LESS, EQEQ, NOTEQ, GREATEREQ, LESSEQ,NOT,AND,OR,
                 PLUS, TIMES, MINUS, DIVIDE,ALPHA,POW,
                 DOT,
                 ASSIGN,
@@ -16,7 +16,7 @@ class Lexer(Lexer):
                 LBC,RBC,
                 LBRCK,RBRCK,
                 TRUE,FALSE,
-                VAR,CONST,
+                VAR,CONST,LET,
                 SEM,
                 USE,LOCAL,
                 FUNCTION,
@@ -54,6 +54,7 @@ class Lexer(Lexer):
         
         NAME["var"] = VAR
         NAME["const"] = CONST
+        NAME["let"] = LET
         
         NAME["use"] = USE
         NAME["local"] = LOCAL
@@ -64,6 +65,9 @@ class Lexer(Lexer):
         NAME["bool"] = BOOLVAR
         NAME["float"] = FLOATVAR
         
+        NAME["not"] = NOT
+        NAME["and"] = AND
+        NAME["or"] = OR
         NAME["if"] = IF
         NAME["else"] = ELSE
         

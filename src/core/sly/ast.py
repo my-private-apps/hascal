@@ -1,4 +1,3 @@
-# sly/ast.py
 import sys
 
 class AST(object):

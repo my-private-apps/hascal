@@ -12,6 +12,7 @@ import std.math : sin,cos,tan,PI,fmax,fmin,abs;
 import std.datetime.systime;
 import std.process : executeShell,execute ,wait ;
 import std.array : split;
+import std.json;
 
 string ReadStr(){
 	try {

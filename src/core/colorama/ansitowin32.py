@@ -1,4 +1,3 @@
-# Copyright Jonathan Hartley 2013. BSD 3-Clause license, see LICENSE file.
 import re
 import sys
 import os
@@ -13,14 +12,7 @@ if windll is not None:
 
 
 class StreamWrapper(object):
-    '''
-    Wraps a stream (such as stdout), acting as a transparent proxy for all
-    attribute access apart from method 'write()', which is delegated to our
-    Converter instance.
-    '''
     def __init__(self, wrapped, converter):
-        # double-underscore everything to prevent clashes with names of
-        # attributes on the wrapped stream object.
         self.__wrapped = wrapped
         self.__convertor = converter
 
@@ -28,9 +20,6 @@ class StreamWrapper(object):
         return getattr(self.__wrapped, name)
 
     def __enter__(self, *args, **kwargs):
-        # special method lookup bypasses __getattr__/__getattribute__, see
-        # https://stackoverflow.com/questions/12632894/why-doesnt-getattr-work-with-exit
-        # thus, contextlib magic methods are not proxied via __getattr__
         return self.__wrapped.__enter__(*args, **kwargs)
 
     def __exit__(self, *args, **kwargs):
@@ -62,59 +51,36 @@ class StreamWrapper(object):
 
 
 class AnsiToWin32(object):
-    '''
-    Implements a 'write()' method which, on Windows, will strip ANSI character
-    sequences from the text, and if outputting to a tty, will convert them into
-    win32 function calls.
-    '''
     ANSI_CSI_RE = re.compile('\001?\033\\[((?:\\d|;)*)([a-zA-Z])\002?'
                              )  # Control Sequence Introducer
     ANSI_OSC_RE = re.compile(
         '\001?\033\\]([^\a]*)(\a)\002?')  # Operating System Command
 
     def __init__(self, wrapped, convert=None, strip=None, autoreset=False):
-        # The wrapped stream (normally sys.stdout or sys.stderr)
         self.wrapped = wrapped
 
-        # should we reset colors to defaults after every .write()
         self.autoreset = autoreset
 
-        # create the proxy wrapping our output stream
         self.stream = StreamWrapper(wrapped, self)
 
         on_windows = os.name == 'nt'
-        # We test if the WinAPI works, because even if we are on Windows
-        # we may be using a terminal that doesn't support the WinAPI
-        # (e.g. Cygwin Terminal). In this case it's up to the terminal
-        # to support the ANSI codes.
         conversion_supported = on_windows and winapi_test()
 
-        # should we strip ANSI sequences from our output?
         if strip is None:
             strip = conversion_supported or (not self.stream.closed
                                              and not self.stream.isatty())
         self.strip = strip
 
-        # should we should convert ANSI sequences into win32 calls?
         if convert is None:
             convert = conversion_supported and not self.stream.closed and self.stream.isatty(
             )
         self.convert = convert
 
-        # dict of ansi codes to win32 functions and parameters
         self.win32_calls = self.get_win32_calls()
 
-        # are we wrapping stderr?
         self.on_stderr = self.wrapped is sys.stderr
 
     def should_wrap(self):
-        '''
-        True if this class is actually needed. If false, then the output
-        stream will not be affected, nor will win32 calls be issued, so
-        wrapping stdout is not actually required. This will generally be
-        False on non-Windows platforms, unless optional functionality like
-        autoreset has been requested using kwargs to init()
-        '''
         return self.convert or self.strip or self.autoreset
 
     def get_win32_calls(self):
@@ -179,11 +145,6 @@ class AnsiToWin32(object):
             self.wrapped.write(Style.RESET_ALL)
 
     def write_and_convert(self, text):
-        '''
-        Write the given text to our wrapped stream, stripping any ANSI
-        sequences from the text, and optionally converting them into win32
-        calls.
-        '''
         cursor = 0
         text = self.convert_osc(text)
         for match in self.ANSI_CSI_RE.finditer(text):
@@ -208,13 +169,11 @@ class AnsiToWin32(object):
             params = tuple(
                 int(p) if len(p) != 0 else 1 for p in paramstring.split(';'))
             while len(params) < 2:
-                # defaults:
                 params = params + (1, )
         else:
             params = tuple(
                 int(p) for p in paramstring.split(';') if len(p) != 0)
             if len(params) == 0:
-                # defaults:
                 if command in 'JKm':
                     params = (0, )
                 elif command in 'ABCD':
@@ -239,7 +198,6 @@ class AnsiToWin32(object):
             winterm.set_cursor_position(params, on_stderr=self.on_stderr)
         elif command in 'ABCD':  # cursor position - relative
             n = params[0]
-            # A - up, B - down, C - forward, D - back
             x, y = {
                 'A': (0, -n),
                 'B': (0, n),
@@ -256,9 +214,6 @@ class AnsiToWin32(object):
             if command == BEL:
                 if paramstring.count(";") == 1:
                     params = paramstring.split(";")
-                    # 0 - change title and icon (we will only change title)
-                    # 1 - change icon (we don't support this)
-                    # 2 - change title
                     if params[0] in '02':
                         winterm.set_title(params[1])
         return text

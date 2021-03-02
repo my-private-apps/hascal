@@ -1,0 +1,6 @@
+var x = 1;
+var y = 2;
+
+if x == 1 and y == 2 {
+    print("Hello");
+}
