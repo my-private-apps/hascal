@@ -1,36 +1,3 @@
-# -----------------------------------------------------------------------------
-# sly: yacc.py
-#
-# Copyright (C) 2016-2018
-# David M. Beazley (Dabeaz LLC)
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are
-# met:
-#
-# * Redistributions of source code must retain the above copyright notice,
-#   this list of conditions and the following disclaimer.
-# * Redistributions in binary form must reproduce the above copyright notice,
-#   this list of conditions and the following disclaimer in the documentation
-#   and/or other materials provided with the distribution.
-# * Neither the name of the David Beazley or Dabeaz LLC may be used to
-#   endorse or promote products derived from this software without
-#  specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-# OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# -----------------------------------------------------------------------------
-
 import sys
 import inspect
 from collections import OrderedDict, defaultdict, Counter
@@ -38,9 +5,6 @@ from collections import OrderedDict, defaultdict, Counter
 __all__        = [ 'Parser' ]
 
 class YaccError(Exception):
-    '''
-    Exception raised for yacc-related build errors.
-    '''
     pass
 
 #-----------------------------------------------------------------------------
@@ -70,22 +34,11 @@ class SlyLogger(object):
 
     def warning(self, msg, *args, **kwargs):
         pass
-        #self.f.write('WARNING: ' + (msg % args) + '\n')
 
     def error(self, msg, *args, **kwargs):
         self.f.write('ERROR: ' + (msg % args) + '\n')
 
     critical = debug
-
-
-# ----------------------------------------------------------------------
-# This class is used to hold non-terminal grammar symbols during parsing.
-# It normally has the following attributes set:
-#        .type       = Grammar symbol type
-#        .value      = Symbol value
-#        .lineno     = Starting line number
-#        .index      = Starting lex position
-# ----------------------------------------------------------------------
 
 class YaccSymbol:
     def __str__(self):
@@ -93,14 +46,6 @@ class YaccSymbol:
 
     def __repr__(self):
         return str(self)
-
-# ----------------------------------------------------------------------
-# This class is a wrapper around the objects actually passed to each
-# grammar rule.   Index lookup and assignment actually assign the
-# .value attribute of the underlying YaccSymbol object.
-# The lineno() method returns the line number of a given
-# item (or 0 if not defined).   
-# ----------------------------------------------------------------------
 
 class YaccProduction:
     __slots__ = ('_slice', '_namemap', '_stack')
@@ -157,37 +102,6 @@ class YaccProduction:
         else:
             raise AttributeError(f"Can't reassign the value of attribute {name!r}")
 
-# -----------------------------------------------------------------------------
-#                          === Grammar Representation ===
-#
-# The following functions, classes, and variables are used to represent and
-# manipulate the rules that make up a grammar.
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------------------------------------
-# class Production:
-#
-# This class stores the raw information about a single production or grammar rule.
-# A grammar rule refers to a specification such as this:
-#
-#       expr : expr PLUS term
-#
-# Here are the basic attributes defined on all productions
-#
-#       name     - Name of the production.  For example 'expr'
-#       prod     - A list of symbols on the right side ['expr','PLUS','term']
-#       prec     - Production precedence level
-#       number   - Production number.
-#       func     - Function that executes on reduce
-#       file     - File where production function is defined
-#       lineno   - Line number where production function is defined
-#
-# The following attributes are defined or optional.
-#
-#       len       - Length of the production (number of symbols on right hand side)
-#       usyms     - Set of unique symbols found in the production
-# -----------------------------------------------------------------------------
-
 class Production(object):
     reduced = 0
     def __init__(self, number, name, prod, precedence=('right', 0), func=None, file='', line=0):
@@ -199,19 +113,15 @@ class Production(object):
         self.line     = line
         self.prec     = precedence
         
-        # Internal settings used during table construction
         self.len  = len(self.prod)   # Length of the production
 
-        # Create a list of unique production symbols used in the production
         self.usyms = []
         symmap = defaultdict(list)
         for n, s in enumerate(self.prod):
             symmap[s].append(n)
             if s not in self.usyms:
                 self.usyms.append(s)
-
-        # Create a name mapping
-        # First determine (in advance) if there are duplicate names
+                
         namecount = defaultdict(int)
         for key in self.prod:
             namecount[key] += 1
@@ -219,7 +129,6 @@ class Production(object):
                 for key in _name_aliases[key]:
                     namecount[key] += 1
 
-        # Now, walk through the names and generate accessor functions
         nameuse = defaultdict(int)
         namemap = { }
         for index, key in enumerate(self.prod):
@@ -236,12 +145,10 @@ class Production(object):
                         nameuse[alias] += 1
                     else:
                         k = alias
-                    # The value is either a list (for repetition) or a tuple for optional 
                     namemap[k] = lambda s,i=index,n=n: ([x[n] for x in s[i].value]) if isinstance(s[i].value, list) else s[i].value[n]
 
         self.namemap = namemap
                 
-        # List of all LR items for the production
         self.lr_items = []
         self.lr_next = None
 
@@ -269,12 +176,10 @@ class Production(object):
     def __getitem__(self, index):
         return self.prod[index]
 
-    # Return the nth lr_item from the production (or None if at the end)
     def lr_item(self, n):
         if n > len(self.prod):
             return None
         p = LRItem(self, n)
-        # Precompute the list of productions immediately following.
         try:
             p.lr_after = Prodnames[p.prod[n+1]]
         except (IndexError, KeyError):
@@ -284,30 +189,6 @@ class Production(object):
         except IndexError:
             p.lr_before = None
         return p
-
-# -----------------------------------------------------------------------------
-# class LRItem
-#
-# This class represents a specific stage of parsing a production rule.  For
-# example:
-#
-#       expr : expr . PLUS term
-#
-# In the above, the "." represents the current location of the parse.  Here
-# basic attributes:
-#
-#       name       - Name of the production.  For example 'expr'
-#       prod       - A list of symbols on the right side ['expr','.', 'PLUS','term']
-#       number     - Production number.
-#
-#       lr_next      Next LR item. Example, if we are ' expr -> expr . PLUS term'
-#                    then lr_next refers to 'expr -> expr PLUS . term'
-#       lr_index   - LR item index (location of the ".") in the prod list.
-#       lookaheads - LALR lookahead symbols for this item
-#       len        - Length of the production (number of symbols on right hand side)
-#       lr_after    - List of all productions that immediately follow
-#       lr_before   - Grammar symbol immediately before
-# -----------------------------------------------------------------------------
 
 class LRItem(object):
     def __init__(self, p, n):
@@ -331,11 +212,6 @@ class LRItem(object):
     def __repr__(self):
         return f'LRItem({self})'
 
-# -----------------------------------------------------------------------------
-# rightmost_terminal()
-#
-# Return the rightmost terminal from a list of symbols.  Used in add_production()
-# -----------------------------------------------------------------------------
 def rightmost_terminal(symbols, terminals):
     i = len(symbols) - 1
     while i >= 0:
@@ -344,52 +220,43 @@ def rightmost_terminal(symbols, terminals):
         i -= 1
     return None
 
-# -----------------------------------------------------------------------------
-#                           === GRAMMAR CLASS ===
-#
-# The following class represents the contents of the specified grammar along
-# with various computed properties such as first sets, follow sets, LR items, etc.
-# This data is used for critical parts of the table generation process later.
-# -----------------------------------------------------------------------------
-
 class GrammarError(YaccError):
     pass
 
 class Grammar(object):
     def __init__(self, terminals):
-        self.Productions  = [None]  # A list of all of the productions.  The first
-                                    # entry is always reserved for the purpose of
-                                    # building an augmented grammar
+        self.Productions  = [None]  
+                                    
 
-        self.Prodnames    = {}      # A dictionary mapping the names of nonterminals to a list of all
-                                    # productions of that nonterminal.
+        self.Prodnames    = {}      
+                                  
 
-        self.Prodmap      = {}      # A dictionary that is only used to detect duplicate
-                                    # productions.
+        self.Prodmap      = {}      
+                                   
 
-        self.Terminals    = {}      # A dictionary mapping the names of terminal symbols to a
-                                    # list of the rules where they are used.
+        self.Terminals    = {}      
+                                    
 
         for term in terminals:
             self.Terminals[term] = []
 
         self.Terminals['error'] = []
 
-        self.Nonterminals = {}      # A dictionary mapping names of nonterminals to a list
-                                    # of rule numbers where they are used.
+        self.Nonterminals = {}      
+                                    
 
-        self.First        = {}      # A dictionary of precomputed FIRST(x) symbols
+        self.First        = {}      
 
-        self.Follow       = {}      # A dictionary of precomputed FOLLOW(x) symbols
+        self.Follow       = {}      
 
-        self.Precedence   = {}      # Precedence rules for each terminal. Contains tuples of the
-                                    # form ('right',level) or ('nonassoc', level) or ('left',level)
+        self.Precedence   = {}      
+                                    
 
-        self.UsedPrecedence = set() # Precedence rules that were actually used by the grammer.
-                                    # This is only used to provide error checking and to generate
-                                    # a warning about unused precedence rules.
+        self.UsedPrecedence = set() 
+                                    
+                                    
 
-        self.Start = None           # Starting symbol for the grammar
+        self.Start = None           
 
 
     def __len__(self):
@@ -398,14 +265,6 @@ class Grammar(object):
     def __getitem__(self, index):
         return self.Productions[index]
 
-    # -----------------------------------------------------------------------------
-    # set_precedence()
-    #
-    # Sets the precedence for a given terminal. assoc is the associativity such as
-    # 'left','right', or 'nonassoc'.  level is a numeric level.
-    #
-    # -----------------------------------------------------------------------------
-
     def set_precedence(self, term, assoc, level):
         assert self.Productions == [None], 'Must call set_precedence() before add_production()'
         if term in self.Precedence:
@@ -413,23 +272,6 @@ class Grammar(object):
         if assoc not in ['left', 'right', 'nonassoc']:
             raise GrammarError(f"Associativity of {term!r} must be one of 'left','right', or 'nonassoc'")
         self.Precedence[term] = (assoc, level)
-
-    # -----------------------------------------------------------------------------
-    # add_production()
-    #
-    # Given an action function, this function assembles a production rule and
-    # computes its precedence level.
-    #
-    # The production rule is supplied as a list of symbols.   For example,
-    # a rule such as 'expr : expr PLUS term' has a production name of 'expr' and
-    # symbols ['expr','PLUS','term'].
-    #
-    # Precedence is determined by the precedence of the right-most non-terminal
-    # or the precedence of a terminal specified by %prec.
-    #
-    # A variety of error checks are performed to make sure production symbols
-    # are valid and that %prec is used correctly.
-    # -----------------------------------------------------------------------------
 
     def add_production(self, prodname, syms, func=None, file='', line=0):
 
@@ -449,7 +291,6 @@ class Grammar(object):
                 syms[n] = c
                 continue
 
-        # Determine the precedence level
         if '%prec' in syms:
             if syms[-1] == '%prec':
                 raise GrammarError(f'{file}:{line}: Syntax error. Nothing follows %%prec')
@@ -461,25 +302,21 @@ class Grammar(object):
                 raise GrammarError(f'{file}:{line}: Nothing known about the precedence of {precname!r}')
             else:
                 self.UsedPrecedence.add(precname)
-            del syms[-2:]     # Drop %prec from the rule
+            del syms[-2:]     
         else:
-            # If no %prec, precedence is determined by the rightmost terminal symbol
             precname = rightmost_terminal(syms, self.Terminals)
             prodprec = self.Precedence.get(precname, ('right', 0))
 
-        # See if the rule is already in the rulemap
         map = '%s -> %s' % (prodname, syms)
         if map in self.Prodmap:
             m = self.Prodmap[map]
             raise GrammarError(f'{file}:{line}: Duplicate rule {m}. ' +
                                f'Previous definition at {m.file}:{m.line}')
 
-        # From this point on, everything is valid.  Create a new Production instance
         pnumber  = len(self.Productions)
         if prodname not in self.Nonterminals:
             self.Nonterminals[prodname] = []
 
-        # Add the production number to Terminals and Nonterminals
         for t in syms:
             if t in self.Terminals:
                 self.Terminals[t].append(pnumber)
@@ -488,23 +325,14 @@ class Grammar(object):
                     self.Nonterminals[t] = []
                 self.Nonterminals[t].append(pnumber)
 
-        # Create a production and add it to the list of productions
         p = Production(pnumber, prodname, syms, prodprec, func, file, line)
         self.Productions.append(p)
         self.Prodmap[map] = p
 
-        # Add to the global productions list
         try:
             self.Prodnames[prodname].append(p)
         except KeyError:
             self.Prodnames[prodname] = [p]
-
-    # -----------------------------------------------------------------------------
-    # set_start()
-    #
-    # Sets the starting symbol and creates the augmented grammar.  Production
-    # rule 0 is S' -> start where start is the start symbol.
-    # -----------------------------------------------------------------------------
 
     def set_start(self, start=None):
         if callable(start):
@@ -519,16 +347,9 @@ class Grammar(object):
         self.Nonterminals[start].append(0)
         self.Start = start
 
-    # -----------------------------------------------------------------------------
-    # find_unreachable()
-    #
-    # Find all of the nonterminal symbols that can't be reached from the starting
-    # symbol.  Returns a list of nonterminals that can't be reached.
-    # -----------------------------------------------------------------------------
 
     def find_unreachable(self):
 
-        # Mark all symbols that are reachable from a symbol s
         def mark_reachable_from(s):
             if s in reachable:
                 return
@@ -541,54 +362,34 @@ class Grammar(object):
         mark_reachable_from(self.Productions[0].prod[0])
         return [s for s in self.Nonterminals if s not in reachable]
 
-    # -----------------------------------------------------------------------------
-    # infinite_cycles()
-    #
-    # This function looks at the various parsing rules and tries to detect
-    # infinite recursion cycles (grammar rules where there is no possible way
-    # to derive a string of only terminals).
-    # -----------------------------------------------------------------------------
 
     def infinite_cycles(self):
         terminates = {}
 
-        # Terminals:
         for t in self.Terminals:
             terminates[t] = True
 
         terminates['$end'] = True
 
-        # Nonterminals:
 
-        # Initialize to false:
         for n in self.Nonterminals:
             terminates[n] = False
 
-        # Then propagate termination until no change:
         while True:
             some_change = False
             for (n, pl) in self.Prodnames.items():
-                # Nonterminal n terminates iff any of its productions terminates.
                 for p in pl:
-                    # Production p terminates iff all of its rhs symbols terminate.
                     for s in p.prod:
                         if not terminates[s]:
-                            # The symbol s does not terminate,
-                            # so production p does not terminate.
                             p_terminates = False
                             break
                     else:
-                        # didn't break from the loop,
-                        # so every symbol s terminates
-                        # so production p terminates.
                         p_terminates = True
 
                     if p_terminates:
-                        # symbol n terminates!
                         if not terminates[n]:
                             terminates[n] = True
                             some_change = True
-                        # Don't need to consider any more productions for this n.
                         break
 
             if not some_change:
@@ -598,21 +399,12 @@ class Grammar(object):
         for (s, term) in terminates.items():
             if not term:
                 if s not in self.Prodnames and s not in self.Terminals and s != 'error':
-                    # s is used-but-not-defined, and we've already warned of that,
-                    # so it would be overkill to say that it's also non-terminating.
                     pass
                 else:
                     infinite.append(s)
 
         return infinite
 
-    # -----------------------------------------------------------------------------
-    # undefined_symbols()
-    #
-    # Find all symbols that were used the grammar, but not defined as tokens or
-    # grammar rules.  Returns a list of tuples (sym, prod) where sym in the symbol
-    # and prod is the production where the symbol was used.
-    # -----------------------------------------------------------------------------
     def undefined_symbols(self):
         result = []
         for p in self.Productions:
@@ -624,12 +416,6 @@ class Grammar(object):
                     result.append((s, p))
         return result
 
-    # -----------------------------------------------------------------------------
-    # unused_terminals()
-    #
-    # Find all terminals that were defined, but not used by the grammar.  Returns
-    # a list of all symbols.
-    # -----------------------------------------------------------------------------
     def unused_terminals(self):
         unused_tok = []
         for s, v in self.Terminals.items():
@@ -637,13 +423,6 @@ class Grammar(object):
                 unused_tok.append(s)
 
         return unused_tok
-
-    # ------------------------------------------------------------------------------
-    # unused_rules()
-    #
-    # Find all grammar rules that were defined,  but not used (maybe not reachable)
-    # Returns a list of productions.
-    # ------------------------------------------------------------------------------
 
     def unused_rules(self):
         unused_prod = []
@@ -653,15 +432,6 @@ class Grammar(object):
                 unused_prod.append(p)
         return unused_prod
 
-    # -----------------------------------------------------------------------------
-    # unused_precedence()
-    #
-    # Returns a list of tuples (term,precedence) corresponding to precedence
-    # rules that were never used by the grammar.  term is the name of the terminal
-    # on which precedence was applied and precedence is a string such as 'left' or
-    # 'right' corresponding to the type of precedence.
-    # -----------------------------------------------------------------------------
-
     def unused_precedence(self):
         unused = []
         for termname in self.Precedence:
@@ -670,22 +440,12 @@ class Grammar(object):
 
         return unused
 
-    # -------------------------------------------------------------------------
-    # _first()
-    #
-    # Compute the value of FIRST1(beta) where beta is a tuple of symbols.
-    #
-    # During execution of compute_first1, the result may be incomplete.
-    # Afterward (e.g., when called from compute_follow()), it will be complete.
-    # -------------------------------------------------------------------------
     def _first(self, beta):
 
-        # We are computing First(x1,x2,x3,...,xn)
         result = []
         for x in beta:
             x_produces_empty = False
 
-            # Add all the non-<empty> symbols of First[x] to the result.
             for f in self.First[x]:
                 if f == '<empty>':
                     x_produces_empty = True
@@ -694,42 +454,27 @@ class Grammar(object):
                         result.append(f)
 
             if x_produces_empty:
-                # We have to consider the next x in beta,
-                # i.e. stay in the loop.
                 pass
             else:
-                # We don't have to consider any further symbols in beta.
                 break
         else:
-            # There was no 'break' from the loop,
-            # so x_produces_empty was true for all x in beta,
-            # so beta produces empty as well.
             result.append('<empty>')
 
         return result
 
-    # -------------------------------------------------------------------------
-    # compute_first()
-    #
-    # Compute the value of FIRST1(X) for all symbols
-    # -------------------------------------------------------------------------
     def compute_first(self):
         if self.First:
             return self.First
 
-        # Terminals:
         for t in self.Terminals:
             self.First[t] = [t]
 
         self.First['$end'] = ['$end']
 
-        # Nonterminals:
 
-        # Initialize to the empty set:
         for n in self.Nonterminals:
             self.First[n] = []
 
-        # Then propagate symbols until no change:
         while True:
             some_change = False
             for n in self.Nonterminals:
@@ -743,23 +488,13 @@ class Grammar(object):
 
         return self.First
 
-    # ---------------------------------------------------------------------
-    # compute_follow()
-    #
-    # Computes all of the follow sets for every non-terminal symbol.  The
-    # follow set is the set of all symbols that might follow a given
-    # non-terminal.  See the Dragon book, 2nd Ed. p. 189.
-    # ---------------------------------------------------------------------
     def compute_follow(self, start=None):
-        # If already computed, return the result
         if self.Follow:
             return self.Follow
 
-        # If first sets not computed yet, do that first.
         if not self.First:
             self.compute_first()
 
-        # Add '$end' to the follow list of the start symbol
         for k in self.Nonterminals:
             self.Follow[k] = []
 
@@ -794,21 +529,6 @@ class Grammar(object):
         return self.Follow
 
 
-    # -----------------------------------------------------------------------------
-    # build_lritems()
-    #
-    # This function walks the list of productions and builds a complete set of the
-    # LR items.  The LR items are stored in two ways:  First, they are uniquely
-    # numbered and placed in the list _lritems.  Second, a linked list of LR items
-    # is built for each production.  For example:
-    #
-    #   E -> E PLUS E
-    #
-    # Creates the list
-    #
-    #  [E -> . E PLUS E, E -> E . PLUS E, E -> E PLUS . E, E -> E PLUS E . ]
-    # -----------------------------------------------------------------------------
-
     def build_lritems(self):
         for p in self.Productions:
             lastlri = p
@@ -819,7 +539,6 @@ class Grammar(object):
                     lri = None
                 else:
                     lri = LRItem(p, i)
-                    # Precompute the list of productions immediately following
                     try:
                         lri.lr_after = self.Prodnames[lri.prod[i+1]]
                     except (IndexError, KeyError):
@@ -837,11 +556,6 @@ class Grammar(object):
                 i += 1
             p.lr_items = lr_items
 
-
-    # ----------------------------------------------------------------------
-    # Debugging output.  Printing the grammar will produce a detailed
-    # description along with some diagnostics.
-    # ----------------------------------------------------------------------
     def __str__(self):
         out = []
         out.append('Grammar:\n')
@@ -865,29 +579,6 @@ class Grammar(object):
         out.append('')
         return '\n'.join(out)
 
-# -----------------------------------------------------------------------------
-#                           === LR Generator ===
-#
-# The following classes and functions are used to generate LR parsing tables on
-# a grammar.
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------------------------------------
-# digraph()
-# traverse()
-#
-# The following two functions are used to compute set valued functions
-# of the form:
-#
-#     F(x) = F'(x) U U{F(y) | x R y}
-#
-# This is used to compute the values of Read() sets as well as FOLLOW sets
-# in LALR(1) generation.
-#
-# Inputs:  X    - An input set
-#          R    - A relation
-#          FP   - Set-valued function
-# ------------------------------------------------------------------------------
 
 def digraph(X, R, FP):
     N = {}
@@ -904,9 +595,9 @@ def traverse(x, N, stack, F, X, R, FP):
     stack.append(x)
     d = len(stack)
     N[x] = d
-    F[x] = FP(x)             # F(X) <- F'(x)
+    F[x] = FP(x)             
 
-    rel = R(x)               # Get y's related to x
+    rel = R(x)               
     for y in rel:
         if N[y] == 0:
             traverse(y, N, stack, F, X, R, FP)
@@ -926,26 +617,18 @@ def traverse(x, N, stack, F, X, R, FP):
 class LALRError(YaccError):
     pass
 
-# -----------------------------------------------------------------------------
-#                             == LRGeneratedTable ==
-#
-# This class implements the LR table generation algorithm.  There are no
-# public methods except for write()
-# -----------------------------------------------------------------------------
 
 class LRTable(object):
     def __init__(self, grammar):
         self.grammar = grammar
 
-        # Internal attributes
-        self.lr_action     = {}        # Action table
-        self.lr_goto       = {}        # Goto table
-        self.lr_productions  = grammar.Productions    # Copy of grammar Production array
-        self.lr_goto_cache = {}        # Cache of computed gotos
-        self.lr0_cidhash   = {}        # Cache of closures
-        self._add_count    = 0         # Internal counter used to detect cycles
+        self.lr_action     = {}        
+        self.lr_goto       = {}        
+        self.lr_productions  = grammar.Productions    
+        self.lr_goto_cache = {}        
+        self.lr0_cidhash   = {}        
+        self._add_count    = 0         
 
-        # Diagonistic information filled in by the table generator
         self.state_descriptions = OrderedDict()
         self.sr_conflict   = 0
         self.rr_conflict   = 0
@@ -954,31 +637,20 @@ class LRTable(object):
         self.sr_conflicts  = []
         self.rr_conflicts  = []
 
-        # Build the tables
         self.grammar.build_lritems()
         self.grammar.compute_first()
         self.grammar.compute_follow()
         self.lr_parse_table()
 
-        # Build default states
-        # This identifies parser states where there is only one possible reduction action.
-        # For such states, the parser can make a choose to make a rule reduction without consuming
-        # the next look-ahead token.  This delayed invocation of the tokenizer can be useful in
-        # certain kinds of advanced parsing situations where the lexer and parser interact with
-        # each other or change states (i.e., manipulation of scope, lexer states, etc.).
-        #
-        # See:  http://www.gnu.org/software/bison/manual/html_node/Default-Reductions.html#Default-Reductions
         self.defaulted_states = {}
         for state, actions in self.lr_action.items():
             rules = list(actions.values())
             if len(rules) == 1 and rules[0] < 0:
                 self.defaulted_states[state] = rules[0]
 
-    # Compute the LR(0) closure operation on I, where I is a set of LR(0) items.
     def lr0_closure(self, I):
         self._add_count += 1
 
-        # Add everything in I to J
         J = I[:]
         didadd = True
         while didadd:
@@ -994,21 +666,12 @@ class LRTable(object):
 
         return J
 
-    # Compute the LR(0) goto function goto(I,X) where I is a set
-    # of LR(0) items and X is a grammar symbol.   This function is written
-    # in a way that guarantees uniqueness of the generated goto sets
-    # (i.e. the same goto set will never be returned as two different Python
-    # objects).  With uniqueness, we can later do fast set comparisons using
-    # id(obj) instead of element-wise comparison.
-
     def lr0_goto(self, I, x):
-        # First we look for a previously cached entry
         g = self.lr_goto_cache.get((id(I), x))
         if g:
             return g
 
-        # Now we generate the goto set in a way that guarantees uniqueness
-        # of the result
+
 
         s = self.lr_goto_cache.get(x)
         if not s:
@@ -1035,7 +698,6 @@ class LRTable(object):
         self.lr_goto_cache[(id(I), x)] = g
         return g
 
-    # Compute the LR(0) sets of item function
     def lr0_items(self):
         C = [self.lr0_closure([self.grammar.Productions[0].lr_next])]
         i = 0
@@ -1043,13 +705,11 @@ class LRTable(object):
             self.lr0_cidhash[id(I)] = i
             i += 1
 
-        # Loop over the items in C and each grammar symbols
         i = 0
         while i < len(C):
             I = C[i]
             i += 1
 
-            # Collect all of the symbols that could possibly be in the goto(I,X) sets
             asyms = {}
             for ii in I:
                 for s in ii.usyms:
@@ -1063,34 +723,6 @@ class LRTable(object):
                 C.append(g)
 
         return C
-
-    # -----------------------------------------------------------------------------
-    #                       ==== LALR(1) Parsing ====
-    #
-    # LALR(1) parsing is almost exactly the same as SLR except that instead of
-    # relying upon Follow() sets when performing reductions, a more selective
-    # lookahead set that incorporates the state of the LR(0) machine is utilized.
-    # Thus, we mainly just have to focus on calculating the lookahead sets.
-    #
-    # The method used here is due to DeRemer and Pennelo (1982).
-    #
-    # DeRemer, F. L., and T. J. Pennelo: "Efficient Computation of LALR(1)
-    #     Lookahead Sets", ACM Transactions on Programming Languages and Systems,
-    #     Vol. 4, No. 4, Oct. 1982, pp. 615-649
-    #
-    # Further details can also be found in:
-    #
-    #  J. Tremblay and P. Sorenson, "The Theory and Practice of Compiler Writing",
-    #      McGraw-Hill Book Company, (1985).
-    #
-    # -----------------------------------------------------------------------------
-
-    # -----------------------------------------------------------------------------
-    # compute_nullable_nonterminals()
-    #
-    # Creates a dictionary containing all of the non-terminals that might produce
-    # an empty production.
-    # -----------------------------------------------------------------------------
 
     def compute_nullable_nonterminals(self):
         nullable = set()
@@ -1110,17 +742,6 @@ class LRTable(object):
             num_nullable = len(nullable)
         return nullable
 
-    # -----------------------------------------------------------------------------
-    # find_nonterminal_trans(C)
-    #
-    # Given a set of LR(0) items, this functions finds all of the non-terminal
-    # transitions.    These are transitions in which a dot appears immediately before
-    # a non-terminal.   Returns a list of tuples of the form (state,N) where state
-    # is the state number and N is the nonterminal symbol.
-    #
-    # The input C is the set of LR(0) items.
-    # -----------------------------------------------------------------------------
-
     def find_nonterminal_transitions(self, C):
         trans = []
         for stateno, state in enumerate(C):
@@ -1131,15 +752,6 @@ class LRTable(object):
                         if t not in trans:
                             trans.append(t)
         return trans
-
-    # -----------------------------------------------------------------------------
-    # dr_relation()
-    #
-    # Computes the DR(p,A) relationships for non-terminal transitions.  The input
-    # is a tuple (state,N) where state is a number and N is a nonterminal symbol.
-    #
-    # Returns a list of terminals.
-    # -----------------------------------------------------------------------------
 
     def dr_relation(self, C, trans, nullable):
         dr_set = {}
@@ -1154,20 +766,12 @@ class LRTable(object):
                     if a not in terms:
                         terms.append(a)
 
-        # This extra bit is to handle the start state
         if state == 0 and N == self.grammar.Productions[0].prod[0]:
             terms.append('$end')
 
         return terms
 
-    # -----------------------------------------------------------------------------
-    # reads_relation()
-    #
-    # Computes the READS() relation (p,A) READS (t,C).
-    # -----------------------------------------------------------------------------
-
     def reads_relation(self, C, trans, empty):
-        # Look for empty transitions
         rel = []
         state, N = trans
 
@@ -1181,44 +785,14 @@ class LRTable(object):
 
         return rel
 
-    # -----------------------------------------------------------------------------
-    # compute_lookback_includes()
-    #
-    # Determines the lookback and includes relations
-    #
-    # LOOKBACK:
-    #
-    # This relation is determined by running the LR(0) state machine forward.
-    # For example, starting with a production "N : . A B C", we run it forward
-    # to obtain "N : A B C ."   We then build a relationship between this final
-    # state and the starting state.   These relationships are stored in a dictionary
-    # lookdict.
-    #
-    # INCLUDES:
-    #
-    # Computes the INCLUDE() relation (p,A) INCLUDES (p',B).
-    #
-    # This relation is used to determine non-terminal transitions that occur
-    # inside of other non-terminal transition states.   (p,A) INCLUDES (p', B)
-    # if the following holds:
-    #
-    #       B -> LAT, where T -> epsilon and p' -L-> p
-    #
-    # L is essentially a prefix (which may be empty), T is a suffix that must be
-    # able to derive an empty string.  State p' must lead to state p with the string L.
-    #
-    # -----------------------------------------------------------------------------
-
     def compute_lookback_includes(self, C, trans, nullable):
-        lookdict = {}          # Dictionary of lookback relations
-        includedict = {}       # Dictionary of include relations
+        lookdict = {}          
+        includedict = {}       
 
-        # Make a dictionary of non-terminal transitions
         dtrans = {}
         for t in trans:
             dtrans[t] = 1
 
-        # Loop over all transitions and compute lookbacks and includes
         for state, N in trans:
             lookb = []
             includes = []
@@ -1226,8 +800,6 @@ class LRTable(object):
                 if p.name != N:
                     continue
 
-                # Okay, we have a name match.  We now follow the production all the way
-                # through the state machine until we get the . on the right hand side
 
                 lr_index = p.lr_index
                 j = state
@@ -1235,11 +807,8 @@ class LRTable(object):
                     lr_index = lr_index + 1
                     t = p.prod[lr_index]
 
-                    # Check to see if this symbol and state are a non-terminal transition
                     if (j, t) in dtrans:
-                        # Yes.  Okay, there is some chance that this is an includes relation
-                        # the only way to know for certain is whether the rest of the
-                        # production derives empty
+
 
                         li = lr_index + 1
                         while li < p.len:
@@ -1249,20 +818,17 @@ class LRTable(object):
                                 break
                             li = li + 1
                         else:
-                            # Appears to be a relation between (j,t) and (state,N)
                             includes.append((j, t))
 
                     g = self.lr0_goto(C[j], t)               # Go to next set
                     j = self.lr0_cidhash.get(id(g), -1)      # Go to next state
 
-                # When we get here, j is the final state, now we have to locate the production
                 for r in C[j]:
                     if r.name != p.name:
                         continue
                     if r.len != p.len:
                         continue
                     i = 0
-                    # This look is comparing a production ". A B C" with "A B C ."
                     while i < r.lr_index:
                         if r.prod[i] != p.prod[i+1]:
                             break
@@ -1277,57 +843,17 @@ class LRTable(object):
 
         return lookdict, includedict
 
-    # -----------------------------------------------------------------------------
-    # compute_read_sets()
-    #
-    # Given a set of LR(0) items, this function computes the read sets.
-    #
-    # Inputs:  C        =  Set of LR(0) items
-    #          ntrans   = Set of nonterminal transitions
-    #          nullable = Set of empty transitions
-    #
-    # Returns a set containing the read sets
-    # -----------------------------------------------------------------------------
-
     def compute_read_sets(self, C, ntrans, nullable):
         FP = lambda x: self.dr_relation(C, x, nullable)
         R =  lambda x: self.reads_relation(C, x, nullable)
         F = digraph(ntrans, R, FP)
         return F
 
-    # -----------------------------------------------------------------------------
-    # compute_follow_sets()
-    #
-    # Given a set of LR(0) items, a set of non-terminal transitions, a readset,
-    # and an include set, this function computes the follow sets
-    #
-    # Follow(p,A) = Read(p,A) U U {Follow(p',B) | (p,A) INCLUDES (p',B)}
-    #
-    # Inputs:
-    #            ntrans     = Set of nonterminal transitions
-    #            readsets   = Readset (previously computed)
-    #            inclsets   = Include sets (previously computed)
-    #
-    # Returns a set containing the follow sets
-    # -----------------------------------------------------------------------------
-
     def compute_follow_sets(self, ntrans, readsets, inclsets):
         FP = lambda x: readsets[x]
         R  = lambda x: inclsets.get(x, [])
         F = digraph(ntrans, R, FP)
         return F
-
-    # -----------------------------------------------------------------------------
-    # add_lookaheads()
-    #
-    # Attaches the lookahead symbols to grammar rules.
-    #
-    # Inputs:    lookbacks         -  Set of lookback relations
-    #            followset         -  Computed follow set
-    #
-    # This function directly attaches the lookaheads to productions contained
-    # in the lookbacks set
-    # -----------------------------------------------------------------------------
 
     def add_lookaheads(self, lookbacks, followset):
         for trans, lb in lookbacks.items():
@@ -1340,56 +866,34 @@ class LRTable(object):
                     if a not in p.lookaheads[state]:
                         p.lookaheads[state].append(a)
 
-    # -----------------------------------------------------------------------------
-    # add_lalr_lookaheads()
-    #
-    # This function does all of the work of adding lookahead information for use
-    # with LALR parsing
-    # -----------------------------------------------------------------------------
-
     def add_lalr_lookaheads(self, C):
-        # Determine all of the nullable nonterminals
         nullable = self.compute_nullable_nonterminals()
 
-        # Find all non-terminal transitions
         trans = self.find_nonterminal_transitions(C)
 
-        # Compute read sets
         readsets = self.compute_read_sets(C, trans, nullable)
 
-        # Compute lookback/includes relations
         lookd, included = self.compute_lookback_includes(C, trans, nullable)
 
-        # Compute LALR FOLLOW sets
         followsets = self.compute_follow_sets(trans, readsets, included)
 
-        # Add all of the lookaheads
         self.add_lookaheads(lookd, followsets)
 
-    # -----------------------------------------------------------------------------
-    # lr_parse_table()
-    #
-    # This function constructs the final LALR parse table.  Touch this code and die.
-    # -----------------------------------------------------------------------------
     def lr_parse_table(self):
         Productions = self.grammar.Productions
         Precedence  = self.grammar.Precedence
-        goto   = self.lr_goto         # Goto array
-        action = self.lr_action       # Action array
+        goto   = self.lr_goto         
+        action = self.lr_action       
 
-        actionp = {}                  # Action production array (temporary)
+        actionp = {}                  
 
-        # Step 1: Construct C = { I0, I1, ... IN}, collection of LR(0) items
-        # This determines the number of states
 
         C = self.lr0_items()
         self.add_lalr_lookaheads(C)
 
-        # Build the parser table, state by state
         for st, I in enumerate(C):
             descrip = []
-            # Loop over each production in I
-            actlist = []              # List of actions
+            actlist = []              
             st_action  = {}
             st_actionp = {}
             st_goto    = {}
@@ -1401,30 +905,21 @@ class LRTable(object):
             for p in I:
                     if p.len == p.lr_index + 1:
                         if p.name == "S'":
-                            # Start symbol. Accept!
                             st_action['$end'] = 0
                             st_actionp['$end'] = p
                         else:
-                            # We are at the end of a production.  Reduce!
                             laheads = p.lookaheads[st]
                             for a in laheads:
                                 actlist.append((a, p, f'reduce using rule {p.number} ({p})'))
                                 r = st_action.get(a)
                                 if r is not None:
-                                    # Have a shift/reduce or reduce/reduce conflict
                                     if r > 0:
-                                        # Need to decide on shift or reduce here
-                                        # By default we favor shifting. Need to add
-                                        # some precedence rules here.
 
-                                        # Shift precedence comes from the token
                                         sprec, slevel = Precedence.get(a, ('right', 0))
 
-                                        # Reduce precedence comes from rule being reduced (p)
                                         rprec, rlevel = Productions[p.number].prec
 
                                         if (slevel < rlevel) or ((slevel == rlevel) and (rprec == 'left')):
-                                            # We really need to reduce here.
                                             st_action[a] = -p.number
                                             st_actionp[a] = p
                                             if not slevel and not rlevel:
@@ -1434,13 +929,10 @@ class LRTable(object):
                                         elif (slevel == rlevel) and (rprec == 'nonassoc'):
                                             st_action[a] = None
                                         else:
-                                            # Hmmm. Guess we'll keep the shift
                                             if not rlevel:
                                                 descrip.append(f'  ! shift/reduce conflict for {a} resolved as shift')
                                                 self.sr_conflicts.append((st, a, 'shift'))
                                     elif r <= 0:
-                                        # Reduce/reduce conflict.   In this case, we favor the rule
-                                        # that was defined first in the grammar file
                                         oldp = Productions[-r]
                                         pp = Productions[p.number]
                                         if oldp.line > pp.line:
@@ -1462,28 +954,21 @@ class LRTable(object):
                                     Productions[p.number].reduced += 1
                     else:
                         i = p.lr_index
-                        a = p.prod[i+1]       # Get symbol right after the "."
+                        a = p.prod[i+1]      
                         if a in self.grammar.Terminals:
                             g = self.lr0_goto(I, a)
                             j = self.lr0_cidhash.get(id(g), -1)
                             if j >= 0:
-                                # We are in a shift state
                                 actlist.append((a, p, f'shift and go to state {j}'))
                                 r = st_action.get(a)
                                 if r is not None:
-                                    # Whoa have a shift/reduce or shift/shift conflict
                                     if r > 0:
                                         if r != j:
                                             raise LALRError(f'Shift/shift conflict in state {st}')
                                     elif r <= 0:
-                                        # Do a precedence check.
-                                        #   -  if precedence of reduce rule is higher, we reduce.
-                                        #   -  if precedence of reduce is same and left assoc, we reduce.
-                                        #   -  otherwise we shift
                                         rprec, rlevel = Productions[st_actionp[a].number].prec
                                         sprec, slevel = Precedence.get(a, ('right', 0))
                                         if (slevel > rlevel) or ((slevel == rlevel) and (rprec == 'right')):
-                                            # We decide to shift here... highest precedence to shift
                                             Productions[st_actionp[a].number].reduced -= 1
                                             st_action[a] = j
                                             st_actionp[a] = p
@@ -1493,7 +978,6 @@ class LRTable(object):
                                         elif (slevel == rlevel) and (rprec == 'nonassoc'):
                                             st_action[a] = None
                                         else:
-                                            # Hmmm. Guess we'll keep the reduce
                                             if not slevel and not rlevel:
                                                 descrip.append(f'  ! shift/reduce conflict for {a} resolved as reduce')
                                                 self.sr_conflicts.append((st, a, 'reduce'))
@@ -1504,7 +988,6 @@ class LRTable(object):
                                     st_action[a] = j
                                     st_actionp[a] = p
 
-            # Print the actions associated with each terminal
             _actprint = {}
             for a, p, m in actlist:
                 if a in st_action:
@@ -1513,7 +996,6 @@ class LRTable(object):
                         _actprint[(a, m)] = 1
             descrip.append('')
 
-            # Construct the goto table for this state
             nkeys = {}
             for ii in I:
                 for s in ii.usyms:
@@ -1531,10 +1013,6 @@ class LRTable(object):
             goto[st] = st_goto
             self.state_descriptions[st] = '\n'.join(descrip)
 
-    # ----------------------------------------------------------------------
-    # Debugging output.   Printing the LRTable object will produce a listing
-    # of all of the states, conflicts, and other details.
-    # ----------------------------------------------------------------------
     def __str__(self):
         out = []
         for descrip in self.state_descriptions.values():
@@ -1562,7 +1040,6 @@ class LRTable(object):
 
         return '\n'.join(out)
 
-# Collect grammar rules from a function
 def _collect_grammar_rules(func):
     grammar = []
     while func:
@@ -1594,7 +1071,6 @@ def _collect_grammar_rules(func):
 
     return grammar
 
-# Replace EBNF repetition
 def _replace_ebnf_repeat(syms):
     syms = list(syms)
     first = syms.index('{')
@@ -1611,7 +1087,6 @@ def _replace_ebnf_optional(syms):
     syms[first:end+1] = [symname]
     return syms, prods
                 
-# Generate grammar rules for repeated items
 _gencount = 0
 
 def _unique_names(names):
@@ -1627,32 +1102,10 @@ def _unique_names(names):
             indices[name] += 1
     return newnames
 
-# Dictionary mapping name aliases generated by EBNF rules.
 
 _name_aliases = { }
 
 def _generate_repeat_rules(symbols):
-    '''
-    Symbols is a list of grammar symbols [ symbols ]. This
-    generates code corresponding to these grammar construction:
-  
-       @('repeat : many')
-       def repeat(self, p):
-           return p.many
-
-       @('repeat :')
-       def repeat(self, p):
-           return []
-
-       @('many : many symbols')
-       def many(self, p):
-           p.many.append(symbols)
-           return p.many
-
-       @('many : symbols')
-       def many(self, p):
-           return [ p.symbols ]
-    '''
     global _gencount
     _gencount += 1
     name = f'_{_gencount}_repeat'
@@ -1696,18 +1149,6 @@ def _generate_repeat_rules(symbols):
     return name, productions
 
 def _generate_optional_rules(symbols):
-    '''
-    Symbols is a list of grammar symbols [ symbols ]. This
-    generates code corresponding to these grammar construction:
-  
-       @('optional : symbols')
-       def optional(self, p):
-           return p.symbols
-
-       @('optional :')
-       def optional(self, p):
-           return None
-    '''
     global _gencount
     _gencount += 1
     name = f'_{_gencount}_optional'
@@ -1733,9 +1174,6 @@ def _generate_optional_rules(symbols):
     return name, productions
     
 class ParserMetaDict(dict):
-    '''
-    Dictionary that allows decorated grammar rule functions to be overloaded
-    '''
     def __setitem__(self, key, value):
         if key in self and callable(value) and hasattr(value, 'rules'):
             value.next_func = self[key]
@@ -1760,12 +1198,6 @@ class ParserMeta(type):
     @classmethod
     def __prepare__(meta, *args, **kwargs):
         d = ParserMetaDict()
-#        def _(rule, *extra):
-#            rules = [rule, *extra]
-#            def decorate(func):
-#                func.rules = [ *getattr(func, 'rules', []), *rules[::-1] ]
-#                return func
-#            return decorate
         d['_'] = _decorator
         return d
 
@@ -1776,10 +1208,8 @@ class ParserMeta(type):
         return cls
 
 class Parser(metaclass=ParserMeta):
-    # Logging object where debugging/diagnostic messages are sent
     log = SlyLogger(sys.stderr)     
 
-    # Debugging filename where parsetab.out data can be written
     debugfile = None
 
     @classmethod
@@ -1830,9 +1260,6 @@ class Parser(metaclass=ParserMeta):
 
     @classmethod
     def __validate_specification(cls):
-        '''
-        Validate various parts of the grammar specification
-        '''
         if not cls.__validate_tokens():
             return False
         if not cls.__validate_precedence():
@@ -1841,12 +1268,8 @@ class Parser(metaclass=ParserMeta):
 
     @classmethod
     def __build_grammar(cls, rules):
-        '''
-        Build the grammar from the grammar rules
-        '''
         grammar_rules = []
         errors = ''
-        # Check for non-empty symbols
         if not rules:
             raise YaccError('No grammar rules are defined')
 
@@ -1916,13 +1339,9 @@ class Parser(metaclass=ParserMeta):
 
     @classmethod
     def __build_lrtables(cls):
-        '''
-        Build the LR Parsing tables from the grammar
-        '''
         lrtable = LRTable(cls._grammar)
         num_sr = len(lrtable.sr_conflicts)
 
-        # Report shift/reduce and reduce/reduce conflicts
         if num_sr != getattr(cls, 'expected_shift_reduce', None):
             if num_sr == 1:
                 cls.log.warning('1 shift/reduce conflict')
@@ -1941,34 +1360,22 @@ class Parser(metaclass=ParserMeta):
 
     @classmethod
     def __collect_rules(cls, definitions):
-        '''
-        Collect all of the tagged grammar rules
-        '''
         rules = [ (name, value) for name, value in definitions
                   if callable(value) and hasattr(value, 'rules') ]
         return rules
 
-    # ----------------------------------------------------------------------
-    # Build the LALR(1) tables. definitions is a list of (name, item) tuples
-    # of all definitions provided in the class, listed in the order in which
-    # they were defined.  This method is triggered by a metaclass.
-    # ----------------------------------------------------------------------
     @classmethod
     def _build(cls, definitions):
         if vars(cls).get('_build', False):
             return
 
-        # Collect all of the grammar rules from the class definition
         rules = cls.__collect_rules(definitions)
 
-        # Validate other parts of the grammar specification
         if not cls.__validate_specification():
             raise YaccError('Invalid parser specification')
 
-        # Build the underlying grammar object
         cls.__build_grammar(rules)
 
-        # Build the LR tables
         if not cls.__build_lrtables():
             raise YaccError('Can\'t build parsing tables')
 
@@ -1979,32 +1386,20 @@ class Parser(metaclass=ParserMeta):
                 f.write(str(cls._lrtable))
             cls.log.info('Parser debugging for %s written to %s', cls.__qualname__, cls.debugfile)
 
-    # ----------------------------------------------------------------------
-    # Parsing Support.  This is the parsing runtime that users use to
-    # ----------------------------------------------------------------------
     def error(self, token):
-        '''
-        Default error handling function.  This may be subclassed.
-        '''
         if token:
             lineno = getattr(token, 'lineno', 0)
             if lineno:
-                sys.stderr.write(f'sly: Syntax error at line {lineno}, token={token.type}\n')
+                sys.stderr.write(f'Error : Syntax error at line {lineno}, token={token.type}\n')
             else:
-                sys.stderr.write(f'sly: Syntax error, token={token.type}')
+                sys.stderr.write(f'Error  : Syntax error, token={token.type}')
         else:
-            sys.stderr.write('sly: Parse error in input. EOF\n')
+            sys.stderr.write('Error : Parse error in input. EOF\n')
  
     def errok(self):
-        '''
-        Clear the error status
-        '''
         self.errorok = True
 
     def restart(self):
-        '''
-        Force the parser to restart from a fresh state. Clears the statestack
-        '''
         del self.statestack[:]
         del self.symstack[:]
         sym = YaccSymbol()
@@ -2014,41 +1409,33 @@ class Parser(metaclass=ParserMeta):
         self.state = 0
 
     def parse(self, tokens):
-        '''
-        Parse the given input tokens.
-        '''
-        lookahead = None                                  # Current lookahead symbol
-        lookaheadstack = []                               # Stack of lookahead symbols
-        actions = self._lrtable.lr_action                 # Local reference to action table (to avoid lookup on self.)
-        goto    = self._lrtable.lr_goto                   # Local reference to goto table (to avoid lookup on self.)
-        prod    = self._grammar.Productions               # Local reference to production list (to avoid lookup on self.)
-        defaulted_states = self._lrtable.defaulted_states # Local reference to defaulted states
-        pslice  = YaccProduction(None)                    # Production object passed to grammar rules
-        errorcount = 0                                    # Used during error recovery
+        lookahead = None                                  
+        lookaheadstack = []                               
+        actions = self._lrtable.lr_action                 
+        goto    = self._lrtable.lr_goto                   
+        prod    = self._grammar.Productions               
+        defaulted_states = self._lrtable.defaulted_states 
+        pslice  = YaccProduction(None)                    
+        errorcount = 0                                    
 
-        # Set up the state and symbol stacks
         self.tokens = tokens
-        self.statestack = statestack = []                 # Stack of parsing states
-        self.symstack = symstack = []                     # Stack of grammar symbols
-        pslice._stack = symstack                           # Associate the stack with the production
+        self.statestack = statestack = []                 
+        self.symstack = symstack = []                     
+        pslice._stack = symstack                           
         self.restart()
 
-        errtoken   = None                                 # Err token
+        errtoken   = None                                 
         while True:
-            # Get the next symbol on the input.  If a lookahead symbol
-            # is already set, we just use that. Otherwise, we'll pull
-            # the next token off of the lookaheadstack or from the lexer
             if self.state not in defaulted_states:
                 if not lookahead:
                     if not lookaheadstack:
-                        lookahead = next(tokens, None)  # Get the next token
+                        lookahead = next(tokens, None)  
                     else:
                         lookahead = lookaheadstack.pop()
                     if not lookahead:
                         lookahead = YaccSymbol()
                         lookahead.type = '$end'
 
-                # Check the action table
                 ltype = lookahead.type
                 t = actions[self.state].get(ltype)
             else:
@@ -2056,26 +1443,22 @@ class Parser(metaclass=ParserMeta):
 
             if t is not None:
                 if t > 0:
-                    # shift a symbol on the stack
                     statestack.append(t)
                     self.state = t
 
                     symstack.append(lookahead)
                     lookahead = None
 
-                    # Decrease error count on successful shift
                     if errorcount:
                         errorcount -= 1
                     continue
 
                 if t < 0:
-                    # reduce a symbol on the stack, emit a production
                     self.production = p = prod[-t]
                     pname = p.name
                     plen  = p.len
                     pslice._namemap = p.namemap
 
-                    # Call the production function
                     pslice._slice = symstack[-plen:] if plen else []
 
                     sym = YaccSymbol()
@@ -2099,68 +1482,40 @@ class Parser(metaclass=ParserMeta):
                     return result
 
             if t is None:
-                # We have some kind of parsing error here.  To handle
-                # this, we are going to push the current token onto
-                # the tokenstack and replace it with an 'error' token.
-                # If there are any synchronization rules, they may
-                # catch it.
-                #
-                # In addition to pushing the error token, we call call
-                # the user defined error() function if this is the
-                # first syntax error.  This function is only called if
-                # errorcount == 0.
                 if errorcount == 0 or self.errorok:
                     errorcount = ERROR_COUNT
                     self.errorok = False
                     if lookahead.type == '$end':
-                        errtoken = None               # End of file!
+                        errtoken = None               
                     else:
                         errtoken = lookahead
 
                     tok = self.error(errtoken)
                     if tok:
-                        # User must have done some kind of panic
-                        # mode recovery on their own.  The
-                        # returned token is the next lookahead
                         lookahead = tok
                         self.errorok = True
                         continue
                     else:
-                        # If at EOF. We just return. Basically dead.
                         if not errtoken:
                             return
                 else:
-                    # Reset the error count.  Unsuccessful token shifted
                     errorcount = ERROR_COUNT
-
-                # case 1:  the statestack only has 1 entry on it.  If we're in this state, the
-                # entire parse has been rolled back and we're completely hosed.   The token is
-                # discarded and we just keep going.
 
                 if len(statestack) <= 1 and lookahead.type != '$end':
                     lookahead = None
                     self.state = 0
-                    # Nuke the lookahead stack
                     del lookaheadstack[:]
                     continue
 
-                # case 2: the statestack has a couple of entries on it, but we're
-                # at the end of the file. nuke the top entry and generate an error token
-
-                # Start nuking entries on the stack
                 if lookahead.type == '$end':
-                    # Whoa. We're really hosed here. Bail out
                     return
 
                 if lookahead.type != 'error':
                     sym = symstack[-1]
                     if sym.type == 'error':
-                        # Hmmm. Error is on top of stack, we'll just nuke input
-                        # symbol and continue
                         lookahead = None
                         continue
 
-                    # Create the error symbol for the first time and make it the new lookahead symbol
                     t = YaccSymbol()
                     t.type = 'error'
 
@@ -2176,6 +1531,4 @@ class Parser(metaclass=ParserMeta):
                     statestack.pop()
                     self.state = statestack[-1]
                 continue
-
-            # Call an error function here
-            raise RuntimeError('sly: internal parser error!!!\n')
+            raise RuntimeError('Error : internal parser error!!!\n')

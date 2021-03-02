@@ -32,9 +32,28 @@ class Parser(Parser):
       @_('struct_declare block_struct')
       def block_struct(self, p):
             return ('block_struct', p.struct_declare, *p.block_struct[1:])
+
+      @_('VAR NAME ASSIGN expr SEM')
+      def struct_declare(self, p):
+            return ('declare','equal1','auto', p.NAME, p.expr)
+      @_('CONST NAME ASSIGN expr SEM')
+      def struct_declare(self, p):
+            return ('declare','const', p.NAME, p.expr)
+            
       @_('VAR NAME COLON return_type SEM')
       def struct_declare(self, p):
-            return ('declare','no_equal',p.return_type, p.NAME)
+            return ('declare','no_equal',p.return_type, p.NAME) 
+      @_('VAR NAME COLON return_type ASSIGN expr SEM')
+      def struct_declare(self, p):
+            return ('declare','equal2',p.return_type, p.NAME,p.expr) 
+            
+      @_('VAR NAME COLON LBRCK return_type RBRCK SEM')
+      def struct_declare(self, p):
+            return ('declare_array','no_equal',p.return_type, p.NAME) 
+            
+      @_('VAR NAME COLON LBRCK return_type RBRCK ASSIGN expr SEM')
+      def struct_declare(self, p):
+            return ('declare_array','equal2',p.return_type, p.NAME,p.expr)
       #-----------------------------------
       @_('USE name SEM')
       def statement(self, p):
@@ -51,6 +70,9 @@ class Parser(Parser):
       def statement(self, p):
             return ('declare','equal1','auto', p.NAME, p.expr)
       @_('CONST NAME ASSIGN expr SEM')
+      def statement(self, p):
+            return ('declare','const', p.NAME, p.expr)
+      @_('LET NAME ASSIGN expr SEM')
       def statement(self, p):
             return ('declare','const', p.NAME, p.expr)
             
@@ -206,6 +228,9 @@ class Parser(Parser):
       @_('name')
       def expr(self, p):
             return ('var', p.name)
+      @_('NOT expr')
+      def expr(self, p):
+            return ('not', p.expr)
       @_('name LBRCK expr RBRCK')
       def expr(self, p):
             return ('var_index', p.name,p.expr)
@@ -227,6 +252,9 @@ class Parser(Parser):
       @_('expr DOT NAME')
       def expr(self, p):
             return ('.', p.expr,p.NAME)
+      @_('expr DOT name LBRCK expr RBRCK')
+      def expr(self, p):
+            return ('.2', p.expr0,p.name,p.expr1)
       @_('NUMBER DOT NUMBER')
       def float(self, p):
             return "{0}.{1}".format(p.NUMBER0,p.NUMBER1)
@@ -274,9 +302,19 @@ class Parser(Parser):
       @_('expr LESS expr')
       def condition(self, p):
             return ('less', p.expr0, p.expr1)
+      
+      @_('NOT expr')
+      def condition(self, p):
+            return ('not_cond', p.expr)
       @_('boolean')
       def condition(self, p):
             return ('bool_cond', p.boolean)
+      @_('condition AND condition')
+      def condition(self, p):
+            return ('and', p.condition0,p.condition1)
+      @_('condition OR condition')
+      def condition(self, p):
+            return ('or', p.condition0,p.condition1)
       #-----------------------------------------
       @_('param_t')
       def params(self, p):

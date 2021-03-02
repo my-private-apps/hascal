@@ -10,7 +10,7 @@ class Generator(object):
       src_pre_main = ""
       def __init__(self, env=None):
             #init standard types
-            self.types = ['int','float','bool','char','string','auto','File']
+            self.types = ['int','float','bool','char','string','auto','File','JSONValue']
 
             # init built-in variables and init variables list
             self.vars = ['argv','dup']
@@ -28,7 +28,8 @@ class Generator(object):
                           'isAlpha','isAlphaNum','isDigit','isUpper','isWhite','toLower','toUpper',
                           'ShellCommand','ExcuteCommand',
                           'isFile','isDir','rmdir','mkdir','getcwd','thisExePath','listdir',
-                          'split']
+                          'split',
+                          'parseJSON']
 
       def generate(self, tree,use=False):
             if self.test(tree):
@@ -50,11 +51,14 @@ class Generator(object):
                               if item[0] == node_name: return True
                               if has_node(item, node_name): return True
                   return False
-            for statement in tree[1:]:
-                  if has_node(statement, 'function'):
-                        HascalException("Error : You can't declere functions under another block")
-                        return False
-            return True
+            try :
+                  for statement in tree[1:]:
+                        if has_node(statement, 'function'):
+                              HascalException("Error : You can't declere functions under another block")
+                              return False
+                  return True
+            except :
+                  sys.exit(1)
       
       def exists_func(self,name):
             if name in self.funcs:
@@ -517,6 +521,12 @@ class Generator(object):
                   return "%s ^ %s" % (self.walk(node[1]), self.walk(node[2]))
             if node[0] == 'paren_expr':
                   return "(%s)" % (self.walk(node[1]))
+            if node[0] == 'not':
+                  return "!%s" % (self.walk(node[1]))
+            if node[0] == 'and':
+                  return "%s && %s" % (self.walk(node[1]),self.walk(node[2]))
+            if node[0] == 'or':
+                  return "%s || %s" % (self.walk(node[1]),self.walk(node[2]))
             # --------------end of operators-----------------  
 
             # ---------------conditions---------------------
@@ -543,6 +553,10 @@ class Generator(object):
             # <expr> < <expr>
             if node[0] == 'less':
                   return "%s < %s" % (self.walk(node[1]), self.walk(node[2]))
+
+            # not <expr>
+            if node[0] == 'not_cond':
+                  return "!%s" % (self.walk(node[1]))
 
             # true / false
             if node[0] == 'bool_cond':
@@ -597,6 +611,9 @@ class Generator(object):
             # <expr>.<name>
             if node[0] == '.':
                   return '%s.%s' % (self.walk(node[1]),node[2])
+            # <expr>.<name>
+            if node[0] == '.2':
+                  return '%s.%s[%s]' % (self.walk(node[1]),node[2],self.walk(node[3]))
             #--------------------------------------------
             if node[0] == 'string':
                   return '"%s"' % node[1]

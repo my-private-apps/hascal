@@ -1,0 +1,5 @@
+var isCar : bool = true ;
+isCar =  not isCar;
+if not isCar {
+    print(isCar);
+}
