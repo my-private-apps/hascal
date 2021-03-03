@@ -55,6 +55,7 @@ You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/m
 - adding multi-syntax
 - adding a library for electrical engineering
 - adding a library for create a simple web server
+- adding a simple web framework for similar to Django
 - adding a graphical user interface library
 - adding a tool for create android applications with hascal(Hascal Android Bootstrapper)
 - adding macOS support
