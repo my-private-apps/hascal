@@ -26,7 +26,7 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 - [x] Dlang on Back-End
 - [x] Native binaries with no dependency
 - [x] Garbage Collection
-- [x] Library Manager(`[hlm]`) written in Hascal
+- [x] Library Manager(`hlm`) written in Hascal
 - [x] Inspired by C, C#, Swift, TypeScript, JavaScript, Pascal
 
 ## Why use Hascal ?
