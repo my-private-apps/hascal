@@ -1,3 +1,9 @@
+# h_error.py
+#
+# The Hascal Programming Language
+# Copyright 2019-2021 Hascal Development Team,
+# all rights reserved.
+
 # this module is written by @pranavbaburaj
 class HascalException(object):
     def __init__(self, exception_message, exception_type="Exception",  line_number="[~]", details=""):

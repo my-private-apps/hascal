@@ -1,16 +1,25 @@
-from .h_lexer import Lexer
-from .h_parser import Parser
-from .h_compiler import Generator
-from .h_help import *
-from os.path import isfile
+# h_builder.py
+#
+# The Hascal Programming Language
+# Copyright 2019-2021 Hascal Development Team,
+# all rights reserved.
+
+from .h_lexer import Lexer # hascal lexer
+from .h_parser import Parser # hascal parser
+from .h_compiler import Generator # hascal to d compiler
+from .h_error import HascalException # hascal excpetion handling
+from .h_help import * # hascal compiler information
+
+from .colorama import init,Fore # colorama library for coloring console output
+
+from os.path import isfile 
 from subprocess import DEVNULL, STDOUT, check_call
 import sys
-from .colorama import init,Fore
 import os
+
 class HascalCompiler(object):
     def __init__(self,argv):
         init() # init colorama
-
         self.code = ""
         self.lexer = Lexer()
         self.parser = Parser()
@@ -35,17 +44,21 @@ class HascalCompiler(object):
             elif self.argv[1] == "-v" or self.argv[1] == "--version":
                 # show version
                 print(f"Hascal {HASCAL_COMPILER_VERSION} {sys.platform}")
+            elif (self.argv[1] == "js" or self.argv[1] == "-js" ) and argv[2] != None:
+                # compile to JavaScript
+                pass
             else :
+                # check file extension
                 if not self.argv[1].endswith(".has"):
                     # show file extension error 
-                    print(f"Error : The specified file is not a hascal(.has) file")
+                    HascalException(f"Error : The specified file is not a hascal(.has) file")
                 else :
                     try:
                         with open(argv[1]) as fin:
                             self.code = fin.read()
                         self.compile()
                     except FileNotFoundError :
-                        print("Error : File not found")
+                        HascalException(f"Error : File '{argv[1]}' not found")
         else:
             output_message = [f"Hascal Compiler {HASCAL_COMPILER_VERSION} {sys.platform}",
                                 "Copyright (c) 2019-2021 Hascal Development Team,",
@@ -59,13 +72,14 @@ class HascalCompiler(object):
                 print(msg)
             sys.exit()
 
+    # hascal to d compiler function
     def compile(self):
         tokens = self.lexer.tokenize(self.code)
         tree = self.parser.parse(tokens)
         output = self.generator.generate(tree)
         outname = self.argv[2] if len(self.argv) > 2 else "com.d"
 
-        # write output d code in a file
+        # write output js code in a file
         with open(outname, 'w') as fout:
             fout.write(output)
 
@@ -85,8 +99,7 @@ class HascalCompiler(object):
                 "\t2-functions arguements and types and length of arguments",
                 "\t3-modify consts",
                 "\tand more..."
-                "\nif you could not troubleshooting your code , create an issue in hascal github repository(github.com/hascal/hascal) ,we helps you "
+                f"\nif you could not troubleshooting your code , create an issue in hascal github repository({HASCAL_GITHUB_REPO}) ,we helps you "
             ]
             for msg in output_messages:
                 print(Fore.RED+msg)
-        
