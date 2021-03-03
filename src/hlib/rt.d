@@ -13,6 +13,7 @@ import std.datetime.systime;
 import std.process : executeShell,execute ,wait ;
 import std.array : split;
 import std.json;
+import std.system : OS;
 
 string ReadStr(){
 	try {
@@ -426,4 +427,34 @@ void ExcuteCommand(string com){
 	exit:
 		auto tmp = 0;
 		tmp++;
+}
+
+string SysPlatform(){
+	OS myOS;
+	switch(int(myOS)){
+        case 1 :
+            return "win32";
+        case 2 :
+            return "win64";
+        case 3 :
+            return "linux";
+        case 4 :
+            return "osx";
+        case 5 :
+            return "freebsd";
+        case 6 :
+            return "netbsd";
+        case 7 :
+            return "dragonFlyBSD";
+        case 8 :
+            return "solaris";
+        case 9 :
+            return "android";
+        case 10 :
+            return "otherPosix";
+        default : 
+            writeln("Runtime Error : cannot get sys platform");
+            break;
+    }
+    return "";
 }

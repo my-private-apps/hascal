@@ -35,7 +35,8 @@ class Generator(object):
                           'ShellCommand','ExcuteCommand',
                           'isFile','isDir','rmdir','mkdir','getcwd','thisExePath','listdir',
                           'split',
-                          'parseJSON']
+                          'parseJSON',
+                          'SysPlatform']
             # list of imported libraries
             self.imported = []
       def generate(self, tree,use=False):
