@@ -19,15 +19,15 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 [![Github all releases](https://img.shields.io/github/downloads/hascal/hascal/total.svg)](https://GitHub.com/hascal/hascal/releases/)
 
 ## Hascal Features:
-- [x] Cross Platform (Linux, Windows)
+- [x] Cross Platform (Linux, Windows and MacOS Soon) 
 - [x] Fast & Powerful
 - [x] C-Family Syntax
-- [x] Can be use in web development(can compiles to javascript)
+- [x] Can be use in web development(can compiles to javascript) **WIP**
 - [x] Dlang on Back-End
 - [x] Native binaries with no dependency
 - [x] Garbage Collection
-- [x] Package Manager(hlm) written in Hascal
-- [x] Inspired by C,C#,Swift,TypeScript,JavaScript,Pascal
+- [x] Hascal Library Manager(`hlm`) written in Hascal
+- [x] Inspired by C, C#, Swift, TypeScript, JavaScript, Pascal
 
 ## Why use Hascal ?
 
@@ -55,6 +55,8 @@ You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/m
 - adding multi-syntax
 - adding a library for electrical engineering
 - adding a library for create a simple web server
+- adding a simple web framework for similar to Django
+- adding a graphical user interface library
 - adding a tool for create android applications with hascal(Hascal Android Bootstrapper)
 - adding macOS support
 

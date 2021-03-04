@@ -1,3 +1,9 @@
+# h_compiler.py
+#
+# The Hascal Programming Language
+# Copyright 2019-2021 Hascal Development Team,
+# all rights reserved.
+
 from .h_error import HascalException
 from .h_lexer import Lexer
 from .h_parser import Parser
@@ -29,8 +35,10 @@ class Generator(object):
                           'ShellCommand','ExcuteCommand',
                           'isFile','isDir','rmdir','mkdir','getcwd','thisExePath','listdir',
                           'split',
-                          'parseJSON']
-
+                          'parseJSON',
+                          'SysPlatform']
+            # list of imported libraries
+            self.imported = []
       def generate(self, tree,use=False):
             if self.test(tree):
                   result = self.walk(tree)
@@ -276,50 +284,64 @@ class Generator(object):
             # use <lib_name> ;
             if node[0] == 'use':
                   if sys.platform.startswith('win32'):
-                        tmp = '.'.join(name for name in node[1])
-                        path = tmp.split('.')
-                        final_path = str(getenv('HPATH') + "\\hlib" + "\\")
+                        if node[1] in self.imported :
+                              pass
+                        else :
+                              tmp = '.'.join(name for name in node[1])
+                              path = tmp.split('.')
+                              final_path = str(getenv('HPATH') + "\\hlib" + "\\")
 
-                        ends_of_path = path[-1]
-                        for x in path[:-1]:
-                              final_path += x + "\\"
-                        final_path += ends_of_path + ".has"
+                              ends_of_path = path[-1]
+                              for x in path[:-1]:
+                                    final_path += x + "\\"
+                              final_path += ends_of_path + ".has"
 
-                        try:
-                              with open(final_path, 'r') as f:
-                                    parser = Parser()
-                                    tree = parser.parse(Lexer().tokenize(f.read()))
-                                    generator = Generator()
-                                    output_d = generator.generate(tree,True)
+                              try:
+                                    with open(final_path, 'r') as f:
+                                          parser = Parser()
+                                          tree = parser.parse(Lexer().tokenize(f.read()))
+                                          generator = Generator()
+                                          output_d = generator.generate(tree,True)
 
-                                    self.src_pre_main += '\n'+output_d+'\n'
-                                    self.funcs += generator.funcs
-                        except FileNotFoundError:
-                              HascalException(f"Error : cannot found '{tmp}' library. Are you missing a library ?")
+                                          self.imported.append(node[1])
+                                          self.imported += generator.imported
+                                          self.src_pre_main += '\n'+output_d+'\n'
+                                          self.funcs += generator.funcs
+                              except FileNotFoundError:
+                                    HascalException(f"Error : cannot found '{tmp}' library. Are you missing a library ?")
 
                   elif sys.platform.startswith('linux'):
-                        tmp = node[1]
-                        path = tmp.split('.')
-                        final_path = str(getenv('HPATH') + "\\hlib" + "\\")
+                        if node[1] in self.imported :
+                              pass
+                        else :
+                              tmp = '.'.join(name for name in node[1])
+                              path = tmp.split('.')
+                              final_path = str(getenv('HPATH') + "/hlib" + "/")
 
-                        ends_of_path = path[-1]
-                        for x in path[:-1]:
-                              final_path += x + "\\"
-                        final_path += ends_of_path + ".has"
+                              ends_of_path = path[-1]
+                              for x in path[:-1]:
+                                    final_path += x + "/"
+                              final_path += ends_of_path + ".has"
 
-                        try:
-                              with open(final_path, 'r') as f:
-                                    parser = Parser()
-                                    tree = parser.parse(Lexer().tokenize(f.read()))
-                                    output_d = Generator().generate(tree,True)
+                              try:
+                                    with open(final_path, 'r') as f:
+                                          parser = Parser()
+                                          tree = parser.parse(Lexer().tokenize(f.read()))
+                                          generator = Generator()
+                                          output_d = generator.generate(tree,True)
 
-                                    self.src_pre_main += '\n'+output_d+'\n'
-                        except FileNotFoundError:
-                              HascalException(f"Error : cannot found '{tmp}' library. Are you missing a library ?")
+                                          self.imported.append(node[1])
+                                          self.imported += generator.imported
+                                          self.src_pre_main += '\n'+output_d+'\n'
+                                          self.funcs += generator.funcs
+                              except FileNotFoundError:
+                                    HascalException(f"Error : cannot found '{tmp}' library. Are you missing a library ?")
             
             # local use <lib_name> ;
             if node[0] == 'use_local':
                   if sys.platform.startswith('win32'):
+                        if node[1] in self.imported :
+                              return
                         tmp = '.'.join(name for name in node[1])
                         path = tmp.split('.')
                         final_path = ""
@@ -336,28 +358,36 @@ class Generator(object):
                                     generator = Generator()
                                     output_d = generator.generate(tree,True)
 
+                                    self.imported.append(node[1])
+                                    self.imported += generator.imported
                                     self.src_pre_main += '\n'+output_d+'\n'
                                     self.funcs += generator.funcs
                         except FileNotFoundError:
                               HascalException(f"Error : cannot found '{tmp}' library. Are you missing a library ?")
 
                   elif sys.platform.startswith('linux'):
-                        tmp = node[1]
+                        if node[1] in self.imported :
+                              return
+                        tmp = '.'.join(name for name in node[1])
                         path = tmp.split('.')
                         final_path = ""
 
                         ends_of_path = path[-1]
                         for x in path[:-1]:
-                              final_path += x + "\\"
+                              final_path += x + "//"
                         final_path += ends_of_path + ".has"
 
                         try:
                               with open(final_path, 'r') as f:
                                     parser = Parser()
                                     tree = parser.parse(Lexer().tokenize(f.read()))
-                                    output_d = Generator().generate(tree,True)
+                                    generator = Generator()
+                                    output_d = generator.generate(tree,True)
 
+                                    self.imported.append(node[1])
+                                    self.imported += generator.imported
                                     self.src_pre_main += '\n'+output_d+'\n'
+                                    self.funcs += generator.funcs
                         except FileNotFoundError:
                               HascalException(f"Error : cannot found '{tmp}' library. Are you missing a library ?")
             #-----------------------------------------

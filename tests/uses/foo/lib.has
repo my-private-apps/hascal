@@ -1,0 +1,4 @@
+use log;
+function Hello(){
+    print("Hello");
+}

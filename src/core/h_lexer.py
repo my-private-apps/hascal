@@ -1,3 +1,9 @@
+# h_lexer.py
+#
+# The Hascal Programming Language
+# Copyright 2019-2021 Hascal Development Team,
+# all rights reserved.
+
 from .sly import Lexer
 
 class Lexer(Lexer):
