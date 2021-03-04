@@ -68,4 +68,4 @@ The compiler and the standard libraries are licensed under the **"GNU general pu
 Read the [License](https://github.com/hascal/hascal/blob/main/LICENSE) for more details.
 
 ## About
-Copyright ©2019-2021, all rights reserved for **Hascal Development Team**.
+Copyright ©2019-2021, all rights reserved for [**Hascal Development Team**](https://github.com/hascal).
