@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #--------------------------------------------------------------
 # | Hascal Programming Language --- Hascal Compiler v1.2.4     |
 # | Copyright (c) 2019-2021 Hascal Development Team            |
@@ -156,9 +156,9 @@ class HascalArgumentParser(object):
             print(output_text)
 
 
-if __name__ == "__main__":
-    hascal_argument_parser = HascalArgumentParser(argv)
-=======
+# if __name__ == "__main__":
+#     hascal_argument_parser = HascalArgumentParser(argv)
+
 #!/usr/bin/env python3
 
 # hascal.py
@@ -176,4 +176,3 @@ if __name__ == "__main__":
       
       
       
->>>>>>> upstream/main
