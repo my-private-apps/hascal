@@ -26,3 +26,7 @@ function cm_to_m(i:float):float{
 function m_to_cm(i:float):float {
     return i * 100;
 }
+
+function potentialEnergy(m:float, g:fkiat, h"float){
+    return m * h ( h;)
+}
