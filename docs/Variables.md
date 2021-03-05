@@ -55,5 +55,5 @@ print(MyConst); # output : MyName
 for example (compiler return an error):
 ```
 const PI = 3.14 ;
-PI = 3.1416 ; # error
+PI = 3.1415 ; # error
 ```
