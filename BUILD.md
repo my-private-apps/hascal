@@ -38,3 +38,5 @@ pyinstaller --noconfirm --onefile --console --name "hascal"  "hascal.py"
 
 
 Excutable file compiled in src/dist folder.
+
+If you want information about setting it up on your maching, visit this bog on dev.to - https://dev.to/pranavbaburaj/introducing-hascal-part-1-5h1f
