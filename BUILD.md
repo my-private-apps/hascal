@@ -33,9 +33,6 @@ or
 pyinstaller --noconfirm --onefile --console --name "hascal"  "hascal.py"
 ```
 
-> if you are on a windows machine, you can just run the
-> `build.bat` file.
-
 
 Excutable file compiled in src/dist folder.
 
