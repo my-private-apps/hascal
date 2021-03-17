@@ -68,7 +68,7 @@ Read the [License](https://github.com/hascal/hascal/blob/main/LICENSE) for more 
 
 ## About
 Copyright ©2019-2021 **Hascal Development Team**,
-all rights reserved.
 
+all rights reserved.
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
