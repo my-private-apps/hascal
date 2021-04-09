@@ -17,6 +17,8 @@ function InstallRequirements {
 	Write-Host "Installing some packages" -Foreground green
 	pip install pyinstaller
 	Write-Host "Building" -Foreground green
+	git clone https://github.com/hascal/hascal.git hascal
+	cd hascal/src
 	pyinstaller --noconfirm --onefile --console --name "hascal"  "hascal.py"
 	Write-Host "Build sucessufully finished" -Foreground green
 }
