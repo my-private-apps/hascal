@@ -19,7 +19,8 @@ import os
 
 class HascalCompiler(object):
     def __init__(self,argv):
-        init() # init colorama
+        init() 
+
         self.code = ""
         self.lexer = Lexer()
         self.parser = Parser()
@@ -89,8 +90,8 @@ class HascalCompiler(object):
 
         # compile with dmd compiler
         try :
-            check_call(['dmd',"com.d", tmp],stdout=DEVNULL,stderr=STDOUT)
-            os.remove("com.d")
+            check_call(['dmd',"out.d", tmp],stdout=DEVNULL,stderr=STDOUT)
+            os.remove("out.d")
         except :
             output_messages = [
                 "Error : Your code have error(s)",

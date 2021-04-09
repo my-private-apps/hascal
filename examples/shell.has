@@ -1,7 +1,1 @@
-var comm = "";
-
-while true {
-    print2(">>>");
-    comm = ReadStr();
-    ExcuteCommand(comm);
-}
+print("LOLZ");
