@@ -10,6 +10,8 @@ Simple Documentation:
 Advanced Documentation:
 - [Data Types](DataTypes.md)
 - [Arrays](Arrays.md)
+- [If statement](if.md)
+- [Loops](loops.md)
 - [Internet](Internet.md)
 - [Filesytem](Filesytem.md)
 - [Bootstrapping](Bootstrapping.md)
