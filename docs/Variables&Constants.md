@@ -43,7 +43,7 @@ var myInt : int;
 myint = 1.1; # error
 ```
 
-## Constants
+# Constants
 Constant(const) is a type qualifier a keyword applied to a data type that indicates that the data is read only(wikipedia).
 
 for example :
