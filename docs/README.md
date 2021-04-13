@@ -15,8 +15,8 @@ Advanced Documentation:
 - [Bootstrapping](Bootstrapping.md)
 
 Hascal Standard Library(HSL) Documentation:
-- [Standard Functions](hsl/stdfuncs.md)
-- [Standard Structs](hsl/stdstructs.md)
+- [Standard Functions](stdfuncs.md)
+- [Standard Structs](stdstructs.md)
 
 HLM Documentation:
 - [Introduction to HLM](HLM.md)
