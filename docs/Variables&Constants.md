@@ -48,12 +48,12 @@ Constant(const) is a type qualifier a keyword applied to a data type that indica
 
 for example :
 ```
-const MyConst = "MyName";
+const MyConst = "MyName"; # or : let MyConst = "MyName";
 print(MyConst); # output : MyName
 ```
 **NOTE:** You cannot change the const values.
 for example (compiler return an error):
 ```
-const PI = 3.14 ;
+const PI = 3.14 ; # or : let PI = 3.14 ;
 PI = 3.1415 ; # error
 ```
