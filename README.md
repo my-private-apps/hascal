@@ -29,18 +29,23 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 - [x] Library Manager(`hlm`) written in Hascal
 - [x] Inspired by C, C#, Swift, TypeScript, JavaScript, Pascal
 
-## Get Started
-[Download latest windows build](https://github.com/hascal/hascal/releases/tag/v1.2.5-bin)
-
-if you use linux , read [build documentation](https://github.com/hascal/hascal/blob/main/BUILD.md) to build Hascal.
-
-**Hascal is'nt support macOS**
 ## Why use Hascal ?
 
 Hascal is so powerful and we listed its important features above.
 you can see that Hascal is perfect in front of many, many other well-known programming languages.
 Also, We have tested many programming languages for Hascal's Back-End, including: C, C++, Assembly, GoLang, Rust, Pascal, and DLang.
 DLang was the best and as you can see, we have used it for our purpose.
+
+## Get Started
+[Download latest windows build](https://github.com/hascal/hascal/releases/tag/v1.2.5-bin)
+
+if you use linux , read [build documentation](https://github.com/hascal/hascal/blob/main/BUILD.md) to build Hascal.
+
+**Hascal is'nt support macOS**
+
+
+## Documentation
+> You can find documentations on installation and using Hascal [here](https://github.com/hascal/hascal/tree/main/docs)
 
 ## Example
 ```dart
@@ -54,8 +59,6 @@ You can see more Hascal examples [here](https://github.com/hascal/hascal/tree/ma
 
 You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/main/syntax.md).
 
-## Documentation
-> You can find documentations on installation and using Hascal [here](https://github.com/hascal/hascal/tree/main/docs)
 
 ## Todo
 - adding multi-syntax
