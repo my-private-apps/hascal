@@ -112,4 +112,18 @@ WriteToFile(file,"1-test");
 CloseFile(f);
 ```
 
+## listdir(path:string) : [string]
+Lists dirs,files on a path
+
+example :
+```
+print(listdir("C:\\"));
+```
+
+## SysPlatform() : string
+Gets type of OS(win32,linux,freebsd,macos,...)
+
+```
+print(SysPlatform());
+```
 
