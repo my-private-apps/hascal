@@ -11,7 +11,7 @@ Advanced Documentation:
 - [Data Types](DataTypes.md)
 - [Arrays](Arrays.md)
 - [Conditional Statements](cond_stmt.md)
-- [Importing[(import.md)
+- [Importing](import.md)
 - [Functions](functions.md)
 - [Internet](Internet.md)
 - [Filesytem](Filesytem.md)
