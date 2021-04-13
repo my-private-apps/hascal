@@ -166,3 +166,13 @@ print(GetSecond());
 ## sin(val:float):float,cos(val:float):float,tan(val:float):float,PI(val:float):float,fmax(val:float):float,fmin(val:float):float,abs(val:float):float
 Math Functions
 [Example](https://github.com/hascal/hascal/tree/main/tests/math)
+
+## exit(exit_code:int)
+End program
+
+example:
+```
+print("Hello");
+exit(0);
+print("Bye");
+```
