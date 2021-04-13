@@ -11,6 +11,7 @@ Advanced Documentation:
 - [Data Types](DataTypes.md)
 - [Arrays](Arrays.md)
 - [Conditional Statements](cond_stmt.md)
+- [Functions](functions.md)
 - [Internet](Internet.md)
 - [Filesytem](Filesytem.md)
 - [Bootstrapping](Bootstrapping.md)
