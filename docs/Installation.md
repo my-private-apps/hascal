@@ -12,4 +12,4 @@ And also add `hascal.exe` to the `PATH` variable
 Read [build documentation](https://github.com/hascal/hascal/blob/main/BUILD.md).
 
 <hr>
-Now you are ready to create you first hascal application. [Next >>>](FirstApplication.md)
+Now you are ready to get started. [Next >>>](GettingStarted.md)
