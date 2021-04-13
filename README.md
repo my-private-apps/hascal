@@ -29,6 +29,12 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 - [x] Library Manager(`hlm`) written in Hascal
 - [x] Inspired by C, C#, Swift, TypeScript, JavaScript, Pascal
 
+## Get Started
+[Download latest windows build](https://github.com/hascal/hascal/releases/tag/v1.2.5-bin)
+
+if you use linux , read [build documentation](https://github.com/hascal/hascal/blob/main/BUILD.md) to build Hascal.
+
+**Hascal is'nt support macOS**
 ## Why use Hascal ?
 
 Hascal is so powerful and we listed its important features above.
