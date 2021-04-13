@@ -5,7 +5,7 @@ Simple Documentation:
 - [Getting Started](GettingStarted.md)
 - [Compile](Compile.md)
 - [Input & Output](Input&output.md)
-- [Variables](Variables.md)
+- [Variables&Constants](Variables&Constants.md)
 
 Advanced Documentation:
 - [Data Types](DataTypes.md)
