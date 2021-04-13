@@ -127,3 +127,42 @@ Gets type of OS(win32,linux,freebsd,macos,...)
 print(SysPlatform());
 ```
 
+## ShellCommand(command:string)
+Runs a shell command
+
+example :
+```
+var commands = "type show_your_code.has";
+ShellCommand(commands);
+```
+
+## ExcuteCommand(command:string)
+Excutes a terminal command
+
+example :
+```
+var comm = "";
+
+while true {
+    print2(">>>");
+    comm = ReadStr();
+    ExcuteCommand(comm);
+}
+```
+
+## GetYear():int,GetMonth():int,GetDay():int,GetHour():int,GetMinute():int,GetSecond():int
+Gets time
+
+example :
+```
+print(GetYear());
+print(GetMonth());
+print(GetDay());
+print(GetHour());
+print(GetMinute());
+print(GetSecond());
+```
+
+## sin(val:float):float,cos(val:float):float,tan(val:float):float,PI(val:float):float,fmax(val:float):float,fmin(val:float):float,abs(val:float):float
+Math Functions
+[Example](https://github.com/hascal/hascal/tree/main/tests/math)
