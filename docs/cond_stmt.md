@@ -1,17 +1,19 @@
+# Condition operators
+| Operator       | Description  | Example |
+| :------------- | :----------: | :----------:|
+|  == | Returns true if the operands are equal.   | var1 == var2 |
+| !=   | Returns true if the operands are not equal. |var1 != var2|
+| >  | Returns true if the left operand is greater than the right operand.  | var1 > var2 |
+| >=  | Returns true if the left operand is greater than or equal to the right operand.  |var1 >= var2|
+| <  | Returns true if the left operand is less than the right operand.   |var1 < var2|
+| <=  | Returns true if the left operand is less than or equal to the right operand.  |var1 <= var2|
+
 # If,else,else if statement
 - Use `if` to specify a block of code to be executed, if a specified condition is true
 - Use `else` to specify a block of code to be executed, if the same condition is false
 - Use `else if` to specify a new condition to test, if the first condition is false
 
-## Condition operators
-| Operator       | Description  |
-| :------------- | :----------: |
-|  == | Returns true if the operands are equal.   |
-| !=   | Returns true if the operands are not equal. |
-| >  | Returns true if the left operand is greater than the right operand.  |
-| >=  | Returns true if the left operand is greater than or equal to the right operand.  |
-| <  | Returns true if the left operand is less than the right operand.   |
-| <=  | Returns true if the left operand is less than or equal to the right operand.  |
+
 
 ## if
 syntax :
