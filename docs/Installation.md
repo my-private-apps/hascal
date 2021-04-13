@@ -7,7 +7,9 @@ Now, Create an environment variables `HPATH`, and set it's value to `src` folder
 And also add `hascal.exe` to the `PATH` variable
 
 <hr>
+
 ## Linux
 Read [build documentation](https://github.com/hascal/hascal/blob/main/BUILD.md).
+
 <hr>
 Now you are ready to create you first hascal application. [Next >>>](FirstApplication.md)
