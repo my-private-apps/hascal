@@ -19,6 +19,7 @@ You can read any type of values from user with one of this functions:
 - `ReadInt`
 - `ReadFloat`
 - `ReadChar`
+
 This is an example for `ReadInt` function:
 
 ```hascal
