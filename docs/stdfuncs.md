@@ -1,0 +1,3 @@
+# Hascal Standard Functions
+
+## print(...)
