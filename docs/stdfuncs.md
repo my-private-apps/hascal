@@ -136,6 +136,9 @@ var commands = "type show_your_code.has";
 ShellCommand(commands);
 ```
 
+> Note: There is an important difference between ShellCommand and ExecuteCommand functions.
+> The `ShellCommand` function can run only system commands, but the `ExecuteCommand` function can run any command with or without arguments.
+
 ## ExcuteCommand(command:string)
 Excutes a terminal command
 
