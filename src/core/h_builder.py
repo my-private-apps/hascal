@@ -78,7 +78,7 @@ class HascalCompiler(object):
         tokens = self.lexer.tokenize(self.code)
         tree = self.parser.parse(tokens)
         output = self.generator.generate(tree)
-        outname = self.argv[2] if len(self.argv) > 2 else "com.d"
+        outname = self.argv[2] if len(self.argv) > 2 else "out.d"
 
         # write output js code in a file
         with open(outname, 'w') as fout:
