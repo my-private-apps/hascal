@@ -309,12 +309,13 @@ class Parser(Parser):
       def condition(self, p):
             return ('less', p.expr0, p.expr1)
       
-      @_('NOT expr')
+      @_('NOT condition')
       def condition(self, p):
-            return ('not_cond', p.expr)
+            return ('not_cond', p.condition)
       @_('boolean')
       def condition(self, p):
             return ('bool_cond', p.boolean)
+
       @_('condition AND condition')
       def condition(self, p):
             return ('and', p.condition0,p.condition1)
@@ -385,17 +386,3 @@ class Parser(Parser):
       def return_type2(self, p):
             return "{0}[]".format(p.NAME)
       #------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-      

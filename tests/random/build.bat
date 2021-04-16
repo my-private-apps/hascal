@@ -1,0 +1,1 @@
+hascal app.has ht_game

@@ -8,6 +8,6 @@ function fib(n:int): int{
     }
 }
 
-var nn = 4;
+var nn = 1000;
 
 print(fib(nn)); # output : 3

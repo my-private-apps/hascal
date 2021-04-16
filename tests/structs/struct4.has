@@ -5,4 +5,4 @@ struct x {
 var t : x ;
 t.t[1] = 1 ;
 
-print(t.t[1]);
+print(t.t[1])

@@ -1,5 +1,7 @@
-/* Hascal Runtime System and Standard Functions written in D
+/* 
+ * Hascal Runtime System and Standard Functions written in Dlang
  * this file is a part of Hascal compiler
+ * File version : 0.2.3
 */
 
 import std.conv : to;
@@ -14,6 +16,12 @@ import std.process : executeShell,execute ,wait ;
 import std.array : split;
 import std.json;
 import std.system : OS;
+import std.random;
+
+int RandomNumber(int min,int max){
+	auto rnd = Random(unpredictableSeed);
+	return uniform(min,max, rnd);
+}
 
 string ReadStr(){
 	try {

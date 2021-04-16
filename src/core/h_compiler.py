@@ -19,11 +19,11 @@ class Generator(object):
             self.types = ['int','float','bool','char','string','auto','File','JSONValue']
 
             # init built-in variables and init variables list
-            self.vars = ['argv','dup']
-            self.stdvars = ['argv','dup']
+            self.vars = ['argv','dup','unpredictableSeed']
+            self.stdvars = ['argv','dup','unpredictableSeed']
 
             # init functions list
-            self.funcs = ['print','print2',
+            self.funcs = ['print','write',
                           'ReadStr','ReadInt','ReadFloat','ReadChar',
                           'sin','cos','tan','PI','fmax','fmin','abs',
                           'exit',
@@ -36,7 +36,8 @@ class Generator(object):
                           'isFile','isDir','rmdir','mkdir','getcwd','thisExePath','listdir',
                           'split',
                           'parseJSON',
-                          'SysPlatform']
+                          'SysPlatform',
+                          'RandomNumber']
             # list of imported libraries
             self.imported = []
       def generate(self, tree,use=False):
@@ -45,12 +46,17 @@ class Generator(object):
                   if use :
                         return f"\n{self.src_pre_main}\n"
                   else :
-                        hascal_runtime_path = str(getenv('HPATH') + "\\hlib" + "\\rt.d")
-                        hascal_runtime = ""
-                        if isfile(hascal_runtime_path):
-                              hascal_runtime_file = open(hascal_runtime_path,"r")
-                              hascal_runtime = hascal_runtime_file.read()
-                        return f"{self.src_includes}\n{hascal_runtime}\n{self.src_pre_main}\nint main(string[] argv){{\n{result}\nreturn 0;\n}}\n"
+
+                        if getenv('HPATH') != None :
+                              hascal_runtime_path = str(getenv('HPATH') + "\\hlib" + "\\rt.d")
+                              hascal_runtime = ""
+                              if isfile(hascal_runtime_path):
+                                    hascal_runtime_file = open(hascal_runtime_path,"r")
+                                    hascal_runtime = hascal_runtime_file.read()
+                              return f"{self.src_includes}\n{hascal_runtime}\n{self.src_pre_main}\nint main(string[] argv){{\n{result}\nreturn 0;\n}}\n"
+                        else :
+                              HascalException("Error : 'HPATH' enviroment varible not found,set Hascal compiler path to 'HPATH'")
+                              exit(1)
 
       def test(self, tree):
             def has_node(t, node_name):
@@ -529,7 +535,7 @@ class Generator(object):
                   if self.exists_func(node[1]):
                         if node[1] == "print":
                               return "writeln(%s)" % (', '.join(self.walk(arg) for arg in node[2]))
-                        if node[1] == "print2":
+                        if node[1] == "write":
                               return "write(%s)" % (', '.join(self.walk(arg) for arg in node[2]))
                         else :
                               return "%s(%s)" % (node[1], ', '.join(self.walk(arg) for arg in node[2]))
@@ -551,10 +557,15 @@ class Generator(object):
                   return "%s ^ %s" % (self.walk(node[1]), self.walk(node[2]))
             if node[0] == 'paren_expr':
                   return "(%s)" % (self.walk(node[1]))
+            if node[0] == 'cond':
+                  return "%s" % (self.walk(node[1]))
+
             if node[0] == 'not':
                   return "!%s" % (self.walk(node[1]))
+
             if node[0] == 'and':
                   return "%s && %s" % (self.walk(node[1]),self.walk(node[2]))
+
             if node[0] == 'or':
                   return "%s || %s" % (self.walk(node[1]),self.walk(node[2]))
             # --------------end of operators-----------------  
@@ -577,7 +588,7 @@ class Generator(object):
                   return "%s <= %s" % (self.walk(node[1]), self.walk(node[2]))
             
             # <expr> > <expr>
-            if node[0] == 'greater_equals':
+            if node[0] == 'greater':
                   return "%s > %s" % (self.walk(node[1]), self.walk(node[2]))
 
             # <expr> < <expr>

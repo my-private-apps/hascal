@@ -78,7 +78,10 @@ class HascalCompiler(object):
         tokens = self.lexer.tokenize(self.code)
         tree = self.parser.parse(tokens)
         output = self.generator.generate(tree)
-        outname = self.argv[2] if len(self.argv) > 2 else "out.d"
+
+        tmp0 = self.argv[1]
+        excutable_outname = self.argv[2] if len(self.argv) > 2 else tmp0[:-4]
+        outname = "out.d"
 
         # write output js code in a file
         with open(outname, 'w') as fout:
@@ -86,11 +89,12 @@ class HascalCompiler(object):
 
         # set output excutable file
         tmp0 = self.argv[1]
-        tmp = '-of=' + tmp0[:-4]
+        tmp = '-of=' + excutable_outname
 
         # compile with dmd compiler
         try :
             check_call(['dmd',"out.d", tmp],stdout=DEVNULL,stderr=STDOUT)
+            # os.system('dmd '+'out.d '+tmp)
             os.remove("out.d")
         except :
             output_messages = [
