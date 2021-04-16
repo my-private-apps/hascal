@@ -21,13 +21,12 @@ This is the official repository for Hascal, a **simple**, **fast**, **powerful**
 ## Hascal Features:
 - [x] Cross Platform (Linux, Windows and MacOS Soon) 
 - [x] Fast & Powerful
-- [x] C-Family Syntax
+- [x] C-Family Syntax, inspired by C, C#, Swift, TypeScript, JavaScript, Pascal
 - [x] Can be use in web development(can compiles to javascript) **WIP**
 - [x] Dlang on Back-End
 - [x] Native binaries with no dependency
 - [x] Garbage Collection
-- [x] Library Manager(`hlm`) written in Hascal
-- [x] Inspired by C, C#, Swift, TypeScript, JavaScript, Pascal
+- [x] Default Library Manager(`hlm`) written in Hascal
 
 ## Why use Hascal ?
 
