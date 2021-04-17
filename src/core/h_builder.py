@@ -19,7 +19,7 @@ import os
 
 class HascalCompiler(object):
     def __init__(self,argv):
-        init() 
+        init() # init colorama
 
         self.code = ""
         self.lexer = Lexer()
@@ -35,7 +35,7 @@ class HascalCompiler(object):
                                     "Copyright (c) 2019-2021 Hascal Development Team,",
                                     "All rights reserved.",
                                     "\nEnter following command for compile a Hascal program :",
-                                    "hascal <inputfile.has>",
+                                    "hascal <inputfile.has> [output file name]",
                                     "other commands:",
                                     "\t--help,-h : show help",
                                     "\t--version,-v : show version"]
@@ -45,9 +45,6 @@ class HascalCompiler(object):
             elif self.argv[1] == "-v" or self.argv[1] == "--version":
                 # show version
                 print(f"Hascal {HASCAL_COMPILER_VERSION} {sys.platform}")
-            elif (self.argv[1] == "js" or self.argv[1] == "-js" ) and argv[2] != None:
-                # compile to JavaScript
-                pass
             else :
                 # check file extension
                 if not self.argv[1].endswith(".has"):

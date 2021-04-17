@@ -313,10 +313,11 @@ class Generator(object):
                                           self.imported += generator.imported
                                           self.src_pre_main += '\n'+output_d+'\n'
                                           self.funcs += generator.funcs
+                                          self.types += generator.types
                               except FileNotFoundError:
                                     HascalException(f"Error : cannot found '{tmp}' library. Are you missing a library ?")
 
-                  elif sys.platform.startswith('linux'):
+                  elif sys.platform.startswith('linux') or sys.platform.startswith('darwin') :
                         if node[1] in self.imported :
                               pass
                         else :
@@ -340,6 +341,7 @@ class Generator(object):
                                           self.imported += generator.imported
                                           self.src_pre_main += '\n'+output_d+'\n'
                                           self.funcs += generator.funcs
+                                          self.types += generator.types
                               except FileNotFoundError:
                                     HascalException(f"Error : cannot found '{tmp}' library. Are you missing a library ?")
             
