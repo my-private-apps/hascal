@@ -58,15 +58,6 @@ You can see more Hascal examples [here](https://github.com/hascal/hascal/tree/ma
 
 You can see Hascal syntax example [here](https://github.com/hascal/hascal/blob/main/syntax.md).
 
-
-## Todo
-- adding multi-syntax
-- adding a library for electrical engineering
-- adding a library for create a simple web server
-- adding a graphical user interface library
-- adding a tool for create android applications with hascal(Hascal Android Bootstrapper)
-- adding macOS support
-
 ## Thanks
 This project exists thanks to all the people who contribute. 
 
