@@ -7,7 +7,7 @@
 # all rights reserved.
 
 from sys import argv 
-from core.h_builder import HascalCompiler # importing hascal compiler
+from core.h_builder import HascalCompiler 
 if __name__ == "__main__":    
       HascalCompiler(argv)
             
