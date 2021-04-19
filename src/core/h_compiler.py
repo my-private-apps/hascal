@@ -570,6 +570,11 @@ class Generator(object):
 
             if node[0] == 'or':
                   return "%s || %s" % (self.walk(node[1]),self.walk(node[2]))
+
+            if node[0] == 'expr_cond':
+                  return "%s" % (self.walk(node[1]))
+            if node[0] == 'paren_cond':
+                  return "(%s)" % (self.walk(node[1]))
             # --------------end of operators-----------------  
 
             # ---------------conditions---------------------

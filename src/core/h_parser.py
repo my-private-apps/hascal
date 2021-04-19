@@ -308,7 +308,14 @@ class Parser(Parser):
       @_('expr LESS expr')
       def condition(self, p):
             return ('less', p.expr0, p.expr1)
-      
+
+      @_('expr')
+      def condition(self, p):
+            return ('expr_cond', p.expr)
+      @_('LPAREN condition RPAREN')
+      def condition(self, p):
+            return ('paren_cond', p.condition)
+
       @_('NOT condition')
       def condition(self, p):
             return ('not_cond', p.condition)

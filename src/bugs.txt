@@ -1,0 +1,9 @@
+1-in if statement local variable defined as a global variable :
+
+like this :
+
+if x == 1 {
+	var x = "Hello";
+}else if x == 2 {
+	var x = "Hello"; # compiler return an error
+}
