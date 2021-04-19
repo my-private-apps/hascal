@@ -17,6 +17,7 @@ import std.array : split;
 import std.json;
 import std.system : OS;
 import std.random;
+import std.ascii;
 
 int RandomNumber(int min,int max){
 	auto rnd = Random(unpredictableSeed);
